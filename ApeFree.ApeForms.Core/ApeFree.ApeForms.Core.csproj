@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net452;net461</TargetFrameworks>
+	  <LangVersion>latest</LangVersion>
+
+	  <Company>ApeFree</Company>
+	  <Authors>Guijie Lee</Authors>
+	  <Copyright>Copyright © 2022 ApeFree, All Rights Reserved.</Copyright>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>ApeForms</Title>
+	  <Product>ApeFree.ApeForms</Product>
+	  <Description>WinForm窗体核心库，包含功能丰富的控件（Metro风格），为常用控件提供扩展功能，更多的使用方法请参考项目URL。</Description>
+	  <RepositoryUrl></RepositoryUrl>
+	  <PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
+	  <Version>0.9.5.0</Version>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <PackageIcon>ApeFree_64px.png</PackageIcon>
+  </PropertyGroup>
+
+ 
+
+  <ItemGroup>
+    <None Include="..\..\ApeFree_64px.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+ 
+
+  <ItemGroup>
+    <PackageReference Include="ApeFree.CodePlus.Algorithm" Version="0.9.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Program Files\IIS\Microsoft Web Deploy V3\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\Button\ImageButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Button\SimpleButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Card\CardView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Card\Magnet.cs" />
+    <Compile Update="Controls\Card\SimpleCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Container\AlignCenterBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Container\Shutter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Container\SlideBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\DatePicker\DatePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\DatePicker\DaysPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\DatePicker\MonthPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\DatePicker\YearPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\Label\TallerLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\ListBox\ControlListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\TabBox\SlideTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

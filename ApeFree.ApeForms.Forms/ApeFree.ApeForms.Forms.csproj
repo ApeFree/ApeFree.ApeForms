@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net452;net461</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+
+		<Company>ApeFree</Company>
+		<Authors>Guijie Lee</Authors>
+		<Copyright>Copyright © 2022 ApeFree, All Rights Reserved.</Copyright>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>ApeForms</Title>
+		<Product>ApeFree.ApeForms</Product>
+		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
+		<RepositoryUrl></RepositoryUrl>
+		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
+		<Version>0.9.5.0</Version>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>ApeFree_64px.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\ApeFree_64px.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Dialog\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Notification\ToastBox\ToastForm.cs">
+			<SubType>Form</SubType>
+		</Compile>
+	</ItemGroup>
+
+</Project>
