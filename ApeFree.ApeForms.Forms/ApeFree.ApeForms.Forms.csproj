@@ -19,14 +19,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\ApeFree_64px.png">
+		<None Include="..\ApeFree_64px.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Dialog\" />
+	  <PackageReference Include="ApeFree.ApeDialogs" Version="0.9.0-Beta0817" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,6 +38,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Dialogs\DialogForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Notification\ToastBox\ToastForm.cs">
 			<SubType>Form</SubType>
 		</Compile>

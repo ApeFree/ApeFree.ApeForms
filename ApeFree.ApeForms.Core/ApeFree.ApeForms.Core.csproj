@@ -21,7 +21,7 @@
  
 
   <ItemGroup>
-    <None Include="..\..\ApeFree_64px.png">
+    <None Include="..\ApeFree_64px.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
