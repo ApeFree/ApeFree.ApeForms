@@ -232,6 +232,10 @@
     <None Include="Resources\ApeForms LOGO.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj">
+      <Project>{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}</Project>
+      <Name>ApeFree.ApeDialogs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj">
       <Project>{316979ae-81df-4430-86d2-64ac44084328}</Project>
       <Name>ApeFree.ApeForms.Core</Name>

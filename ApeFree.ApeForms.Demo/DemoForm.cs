@@ -1,5 +1,7 @@
-﻿using ApeFree.ApeForms.Core.Controls;
+﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeForms.Core.Controls;
 using ApeFree.ApeForms.Demo.DemoPanel;
+using ApeFree.ApeForms.Forms.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,6 +70,13 @@ namespace ApeFree.ApeForms.Demo
                 }
                 controlListBox.AddItem(shutter);
             }
+
+            ApeFormsDialogProvider provider = new ApeFormsDialogProvider();
+            var dialog = provider.CreateInputDialog(new InputDialogSettings() { 
+                Title = "Test Dialog",
+                Content="这是一个测试Dialog",
+            }, this);
+            dialog.Show();
         }
 
         private void labBlog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

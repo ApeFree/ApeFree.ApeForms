@@ -26,10 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ApeFree.ApeDialogs" Version="0.9.0-Beta0817" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj" />
 		<ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj" />
 	</ItemGroup>
 
