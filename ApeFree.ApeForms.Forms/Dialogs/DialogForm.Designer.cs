@@ -37,27 +37,28 @@ partial class DialogForm
             // 
             this.flpOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpOptions.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpOptions.Location = new System.Drawing.Point(0, 119);
+            this.flpOptions.Location = new System.Drawing.Point(10, 109);
             this.flpOptions.Name = "flpOptions";
-            this.flpOptions.Size = new System.Drawing.Size(434, 42);
+            this.flpOptions.Size = new System.Drawing.Size(414, 42);
             this.flpOptions.TabIndex = 0;
             // 
             // labContent
             // 
             this.labContent.AutoEllipsis = true;
             this.labContent.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labContent.Location = new System.Drawing.Point(0, 0);
+            this.labContent.Location = new System.Drawing.Point(10, 10);
             this.labContent.Name = "labContent";
-            this.labContent.Size = new System.Drawing.Size(434, 12);
+            this.labContent.Size = new System.Drawing.Size(414, 12);
             this.labContent.TabIndex = 2;
             this.labContent.Text = "Content";
             // 
             // panelView
             // 
             this.panelView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelView.Location = new System.Drawing.Point(0, 12);
+            this.panelView.Location = new System.Drawing.Point(10, 22);
             this.panelView.Name = "panelView";
-            this.panelView.Size = new System.Drawing.Size(434, 107);
+            this.panelView.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.panelView.Size = new System.Drawing.Size(414, 87);
             this.panelView.TabIndex = 3;
             // 
             // DialogForm
@@ -69,12 +70,15 @@ partial class DialogForm
             this.Controls.Add(this.panelView);
             this.Controls.Add(this.labContent);
             this.Controls.Add(this.flpOptions);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DialogForm";
+            this.Padding = new System.Windows.Forms.Padding(10);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ToastForm";
             this.TopMost = true;
             this.ResumeLayout(false);

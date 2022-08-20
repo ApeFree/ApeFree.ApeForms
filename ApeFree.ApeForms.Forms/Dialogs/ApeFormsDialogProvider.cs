@@ -44,6 +44,8 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 Button button = new Button();
                 button.Text = option.Text;
+                button.Enabled = option.Enable;
+
                 switch (option.OptionType)
                 {
                     case DialogOptionType.Neutral:

@@ -28,7 +28,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public void SetOptions(IEnumerable<Control> buttons)
         {
             flpOptions.Controls.Clear();
-            flpOptions.Controls.AddRange(buttons.ToArray());
+            flpOptions.Controls.AddRange(buttons.Reverse().ToArray());
         }
     }
 }
