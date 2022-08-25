@@ -25,10 +25,14 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             panelView.Controls.Add(view);
         }
 
-        public void SetOptions(IEnumerable<Control> buttons)
+        public void AddButton(Control button)
+        {
+            flpOptions.Controls.Add(button);
+        }
+
+        public void ClearButtons()
         {
             flpOptions.Controls.Clear();
-            flpOptions.Controls.AddRange(buttons.Reverse().ToArray());
         }
     }
 }
