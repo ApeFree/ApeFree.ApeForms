@@ -93,12 +93,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
     }
     public class ApeFormsDialogProvider : DialogProvider<Control, Control>
     {
-        public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context)
+        public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context)
+        public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
         {
             var view = new TextBox();
 
@@ -111,27 +111,27 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
-        public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context)
+        public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context)
+        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context)
+        public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context)
+        public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings settings, IEnumerable<T> collection, T defaultSelectedItem, Control context)
+        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
             throw new NotImplementedException();
         }
