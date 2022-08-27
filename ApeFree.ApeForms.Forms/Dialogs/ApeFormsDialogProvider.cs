@@ -79,7 +79,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var option = new Button();
             option.Text = text;
-            option.Click += (s, e) => onClick(this, option);
+            option.Click += (s, e) => onClick?.Invoke(this, option);
 
             InnerDialog.AddButton(option);
 
@@ -101,19 +101,42 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
         {
             var view = new TextBox();
+            view.Multiline = settings.IsMultiline;
 
             var dialog = new ApeFormsDialog<string>(settings, v => v.Text);
             dialog.ContentView = view;
-            dialog.AddOption(settings.ClearOptionText, (d, o) => view.Clear());
-            dialog.AddOption(settings.ConfirmOptionText, (d, o) => { dialog.ExtractResultFromView(); d.Dismiss(); });
+
+            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            {
+                dialog.ExtractResultFromView();
+                d.Dismiss();
+            };
+
+            // 添加选项按钮
             dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss());
+            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.AddOption(settings.ClearOptionText, (d, o) => view.Clear());
+
+            // 单行输入的模式下，在输入框内使用回车键可确认输入
+            if (!view.Multiline)
+            {
+                view.KeyDown += (s, e) =>
+                {
+                    if (e.KeyCode == Keys.Return)
+                    {
+                        confirmOptionCallback.Invoke(dialog, view);
+                    }
+                };
+            }
 
             return dialog;
         }
 
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
-            throw new NotImplementedException();
+            var dialog = new ApeFormsDialog<bool>(settings);
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss());
+            return dialog;
         }
 
         public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)

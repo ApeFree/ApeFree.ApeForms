@@ -20,9 +20,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public void SetContentView(Control view)
         {
-            view.Dock = DockStyle.Fill;
-            panelView.Controls.Clear();
-            panelView.Controls.Add(view);
+            if(view != null)
+            {
+                view.Dock = DockStyle.Fill;
+                panelView.Controls.Clear();
+                panelView.Controls.Add(view);
+            }
         }
 
         public void AddButton(Control button)
