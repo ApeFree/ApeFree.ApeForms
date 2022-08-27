@@ -41,6 +41,10 @@ namespace ApeFree.ApeForms.Demo
             {
                 {"Toast",new Lazy<Control>(()=>new ToastDemoPanel()) },
             },
+            new NavigationBarData("Dialogs")
+            {
+                {"ApeDialogs",new Lazy<Control>(()=>new DialogDemoPanel()) },
+            },
         };
 
         public DemoForm()
@@ -72,11 +76,14 @@ namespace ApeFree.ApeForms.Demo
             }
 
             //ApeFormsDialogProvider provider = new ApeFormsDialogProvider();
-            //var dialog = provider.CreateInputDialog(new InputDialogSettings() { 
+            //var dialog = provider.CreateInputDialog(new InputDialogSettings()
+            //{
             //    Title = "Test Dialog",
-            //    Content="这是一个测试Dialog",
+            //    Content = "这是一个测试Dialog",
             //}, this);
             //dialog.Show();
+
+            //Console.WriteLine($"Result[{!dialog.Result.IsCancel}] : {dialog.Result.Data}");
         }
 
         private void labBlog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

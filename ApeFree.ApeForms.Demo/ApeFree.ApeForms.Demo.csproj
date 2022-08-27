@@ -136,6 +136,12 @@
     <Compile Include="DemoPanel\DatePickerDemoPanel.Designer.cs">
       <DependentUpon>DatePickerDemoPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="DemoPanel\DialogDemoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DemoPanel\DialogDemoPanel.Designer.cs">
+      <DependentUpon>DialogDemoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DemoPanel\MagnetDemoPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\DatePickerDemoPanel.resx">
       <DependentUpon>DatePickerDemoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DemoPanel\DialogDemoPanel.resx">
+      <DependentUpon>DialogDemoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\MagnetDemoPanel.resx">
       <DependentUpon>MagnetDemoPanel.cs</DependentUpon>
