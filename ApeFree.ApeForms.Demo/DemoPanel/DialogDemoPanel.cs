@@ -55,5 +55,19 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 Toast.Show($"输入内容为：{dialog.Result.Data}");
             }
         }
+
+        private void btnPasswordDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreatePasswordDialog(new PasswordDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text,PasswordChar='●' }, null);
+            dialog.Show();
+            if (dialog.Result.IsCancel)
+            {
+                Toast.Show("取消输入");
+            }
+            else
+            {
+                Toast.Show($"输入密码为：{dialog.Result.Data}");
+            }
+        }
     }
 }

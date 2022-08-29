@@ -30,14 +30,15 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbTitle = new System.Windows.Forms.TextBox();
             this.tbContent = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.tbTitle = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnMessageDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnInputDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnInputMultiLineDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnPasswordDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -67,15 +68,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Basic Settings";
             // 
-            // tbTitle
-            // 
-            this.tbTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbTitle.Location = new System.Drawing.Point(3, 29);
-            this.tbTitle.Name = "tbTitle";
-            this.tbTitle.Size = new System.Drawing.Size(734, 21);
-            this.tbTitle.TabIndex = 1;
-            this.tbTitle.Text = "Dialog Demo";
-            // 
             // tbContent
             // 
             this.tbContent.Dock = System.Windows.Forms.DockStyle.Top;
@@ -95,6 +87,15 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Content";
             // 
+            // tbTitle
+            // 
+            this.tbTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbTitle.Location = new System.Drawing.Point(3, 29);
+            this.tbTitle.Name = "tbTitle";
+            this.tbTitle.Size = new System.Drawing.Size(734, 21);
+            this.tbTitle.TabIndex = 1;
+            this.tbTitle.Text = "Dialog Demo";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.flowLayoutPanel1);
@@ -111,6 +112,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btnMessageDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnInputDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnInputMultiLineDialog);
+            this.flowLayoutPanel1.Controls.Add(this.btnPasswordDialog);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -153,6 +155,18 @@
             this.btnInputMultiLineDialog.Title = "InputDialog(MultiLine)";
             this.btnInputMultiLineDialog.Click += new System.EventHandler(this.btnInputMultiLineDialog_Click);
             // 
+            // btnPasswordDialog
+            // 
+            this.btnPasswordDialog.AutoSize = true;
+            this.btnPasswordDialog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnPasswordDialog.ForeColor = System.Drawing.Color.White;
+            this.btnPasswordDialog.Location = new System.Drawing.Point(480, 3);
+            this.btnPasswordDialog.Name = "btnPasswordDialog";
+            this.btnPasswordDialog.Size = new System.Drawing.Size(153, 37);
+            this.btnPasswordDialog.TabIndex = 3;
+            this.btnPasswordDialog.Title = "PasswordDialog";
+            this.btnPasswordDialog.Click += new System.EventHandler(this.btnPasswordDialog_Click);
+            // 
             // DialogDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -182,5 +196,6 @@
         private Core.Controls.SimpleButton btnMessageDialog;
         private Core.Controls.SimpleButton btnInputDialog;
         private Core.Controls.SimpleButton btnInputMultiLineDialog;
+        private Core.Controls.SimpleButton btnPasswordDialog;
     }
 }
