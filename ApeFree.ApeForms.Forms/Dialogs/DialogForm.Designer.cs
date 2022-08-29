@@ -35,11 +35,12 @@ partial class DialogForm
             // 
             // flpOptions
             // 
+            this.flpOptions.AutoSize = true;
             this.flpOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpOptions.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpOptions.Location = new System.Drawing.Point(10, 109);
+            this.flpOptions.Location = new System.Drawing.Point(10, 151);
             this.flpOptions.Name = "flpOptions";
-            this.flpOptions.Size = new System.Drawing.Size(414, 42);
+            this.flpOptions.Size = new System.Drawing.Size(414, 0);
             this.flpOptions.TabIndex = 0;
             // 
             // labContent
@@ -58,7 +59,7 @@ partial class DialogForm
             this.panelView.Location = new System.Drawing.Point(10, 22);
             this.panelView.Name = "panelView";
             this.panelView.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.panelView.Size = new System.Drawing.Size(414, 87);
+            this.panelView.Size = new System.Drawing.Size(414, 129);
             this.panelView.TabIndex = 3;
             // 
             // DialogForm
@@ -82,6 +83,7 @@ partial class DialogForm
             this.Text = "ToastForm";
             this.TopMost = true;
             this.ResumeLayout(false);
+            this.PerformLayout();
 
     }
 

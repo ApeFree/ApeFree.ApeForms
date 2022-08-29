@@ -146,7 +146,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
-            throw new NotImplementedException();
+            ApeFormsDialog<string> dialog = (ApeFormsDialog<string>)CreateInputDialog(settings, context);
+            ((TextBox)dialog.ContentView).PasswordChar = settings.PasswordChar;
+            return dialog;
         }
 
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
