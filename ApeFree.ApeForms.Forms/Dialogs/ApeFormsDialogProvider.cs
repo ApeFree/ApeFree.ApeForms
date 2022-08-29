@@ -77,7 +77,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public override Control AddOption(string text, Action<IDialog, Control> onClick = null)
         {
-            var option = new Button();
+            var option = new SimpleButton();
             option.Text = text;
             option.Click += (s, e) => onClick?.Invoke(this, option);
 
