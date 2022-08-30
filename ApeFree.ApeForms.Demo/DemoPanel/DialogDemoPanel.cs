@@ -69,5 +69,19 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 Toast.Show($"输入密码为：{dialog.Result.Data}");
             }
         }
+
+        private void btnPromptDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreatePromptDialog(new PromptDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text,PositiveOptionText="Yes",NegativeOptionText = "No" }, null);
+            dialog.Show();
+            if (dialog.Result.Data)
+            {
+                Toast.Show("结果：积极选项");
+            }
+            else
+            {
+                Toast.Show("结果：消极选项");
+            }
+        }
     }
 }
