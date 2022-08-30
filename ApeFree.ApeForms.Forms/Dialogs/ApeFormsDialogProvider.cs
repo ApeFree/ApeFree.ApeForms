@@ -153,7 +153,16 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
         {
-            throw new NotImplementedException();
+            Control control = new Control();
+            control.Visible = false;
+            control.Enabled = false;
+
+            var dialog = new ApeFormsDialog<bool>(settings, ctrl => ctrl.Enabled);
+            dialog.ContentView = control;
+
+            dialog.AddOption(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(); });
+            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(); });
+            return dialog;
         }
 
         public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
