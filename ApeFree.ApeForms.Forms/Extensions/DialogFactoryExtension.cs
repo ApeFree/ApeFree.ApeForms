@@ -1,12 +1,6 @@
-﻿using ApeFree.ApeDialogs;
-using ApeFree.ApeForms.Forms.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApeFree.ApeForms.Forms.Dialogs;
 
-namespace ApeFree.ApeForms.Forms.Extensions
+namespace ApeFree.ApeDialogs
 {
     public static class DialogFactoryExtension
     {
