@@ -1,4 +1,5 @@
-﻿using ApeFree.ApeDialogs.Settings;
+﻿using ApeFree.ApeDialogs;
+using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Forms.Dialogs;
 using ApeFree.ApeForms.Forms.Notification;
 using System;
@@ -15,7 +16,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 {
     public partial class DialogDemoPanel : UserControl
     {
-        ApeFormsDialogProvider provider = new ApeFormsDialogProvider();
+        ApeFormsDialogProvider provider = DialogFactory.Factory.GetApeFormsDialogProvider();
 
         public DialogDemoPanel()
         {
@@ -24,7 +25,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnMessageDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateMessageDialog(new MessageDialogSettings() { Title = tbTitle.Text,Content = tbContent.Text}, null);
+            var dialog = provider.CreateMessageDialog(new MessageDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text }, null);
             dialog.Show();
         }
 
@@ -44,7 +45,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnInputMultiLineDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateInputDialog(new InputDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text,IsMultiline = true }, null);
+            var dialog = provider.CreateInputDialog(new InputDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text, IsMultiline = true }, null);
             dialog.Show();
             if (dialog.Result.IsCancel)
             {
@@ -58,7 +59,13 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnPasswordDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreatePasswordDialog(new PasswordDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text,PasswordChar='●' }, null);
+            var dialog = provider.CreatePasswordDialog(new PasswordDialogSettings()
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text + $"\r\n提示：密码至少要[6]位",
+                PasswordChar = '●',
+                PrecheckResult = password => password != null && password.Length >= 6,
+            }, null);
             dialog.Show();
             if (dialog.Result.IsCancel)
             {
@@ -72,7 +79,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnPromptDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreatePromptDialog(new PromptDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text,PositiveOptionText="Yes",NegativeOptionText = "No" }, null);
+            var dialog = provider.CreatePromptDialog(new PromptDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text, PositiveOptionText = "Yes", NegativeOptionText = "No" }, null);
             dialog.Show();
             if (dialog.Result.Data)
             {
