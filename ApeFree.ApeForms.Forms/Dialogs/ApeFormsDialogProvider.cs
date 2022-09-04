@@ -14,16 +14,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 {
     public class ApeFormsDialog<TResult> : BaseDialog<Control, Control, Control, TResult>
     {
-        private readonly DialogSettings settings;
-
         public DialogForm InnerDialog { get; }
         public override string Title { get => InnerDialog.Text; set => InnerDialog.Text = value; }
         public override string Content { get => InnerDialog.Content; set => InnerDialog.Content = value; }
 
-        public ApeFormsDialog(DialogSettings settings, Func<Control, TResult> extractResultFromViewHandler = null)
+        public ApeFormsDialog(DialogSettings<TResult> settings, Func<Control, TResult> extractResultFromViewHandler = null) : base(settings)
         {
-            this.settings = settings;
-
             InnerDialog = new DialogForm();
 
             Title = settings.Title;
@@ -36,38 +32,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             InnerDialog.Close();
         }
-
-        //protected override void SetOptions(IEnumerable<DialogOption> options)
-        //{
-        //    List<Button> buttons = new List<Button>();
-        //    foreach (DialogOption option in options)
-        //    {
-        //        Button button = new Button();
-        //        button.Text = option.Text;
-        //        button.Enabled = option.Enable;
-
-        //        switch (option.OptionType)
-        //        {
-        //            case DialogOptionType.Neutral:
-        //                break;
-        //            case DialogOptionType.Positive:
-        //                button.BackColor = Color.DarkGreen;
-        //                button.ForeColor = Color.White;
-        //                break;
-        //            case DialogOptionType.Negative:
-        //                button.BackColor = Color.OrangeRed;
-        //                button.ForeColor = Color.White;
-        //                break;
-        //            case DialogOptionType.Functional:
-        //            case DialogOptionType.Special:
-        //                button.BackColor = Color.White;
-        //                button.ForeColor = Color.Black;
-        //                break;
-        //        }
-        //        buttons.Add(button);
-        //    }
-        //    InnerDialog.SetOptions(buttons);
-        //}
 
         protected override void ShowHandler()
         {
@@ -90,6 +54,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             InnerDialog.ClearButtons();
         }
+
+        protected override void PrecheckFailsCallback()
+        {
+            // 抖动窗口
+            InnerDialog.Shake();
+        }
     }
     public class ApeFormsDialogProvider : DialogProvider<Control, Control>
     {
@@ -109,11 +79,14 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             Action<IDialog, Control> confirmOptionCallback = (d, o) =>
             {
                 dialog.ExtractResultFromView();
-                d.Dismiss();
+                if (dialog.PerformPrecheck())
+                {
+                    d.Dismiss(false);
+                }
             };
 
             // 添加选项按钮
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss());
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
             dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
             dialog.AddOption(settings.ClearOptionText, (d, o) => view.Clear());
 
@@ -135,11 +108,11 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss());
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
             return dialog;
         }
 
-        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
+        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
         {
             throw new NotImplementedException();
         }
@@ -160,12 +133,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var dialog = new ApeFormsDialog<bool>(settings, ctrl => ctrl.Enabled);
             dialog.ContentView = control;
 
-            dialog.AddOption(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(); });
-            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(); });
+            dialog.AddOption(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
+            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(true); });
             return dialog;
         }
 
-        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
+        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
             throw new NotImplementedException();
         }
