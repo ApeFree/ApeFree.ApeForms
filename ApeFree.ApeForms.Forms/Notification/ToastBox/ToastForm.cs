@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApeFree.ApeForms.Forms.Dialogs;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -33,6 +34,11 @@ namespace ApeFree.ApeForms.Forms.Notification
 
             // 判断是否有活动窗体
             var parent = ActiveForm;
+            // 如果活动窗体是DialogForm则不会被当做是Toast的背景窗体
+            if (parent is DialogForm)
+            {
+                parent = null;
+            }
             if (parent != null)
             {
                 Left = (parent.Width - Width) / 2 + parent.Left;
