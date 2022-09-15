@@ -125,6 +125,42 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             }
         }
 
+
+
+        private void btnMultipleSelectionDialog_Click(object sender, EventArgs e)
+        {
+            Student[] students = new Student[] {
+                new Student("张三","一年级"),
+                new Student("李四","三年级"),
+                new Student("王二","五年级"),
+            };
+
+            var dialog = provider.CreateMultipleSelectionDialog(new MultipleSelectionDialogSettings<Student>()
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                PrecheckResult = item =>
+                {
+                    var b = item.Any();
+                    if (!b)
+                    {
+                        Toast.Show("至少要选一项哦！", 2000, null, ToastMode.Reuse);
+                    }
+                    return b;
+                },
+                ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})",
+            }, students, null, null); ;
+            dialog.Show();
+            if (dialog.Result.IsCancel)
+            {
+                Toast.Show("取消选择");
+            }
+            else
+            {
+                Toast.Show($"结果：{string.Join("|", dialog.Result.Data.Select(s=>$"{s.Name}({s.Description})"))}");
+            }
+        }
+
         class Student
         {
             public Student(string name, string description)

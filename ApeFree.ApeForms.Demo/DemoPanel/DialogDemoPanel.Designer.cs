@@ -41,6 +41,7 @@
             this.btnPasswordDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnPromptDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnSelectionDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnMultipleSelectionDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -117,6 +118,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btnPasswordDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnPromptDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnSelectionDialog);
+            this.flowLayoutPanel1.Controls.Add(this.btnMultipleSelectionDialog);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -195,6 +197,18 @@
             this.btnSelectionDialog.Title = "SelectionDialog";
             this.btnSelectionDialog.Click += new System.EventHandler(this.btnSelectionDialog_Click);
             // 
+            // btnMultipleSelectionDialog
+            // 
+            this.btnMultipleSelectionDialog.AutoSize = true;
+            this.btnMultipleSelectionDialog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnMultipleSelectionDialog.ForeColor = System.Drawing.Color.White;
+            this.btnMultipleSelectionDialog.Location = new System.Drawing.Point(321, 46);
+            this.btnMultipleSelectionDialog.Name = "btnMultipleSelectionDialog";
+            this.btnMultipleSelectionDialog.Size = new System.Drawing.Size(153, 37);
+            this.btnMultipleSelectionDialog.TabIndex = 6;
+            this.btnMultipleSelectionDialog.Title = "MultipleSelectionDialog";
+            this.btnMultipleSelectionDialog.Click += new System.EventHandler(this.btnMultipleSelectionDialog_Click);
+            // 
             // DialogDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -227,5 +241,6 @@
         private Core.Controls.SimpleButton btnPasswordDialog;
         private Core.Controls.SimpleButton btnPromptDialog;
         private Core.Controls.SimpleButton btnSelectionDialog;
+        private Core.Controls.SimpleButton btnMultipleSelectionDialog;
     }
 }
