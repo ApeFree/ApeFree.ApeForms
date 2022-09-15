@@ -140,7 +140,39 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
-            throw new NotImplementedException();
+            var view = new CheckedListBox();
+            view.SelectedIndexChanged += (s, e) =>
+            {
+                for (int i = 0; i < view.Items.Count; i++)
+                {
+                    view.SetItemChecked(i, false);
+                }
+                view.SetItemChecked(view.SelectedIndex, true);
+            };
+            foreach (var item in collection)
+            {
+                view.Items.Add(settings.ItemDisplayTextConvertCallback(item), item.Equals(defaultSelectedItem));
+            }
+            var dialog = new ApeFormsDialog<T>(settings, v =>
+            {
+                var index = (v as CheckedListBox).SelectedIndex;
+                return index >= 0 ? collection.ElementAt(index) : default(T);
+            });
+            dialog.ContentView = view;
+
+            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            {
+                dialog.ExtractResultFromView();
+                if (dialog.PerformPrecheck())
+                {
+                    d.Dismiss(false);
+                }
+            };
+
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+
+            return dialog;
         }
     }
 }
