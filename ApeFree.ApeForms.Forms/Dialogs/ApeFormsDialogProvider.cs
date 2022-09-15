@@ -112,10 +112,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
-        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
@@ -171,6 +168,65 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
             dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
             dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+
+            return dialog;
+        }
+
+        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
+        {
+            var view = new CheckedListBox();
+            view.SelectedIndexChanged += (s, e) =>
+            {
+                if (view.SelectedIndex != -1)
+                {
+                    view.SetItemChecked(view.SelectedIndex, !view.GetItemChecked(view.SelectedIndex));
+                }
+            };
+            foreach (var item in collection)
+            {
+                view.Items.Add(settings.ItemDisplayTextConvertCallback(item), defaultSelectedItems?.Contains(item) ?? false);
+            }
+            var dialog = new ApeFormsDialog<IEnumerable<T>>(settings, v =>
+            {
+                List<T> selectedItems = new List<T>();
+                for (int i = 0; i < view.Items.Count; i++)
+                {
+                    if (view.GetItemChecked(i))
+                    {
+                        selectedItems.Add(collection.ElementAt(i));
+                    }
+                }
+                return selectedItems;
+            });
+            dialog.ContentView = view;
+
+            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            {
+                dialog.ExtractResultFromView();
+                if (dialog.PerformPrecheck())
+                {
+                    d.Dismiss(false);
+                }
+            };
+
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.AddOption(settings.SelectAllOptionText, (d, o) =>
+            {
+                view.SelectedIndex = -1;
+                for (int i = 0; i < view.Items.Count; i++)
+                {
+                    view.SetItemChecked(i, true);
+                }
+            });
+            dialog.AddOption(settings.ReverseSelectedOptionText, (d, o) =>
+            {
+                view.SelectedIndex = -1;
+                for (int i = 0; i < view.Items.Count; i++)
+                {
+                    view.SetItemChecked(i, !view.GetItemChecked(i));
+                }
+            });
 
             return dialog;
         }
