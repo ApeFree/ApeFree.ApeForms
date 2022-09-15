@@ -40,6 +40,7 @@
             this.btnInputMultiLineDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnPasswordDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnPromptDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnSelectionDialog = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -115,6 +116,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btnInputMultiLineDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnPasswordDialog);
             this.flowLayoutPanel1.Controls.Add(this.btnPromptDialog);
+            this.flowLayoutPanel1.Controls.Add(this.btnSelectionDialog);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -181,6 +183,18 @@
             this.btnPromptDialog.Title = "PromptDialog";
             this.btnPromptDialog.Click += new System.EventHandler(this.btnPromptDialog_Click);
             // 
+            // btnSelectionDialog
+            // 
+            this.btnSelectionDialog.AutoSize = true;
+            this.btnSelectionDialog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnSelectionDialog.ForeColor = System.Drawing.Color.White;
+            this.btnSelectionDialog.Location = new System.Drawing.Point(162, 46);
+            this.btnSelectionDialog.Name = "btnSelectionDialog";
+            this.btnSelectionDialog.Size = new System.Drawing.Size(153, 37);
+            this.btnSelectionDialog.TabIndex = 5;
+            this.btnSelectionDialog.Title = "SelectionDialog";
+            this.btnSelectionDialog.Click += new System.EventHandler(this.btnSelectionDialog_Click);
+            // 
             // DialogDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -212,5 +226,6 @@
         private Core.Controls.SimpleButton btnInputMultiLineDialog;
         private Core.Controls.SimpleButton btnPasswordDialog;
         private Core.Controls.SimpleButton btnPromptDialog;
+        private Core.Controls.SimpleButton btnSelectionDialog;
     }
 }

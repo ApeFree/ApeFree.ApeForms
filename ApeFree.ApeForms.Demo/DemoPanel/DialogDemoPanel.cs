@@ -90,5 +90,50 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 Toast.Show("结果：消极选项");
             }
         }
+
+        private void btnSelectionDialog_Click(object sender, EventArgs e)
+        {
+            Student[] students = new Student[] {
+                new Student("张三","一年级"),
+                new Student("李四","三年级"),
+                new Student("王二","五年级"),
+            };
+
+            var dialog = provider.CreateSelectionDialog(new SelectionDialogSettings<Student>()
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                PrecheckResult = item =>
+                {
+                    var b = item != null;
+                    if (!b)
+                    {
+                        Toast.Show("至少要选一项哦！", 2000, null, ToastMode.Reuse);
+                    }
+                    return b;
+                },
+                ItemDisplayTextConvertCallback = stu=> $"{stu.Name} ({stu.Description})",
+            }, students, null, null);;
+            dialog.Show();
+            if (dialog.Result.IsCancel)
+            {
+                Toast.Show("取消选择");
+            }
+            else
+            {
+                Toast.Show($"结果：{dialog.Result.Data.Name} , {dialog.Result.Data.Description}");
+            }
+        }
+
+        class Student
+        {
+            public Student(string name, string description)
+            {
+                Name = name;
+                Description = description;
+            }
+            public string Name { get; set; }
+            public string Description { get; set; }
+        }
     }
 }
