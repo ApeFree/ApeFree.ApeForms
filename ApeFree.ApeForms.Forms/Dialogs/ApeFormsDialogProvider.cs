@@ -61,7 +61,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InnerDialog.Shake();
         }
     }
-    public class ApeFormsDialogProvider : DialogProvider<Control, Control>
+    public class ApeFormsDialogProvider : DialogProvider<Control>
     {
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
