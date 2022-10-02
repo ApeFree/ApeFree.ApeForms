@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace System.Windows.Forms
 {
@@ -15,30 +16,36 @@ namespace System.Windows.Forms
         /// <param name="form"></param>
         /// <param name="stepValue"></param>
         /// <returns></returns>
-        public static Task GraduallyShow(this Form form, double stepValue = 0.02)
+        public static Task GraduallyShow(this Form form, double stepValue = 0.1)
         {
+            form.Opacity = 0;
+            form.Show();
+
             return Task.Run(() =>
             {
-                Form.ActiveForm.ModifyInUI(() =>
-                {
-                    form.Opacity = 0;
-                    form.Enabled = false;
-                    form.Show();
-                    while (!GradualTransparencyOnce(form, stepValue, 1))
-                    {
-                        // Task.Delay(100);
-                        Thread.Sleep(10);
-                    }
-                    form.Enabled = true;
-                });
-            });
-        }
+                AutoResetEvent evt = new AutoResetEvent(false);
 
-        private static bool GradualTransparencyOnce(this Form form, double stepValue, double target = 1)
-        {
-            double value = form.Opacity + stepValue;
-            form.Opacity = value > target ? target : value;
-            return form.Opacity == target;
+                double targetOpacityValue = 1;
+
+                Timers.Timer timer = new Timers.Timer(10);
+                timer.Elapsed += (s, e) =>
+                {
+                    double value = form.Opacity + stepValue;
+                    form.ModifyInUI(() =>
+                    {
+                        form.Opacity = value > targetOpacityValue ? targetOpacityValue : value;
+                    });
+                    if (form.Opacity == targetOpacityValue)
+                    {
+                        timer.Stop();
+                        timer.Dispose();
+                        evt.Set();
+                    }
+                };
+                timer.Start();
+
+                evt.WaitOne();
+            });
         }
     }
 }
