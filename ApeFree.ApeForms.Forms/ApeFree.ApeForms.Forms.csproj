@@ -13,7 +13,7 @@
 		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.9.7</Version>
+		<Version>0.9.8</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
@@ -23,6 +23,10 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="ApeFree.ApeDialogs" Version="0.9.1-Beta1003" />
 	</ItemGroup>
 
 	<ItemGroup>
