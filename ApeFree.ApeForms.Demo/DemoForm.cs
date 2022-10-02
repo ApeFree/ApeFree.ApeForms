@@ -45,6 +45,10 @@ namespace ApeFree.ApeForms.Demo
             {
                 {"ApeDialogs",new Lazy<Control>(()=>new DialogDemoPanel()) },
             },
+            new NavigationBarData("Extensions")
+            {
+                {"Form",new Lazy<Control>(()=>new FormExtensionDemoPanel()) },
+            },
         };
 
         public DemoForm()
@@ -103,6 +107,8 @@ namespace ApeFree.ApeForms.Demo
 
         private void btnContact_Click(object sender, EventArgs e)
         {
+            new Form().GraduallyShow();
+
             Clipboard.SetDataObject("929371169");
             this.ShowToast("QQ群：929371169 (已复制)", ToastMode.Preemption, 8000);
         }

@@ -142,6 +142,12 @@
     <Compile Include="DemoPanel\DialogDemoPanel.Designer.cs">
       <DependentUpon>DialogDemoPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="DemoPanel\FormExtensionDemoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DemoPanel\FormExtensionDemoPanel.Designer.cs">
+      <DependentUpon>FormExtensionDemoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DemoPanel\MagnetDemoPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -182,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\DialogDemoPanel.resx">
       <DependentUpon>DialogDemoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DemoPanel\FormExtensionDemoPanel.resx">
+      <DependentUpon>FormExtensionDemoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\MagnetDemoPanel.resx">
       <DependentUpon>MagnetDemoPanel.cs</DependentUpon>

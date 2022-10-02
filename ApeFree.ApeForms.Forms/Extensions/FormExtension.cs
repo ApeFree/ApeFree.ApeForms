@@ -14,9 +14,9 @@ namespace System.Windows.Forms
         /// 窗体透明度渐进显示
         /// </summary>
         /// <param name="form"></param>
-        /// <param name="stepValue"></param>
+        /// <param name="gradientValue"></param>
         /// <returns></returns>
-        public static Task GraduallyShow(this Form form, double stepValue = 0.1)
+        public static Task GraduallyShow(this Form form, double gradientValue = 0.1)
         {
             form.Opacity = 0;
             form.Show();
@@ -26,25 +26,71 @@ namespace System.Windows.Forms
                 AutoResetEvent evt = new AutoResetEvent(false);
 
                 double targetOpacityValue = 1;
+                bool hasError = false;
 
                 Timers.Timer timer = new Timers.Timer(10);
                 timer.Elapsed += (s, e) =>
                 {
-                    double value = form.Opacity + stepValue;
-                    form.ModifyInUI(() =>
+                    timer.Stop();
+
+                    double value = form.Opacity + gradientValue;
+
+                    try
                     {
-                        form.Opacity = value > targetOpacityValue ? targetOpacityValue : value;
-                    });
-                    if (form.Opacity == targetOpacityValue)
+                        form.Invoke(() =>
+                        {
+                            form.Opacity = value > targetOpacityValue ? targetOpacityValue : value;
+                        });
+                    }
+                    catch (Exception ex)
                     {
-                        timer.Stop();
+                        hasError = true;
+                    }
+
+                    if (form.Opacity == targetOpacityValue || hasError)
+                    {
                         timer.Dispose();
                         evt.Set();
+                    }
+                    else
+                    {
+                        timer.Start();
                     }
                 };
                 timer.Start();
 
                 evt.WaitOne();
+            });
+        }
+
+        /// <summary>
+        /// 窗口震动
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="shakeTimes">震动次数</param>
+        /// <param name="amplitude">震动幅度(像素)</param>
+        public static void Shake(this Form form, int shakeTimes = 8, int amplitude = 20)
+        {
+            Task.Run(() =>
+            {
+                // 备份原位置
+                var originalSite = form.Left;
+
+                // 振幅减半（以原点为中心左右摇摆）
+                amplitude /= 2;
+
+                while (shakeTimes-- > 0)
+                {
+                    form.ModifyInUI(() =>
+                    {
+                        form.Left = originalSite + (shakeTimes % 2 == 0 ? amplitude : -amplitude);
+                    });
+                    Thread.Sleep(10);
+                }
+                form.ModifyInUI(() =>
+                {
+                    form.Left = originalSite;
+                });
             });
         }
     }
