@@ -21,11 +21,11 @@ namespace System.Drawing
         /// <summary>
         /// 转换为纯色图像
         /// </summary>
-        /// <param name="bitmap"></param>
-        /// <param name="color"></param>
-        /// <param name="reserveAlpha"></param>
+        /// <param name="bitmap">位图</param>
+        /// <param name="color">目标颜色</param>
+        /// <param name="reserveAlpha">是否保留透明通道</param>
         /// <returns></returns>
-        public static Bitmap ToPureColor(this Bitmap bitmap, Color color, bool reserveAlpha)
+        public static Bitmap ToPureColor(this Bitmap bitmap, Color color, bool reserveAlpha = false)
         {
             return bitmap.ToPureColor(new Color[] { color }, reserveAlpha)[0];
         }
