@@ -30,6 +30,7 @@ namespace ApeFree.ApeForms.Demo
             new NavigationBarData("Card")
             {
                 {"Magnet",new Lazy<Control>(()=>new MagnetDemoPanel()) },
+                {"SimpleCard",new Lazy<Control>(()=>new SimpleCardDemoPanel()) },
             },
             new NavigationBarData("Container")
             {

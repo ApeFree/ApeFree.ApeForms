@@ -160,6 +160,12 @@
     <Compile Include="DemoPanel\ShutterDemoPanel.Designer.cs">
       <DependentUpon>ShutterDemoPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="DemoPanel\SimpleCardDemoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DemoPanel\SimpleCardDemoPanel.Designer.cs">
+      <DependentUpon>SimpleCardDemoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DemoPanel\SlideBoxDemoPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\ShutterDemoPanel.resx">
       <DependentUpon>ShutterDemoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DemoPanel\SimpleCardDemoPanel.resx">
+      <DependentUpon>SimpleCardDemoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\SlideBoxDemoPanel.resx">
       <DependentUpon>SlideBoxDemoPanel.cs</DependentUpon>
