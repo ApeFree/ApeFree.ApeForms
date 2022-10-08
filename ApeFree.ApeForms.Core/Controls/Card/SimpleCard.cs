@@ -25,6 +25,14 @@ namespace ApeFree.ApeForms.Core.Controls
         [Description("图文内容的边距")]
         public int ImageMargin { get => Padding.All; set => Padding = new Padding(value); }
 
+        [Browsable(true)]
+        [Description("边框颜色")]
+        public Color BorderColor { get; set; } = Color.LightBlue;
+
+        [Browsable(true)]
+        [Description("边框粗细")]
+        public int BorderSize { get; set; } = 2;
+
         public SimpleCard()
         {
             InitializeComponent();
@@ -35,7 +43,20 @@ namespace ApeFree.ApeForms.Core.Controls
             picImage.MouseMove += SimpleCardMouseMove;
         }
 
-        private void SimpleCardMouseMove(object sender, MouseEventArgs e) => OnMouseMove(e);
+        private static Control lastMouseMovedCard = null;
+
+        private void SimpleCardMouseMove(object sender, MouseEventArgs e)
+        {
+            if(lastMouseMovedCard != this)
+            {
+                this.DrawBorder(BorderColor, BorderSize);
+                lastMouseMovedCard?.DrawBorder(BorderColor, 0);
+                lastMouseMovedCard?.Refresh();
+
+                lastMouseMovedCard = this;
+            }
+            OnMouseMove(e);
+        }
         private void SimpleCardClick(object sender, EventArgs e) => OnClick(e);
         protected virtual void LabText_FontChanged(object sender, EventArgs e)
         {
