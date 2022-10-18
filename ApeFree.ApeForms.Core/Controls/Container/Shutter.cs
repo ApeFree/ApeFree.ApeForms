@@ -91,9 +91,9 @@ namespace ApeFree.ApeForms.Core.Controls
             }
         }
 
-        protected override void OnResize(EventArgs e)
+        protected override void OnSizeChanged(EventArgs e)
         {
-            base.OnResize(e);
+            base.OnSizeChanged(e);
 
             if (MainControl == null && HiddenControl == null)
             {
@@ -112,6 +112,8 @@ namespace ApeFree.ApeForms.Core.Controls
             else
             {
             }
+
+            AdjustSize();
         }
     }
 }
