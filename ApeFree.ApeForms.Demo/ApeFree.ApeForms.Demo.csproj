@@ -39,6 +39,9 @@
     <ApplicationIcon>ApeFree_48px.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ApeFree.ApeDialogs, Version=0.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ApeFree.ApeDialogs.0.9.2\lib\net45\ApeFree.ApeDialogs.dll</HintPath>
+    </Reference>
     <Reference Include="ApeFree.CodePlus.Algorithm">
       <HintPath>..\..\ApeFree.CodePlus\ApeFree.CodePlus.Algorithm\bin\Debug\net40\ApeFree.CodePlus.Algorithm.dll</HintPath>
     </Reference>
@@ -259,10 +262,6 @@
     <None Include="Resources\ApeForms LOGO.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj">
-      <Project>{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}</Project>
-      <Name>ApeFree.ApeDialogs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj">
       <Project>{316979ae-81df-4430-86d2-64ac44084328}</Project>
       <Name>ApeFree.ApeForms.Core</Name>
