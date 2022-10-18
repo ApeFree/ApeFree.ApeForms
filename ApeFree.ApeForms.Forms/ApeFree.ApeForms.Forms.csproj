@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ApeFree.ApeDialogs" Version="0.9.1-Beta1003" />
+	  <PackageReference Include="ApeFree.ApeDialogs" Version="0.9.2" />
 	</ItemGroup>
 
 	<ItemGroup>
