@@ -14,7 +14,7 @@ namespace System.Windows.Forms
 
         public static void SizeGradualChange(this Control control, Size targetSize, byte rate = 5)
         {
-            SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control,() =>
+            SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control, () =>
             {
                 control.ModifyInUI(() =>
                 {
@@ -37,7 +37,7 @@ namespace System.Windows.Forms
                         control.Left = Gradual(control.Left, targetPoint.X, rate);
                         control.Top = Gradual(control.Top, targetPoint.Y, rate);
                     });
-                }, 
+                },
                 () =>
                 {
                     return (control.Left == targetPoint.X) && (control.Top == targetPoint.Y);
@@ -64,6 +64,8 @@ namespace System.Windows.Forms
 
         private readonly Timer timer;
 
+        private readonly object _lockerTaskListItemsChange = new object();
+
         private readonly EventableList<TimerTask> tasks;
 
         private SmoothMovementTaskManager()
@@ -81,9 +83,12 @@ namespace System.Windows.Forms
         public void AddTask(TimerTask task)
         {
             var t = tasks.FirstOrDefault(i => i.Id == task.Id);
-            if(t == null)
+            if (t == null)
             {
-                tasks.Add(task);
+                lock (_lockerTaskListItemsChange)
+                {
+                    tasks.Add(task);
+                }
             }
             else
             {
@@ -102,7 +107,10 @@ namespace System.Windows.Forms
                 }
                 task.Run();
             }
-            deleteTasks.ForEach(t => tasks.Remove(t));
+            lock (_lockerTaskListItemsChange)
+            {
+                deleteTasks.ForEach(t => tasks.Remove(t));
+            }
         }
 
         public class TimerTask
