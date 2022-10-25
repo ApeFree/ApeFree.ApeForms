@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApeFree.ApeForms.Demo", "Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApeFree.ApeForms.Forms", "ApeFree.ApeForms.Forms\ApeFree.ApeForms.Forms.csproj", "{A6D675BD-FB87-487A-B0DC-14608174C132}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApeFree.ApeDialogs", "..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj", "{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{A6D675BD-FB87-487A-B0DC-14608174C132}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6D675BD-FB87-487A-B0DC-14608174C132}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6D675BD-FB87-487A-B0DC-14608174C132}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD9AF9B3-2912-471F-86B7-2617A3FDC63D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
