@@ -25,5 +25,17 @@ namespace ApeFree.ApeForms.Core.Gdi
             var y = centrePoint.Y + radius * Math.Sin(angle * Math.PI / 180);
             return new PointF((float)x, (float)y);
         }
+
+        /// <summary>
+        /// 通过两点坐标计算距离
+        /// </summary>
+        /// <param name="p1">坐标1</param>
+        /// <param name="p2">坐标2</param>
+        /// <returns></returns>
+        public static double CalculateLengthFromTwoPoints(PointF p1, PointF p2)
+        {
+            double value = Math.Sqrt(Math.Abs(p1.X - p2.X) * Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y) * Math.Abs(p1.Y - p2.Y));
+            return value;
+        }
     }
 }
