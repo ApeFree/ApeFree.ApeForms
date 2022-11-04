@@ -10,141 +10,92 @@ using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Core.Controls
 {
-    [DefaultEvent("Click")]
-    // [DefaultProperty("Text")]
-    public partial class SimpleButton : UserControl
-    {
-        [Browsable(false)]
-        // [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override string Text { get => Title; set => Title = value; }
 
-        [Browsable(true)]
-        public string Title
+    public class SimpleButton : Button
+    {
+        private Color normalBackColor;
+        private Color normalForeColor;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Color PressedBackColor { get; private set; }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Color PressedForeColor { get; private set; }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Color TouchedBackColor { get; private set; }
+
+        public Color TouchedForeColor { get; private set; }
+
+        [Obsolete]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool AutoScroll { get; set; }
+
+        [Obsolete]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public BorderStyle BorderStyle { get; set; }
+
+        public new Color BackColor
         {
-            get
-            {
-                return labButtonText == null ? base.Text : labButtonText.Text;
-            }
+            get => normalBackColor;
             set
             {
-                base.Text = value;
-                if (labButtonText != null)
-                {
-                    labButtonText.Text = value;
-                }
+                base.BackColor = value;
+                normalBackColor = value;
+                PressedBackColor = value.Luminance(0.9f);
+                TouchedBackColor = value.Luminance(1.1f);
+            }
+        }
+        public new Color ForeColor
+        {
+            get => normalForeColor;
+            set
+            {
+                base.ForeColor = value;
+                normalForeColor = value;
+                PressedForeColor = value.Luminance(0.9f);
+                TouchedForeColor = value.Luminance(1.1f);
             }
         }
 
-        /// <summary>
-        /// 按钮的尺寸跟随文本的尺寸自适应
-        /// </summary>
-        [Browsable(true)]
-        [Description("按钮的尺寸跟随文本的尺寸自适应")]
-        public override bool AutoSize { get; set; }
+        public string Title { get => Text; set => Text = value; }
+
 
         public SimpleButton()
         {
-            InitializeComponent();
-            Text = Name;
-            AutoSize = true;
-            labButtonText.TextChanged += LabButtonText_TextChanged;
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+
+            base.BackColor = BackColor = Color.FromArgb(0, 122, 204);
+            base.ForeColor = ForeColor = Color.WhiteSmoke;
         }
 
-        private void LabButtonText_TextChanged(object sender, EventArgs e)
+        protected override void OnMouseDown(MouseEventArgs mevent)
         {
-            if (AutoSize)
-            {
-                SizeF sizeF = labButtonText.GetTextSize();
-                labButtonText.Height = (int)sizeF.Height + 6;
-                labButtonText.Width = (int)sizeF.Width + 6;
-            }
+            base.BackColor = PressedBackColor;
+            base.ForeColor = PressedForeColor;
+            base.OnMouseDown(mevent);
         }
 
-        public void PerformClick()
+        protected override void OnMouseEnter(EventArgs e)
         {
-            OnClick(new EventArgs());
+            base.BackColor = TouchedBackColor;
+            base.ForeColor = TouchedForeColor;
+            base.OnMouseEnter(e);
         }
 
-        private void labButtonText_Click(object sender, EventArgs e)
+        protected override void OnMouseLeave(EventArgs e)
         {
-            OnClick(e);
+            base.BackColor = BackColor;
+            base.ForeColor = ForeColor;
+            base.OnMouseLeave(e);
         }
 
-        protected override void OnEnabledChanged(EventArgs e)
+        protected override void OnMouseUp(MouseEventArgs mevent)
         {
-            base.OnEnabledChanged(e);
-            if (Enabled)
-            {
-                labButtonText.ForeColor = ForeColor;
-                labButtonText.BackColor = BackColor;
-            }
-            else
-            {
-                labButtonText.ForeColor = Color.White;
-                labButtonText.BackColor = Color.DarkGray;
-            }
-        }
-
-        private void labButtonText_MouseDown(object sender, MouseEventArgs e)
-        {
-            labButtonText.ForeColor = ControlPaint.Dark(ForeColor, 0.02f);
-            labButtonText.BackColor = ControlPaint.Dark(BackColor, 0.02f);
-        }
-
-        private void labButtonText_MouseUp(object sender, MouseEventArgs e)
-        {
-            labButtonText.ForeColor = ControlPaint.Light(ForeColor);
-            labButtonText.BackColor = ControlPaint.Light(BackColor);
-        }
-
-        private void labButtonText_MouseMove(object sender, MouseEventArgs e)
-        {
-            labButtonText.ForeColor = ControlPaint.Light(ForeColor);
-            labButtonText.BackColor = ControlPaint.Light(BackColor);
-        }
-
-        private void labButtonText_MouseLeave(object sender, EventArgs e)
-        {
-            labButtonText.ForeColor = ForeColor;
-            labButtonText.BackColor = BackColor;
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            labButtonText.ForeColor = ForeColor;
-            labButtonText.BackColor = BackColor;
-        }
-
-        protected override void OnFontChanged(EventArgs e)
-        {
-            base.OnFontChanged(e);
-            labButtonText.Font = Font;
-        }
-        protected override void OnBackColorChanged(EventArgs e)
-        {
-            base.OnBackColorChanged(e);
-            labButtonText.BackColor = BackColor;
-        }
-
-        protected override void OnForeColorChanged(EventArgs e)
-        {
-            base.OnForeColorChanged(e);
-            labButtonText.ForeColor = ForeColor;
-        }
-
-        /// <summary>
-        /// 创建简单的按钮
-        /// </summary>
-        /// <param name="text">按钮文本</param>
-        /// <param name="action">单击动作</param>
-        /// <returns></returns>
-        public static SimpleButton CreateSimpleButton(string text, Action action)
-        {
-            SimpleButton btn = new SimpleButton();
-            btn.Text = text;
-            btn.Click += (s, e) => action.Invoke();
-            return btn;
+            base.BackColor = TouchedBackColor;
+            base.ForeColor = TouchedForeColor;
+            base.OnMouseUp(mevent);
         }
     }
 }
