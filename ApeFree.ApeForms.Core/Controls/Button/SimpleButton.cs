@@ -63,6 +63,8 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public SimpleButton()
         {
+            Size = new Size(50, 35);
+
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
 
