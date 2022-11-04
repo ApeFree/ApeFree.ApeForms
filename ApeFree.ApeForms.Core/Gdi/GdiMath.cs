@@ -34,8 +34,36 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// <returns></returns>
         public static double CalculateLengthFromTwoPoints(PointF p1, PointF p2)
         {
-            double value = Math.Sqrt(Math.Abs(p1.X - p2.X) * Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y) * Math.Abs(p1.Y - p2.Y));
-            return value;
+            double length = Math.Sqrt(Math.Abs(p1.X - p2.X) * Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y) * Math.Abs(p1.Y - p2.Y));
+            return length;
+        }
+
+        /// <summary>
+        /// 计算两点之间的角度
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public static double CalculateAngleFromTwoPoints(PointF p1, PointF p2)
+        {
+            double angle = Math.Atan2((p2.Y - p1.Y), (p2.X - p1.X)) * 180 / Math.PI;
+            return angle > 0 ? angle : 360 + angle;
+        }
+
+        /// <summary>
+        /// 点位环绕
+        /// </summary>
+        /// <param name="centrePoint">中心点</param>
+        /// <param name="satellitePoint">卫星点</param>
+        /// <param name="rotationAngle">旋转半径</param>
+        /// <returns></returns>
+        public static PointF PointAround(PointF centrePoint, PointF satellitePoint, float rotationAngle)
+        {
+            var radius = CalculateLengthFromTwoPoints(centrePoint, satellitePoint);
+            var angle = CalculateAngleFromTwoPoints(centrePoint, satellitePoint);
+            var newPoint = CalculatePointOnCircle(centrePoint, (float)radius, (float)(angle + rotationAngle));
+
+            return newPoint;
         }
     }
 }
