@@ -44,6 +44,7 @@ namespace ApeFree.ApeForms.Core.Controls
             if (MainControl == null)
             {
                 MainControl = e.Control;
+                Height = MainControl.Height;
             }
             else if (HiddenControl == null)
             {
@@ -53,6 +54,7 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 throw new InvalidOperationException("The space available for the control is full.");
             }
+
             AdjustSize();
 
             ResumeLayout();

@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "Shutter";
-            this.Size = new System.Drawing.Size(138, 54);
+            this.Size = new System.Drawing.Size(138, 18);
             this.ResumeLayout(false);
 
         }
