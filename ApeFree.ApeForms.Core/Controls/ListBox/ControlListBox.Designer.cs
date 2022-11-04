@@ -38,7 +38,6 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Name = "CustomListBox";
             this.Size = new System.Drawing.Size(86, 83);
-            this.SizeChanged += new System.EventHandler(this.CustomListBox_SizeChanged);
             this.ResumeLayout(false);
 
         }

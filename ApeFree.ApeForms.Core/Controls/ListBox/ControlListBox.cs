@@ -160,8 +160,10 @@ namespace ApeFree.ApeForms.Core.Controls
             return DockStyle.Top;
         }
 
-        private void CustomListBox_SizeChanged(object sender, EventArgs e)
+
+        protected override void OnSizeChanged(EventArgs e)
         {
+            base.OnSizeChanged(e);
             RefreshChildControlsSize();
         }
     }
