@@ -12,7 +12,7 @@ namespace ApeFree.ApeForms.Core.Controls
     public class SimpleButtonShutter : Shutter
     {
         [Browsable(false)]
-        public override Control MainControl { get; set; }
+        public new SimpleButton MainControl { get => (SimpleButton)base.MainControl; set => base.MainControl = value; }
 
         [Browsable(false)]
         public override Control HiddenControl { get; set; }
