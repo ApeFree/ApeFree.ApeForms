@@ -79,12 +79,16 @@ namespace ApeFree.ApeForms.Demo
             this.btnDocument.AutoSize = true;
             this.btnDocument.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(45)))));
             this.btnDocument.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDocument.FlatAppearance.BorderSize = 0;
+            this.btnDocument.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDocument.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnDocument.Location = new System.Drawing.Point(361, 0);
             this.btnDocument.Name = "btnDocument";
             this.btnDocument.Size = new System.Drawing.Size(91, 50);
             this.btnDocument.TabIndex = 2;
+            this.btnDocument.Text = "Document";
             this.btnDocument.Title = "Document";
+            this.btnDocument.UseVisualStyleBackColor = false;
             this.btnDocument.Click += new System.EventHandler(this.btnDocument_Click);
             // 
             // btnForum
@@ -92,12 +96,16 @@ namespace ApeFree.ApeForms.Demo
             this.btnForum.AutoSize = true;
             this.btnForum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
             this.btnForum.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnForum.FlatAppearance.BorderSize = 0;
+            this.btnForum.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnForum.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnForum.Location = new System.Drawing.Point(452, 0);
             this.btnForum.Name = "btnForum";
             this.btnForum.Size = new System.Drawing.Size(91, 50);
             this.btnForum.TabIndex = 1;
+            this.btnForum.Text = "Forum";
             this.btnForum.Title = "Forum";
+            this.btnForum.UseVisualStyleBackColor = false;
             this.btnForum.Click += new System.EventHandler(this.btnForum_Click);
             // 
             // btnContact
@@ -105,12 +113,16 @@ namespace ApeFree.ApeForms.Demo
             this.btnContact.AutoSize = true;
             this.btnContact.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(35)))));
             this.btnContact.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnContact.FlatAppearance.BorderSize = 0;
+            this.btnContact.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnContact.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnContact.Location = new System.Drawing.Point(543, 0);
             this.btnContact.Name = "btnContact";
             this.btnContact.Size = new System.Drawing.Size(91, 50);
             this.btnContact.TabIndex = 0;
+            this.btnContact.Text = "Contact";
             this.btnContact.Title = "Contact";
+            this.btnContact.UseVisualStyleBackColor = false;
             this.btnContact.Click += new System.EventHandler(this.btnContact_Click);
             // 
             // picLogo
