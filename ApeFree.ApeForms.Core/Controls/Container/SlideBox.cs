@@ -74,10 +74,19 @@ namespace ApeFree.ApeForms.Core.Controls
 
             panel.ResumeLayout();
 
-            if (pageIndex != -1)
+            // 检查内部页面数量是否为0
+            if(panel.Controls.Count == 0)
             {
-                panel.Left = -panel.Controls[pageIndex].Left;
+                return;
             }
+            else
+            {
+                if (pageIndex != -1)
+                {
+                    panel.Left = -panel.Controls[pageIndex].Left;
+                }
+            }
+
         }
 
         public int AddPage(Control control)
