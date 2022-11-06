@@ -62,7 +62,21 @@ namespace ApeFree.ApeForms.Core.Gdi
             var radius = CalculateLengthFromTwoPoints(centrePoint, satellitePoint);
             var angle = CalculateAngleFromTwoPoints(centrePoint, satellitePoint);
             var newPoint = CalculatePointOnCircle(centrePoint, (float)radius, (float)(angle + rotationAngle));
+            return newPoint;
+        }
 
+        /// <summary>
+        /// 线段伸缩
+        /// 在固定点和活动点的直线上，计算出与固定点指定距离的新点位
+        /// </summary>
+        /// <param name="fixedPoint">固定点</param>
+        /// <param name="activePoint">移动点</param>
+        /// <param name="distance">距离</param>
+        /// <returns></returns>
+        public static PointF LineScale(PointF fixedPoint, PointF activePoint, float distance)
+        {
+            var angle = CalculateAngleFromTwoPoints(fixedPoint, activePoint);
+            var newPoint = CalculatePointOnCircle(fixedPoint, distance, (float)angle);
             return newPoint;
         }
     }
