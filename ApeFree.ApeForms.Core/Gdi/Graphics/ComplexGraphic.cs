@@ -28,7 +28,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Graphics
         /// <param name="angle"></param>
         public void Rotate(PointF centralPoint, float angle)
         {
-            throw new NotImplementedException();
+            foreach (IGraphic g in Graphics)
+            {
+                g.Rotate(centralPoint, angle);
+            }
         }
 
         /// <summary>
@@ -37,7 +40,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Graphics
         /// <param name="scaling"></param>
         public void Scale(float scaling)
         {
-            throw new NotImplementedException();
+            foreach (IGraphic g in Graphics)
+            {
+                g.Scale(scaling);
+            }
         }
 
         /// <summary>
@@ -47,7 +53,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Graphics
         /// <param name="distanceY"></param>
         public void Translation(float distanceX, float distanceY)
         {
-            throw new NotImplementedException();
+            foreach (IGraphic g in Graphics)
+            {
+                g.Translation(distanceX, distanceY);
+            }
         }
     }
 }
