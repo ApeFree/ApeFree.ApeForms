@@ -98,17 +98,18 @@ namespace System.Windows.Forms
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            List<TimerTask> deleteTasks = new List<TimerTask>();
-            foreach (var task in tasks)
-            {
-                if (task.IsFinish())
-                {
-                    deleteTasks.Add(task);
-                }
-                task.Run();
-            }
             lock (_lockerTaskListItemsChange)
             {
+                List<TimerTask> deleteTasks = new List<TimerTask>();
+                for (int i = 0; i < tasks.Count; i++)
+                {
+                    var task = tasks[i];
+                    if (task.IsFinish())
+                    {
+                        deleteTasks.Add(task);
+                    }
+                    task.Run();
+                }
                 deleteTasks.ForEach(t => tasks.Remove(t));
             }
         }
