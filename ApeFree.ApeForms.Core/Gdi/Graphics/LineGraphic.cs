@@ -28,7 +28,8 @@ namespace ApeFree.ApeForms.Core.Gdi.Graphics
 
         public void Translation(float distanceX, float distanceY)
         {
-            throw new NotImplementedException();
+            StartPoint = StartPoint.Add(distanceX, distanceY);
+            EndPoint = EndPoint.Add(distanceX, distanceY);
         }
     }
 }
