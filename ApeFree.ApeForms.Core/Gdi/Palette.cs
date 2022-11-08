@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ApeFree.ApeForms.Core.Gdi.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace ApeFree.ApeForms.Core.Gdi
 {
@@ -39,7 +42,7 @@ namespace ApeFree.ApeForms.Core.Gdi
     {
         /// <summary>
         /// 画布
-    /// </summary>
+        /// </summary>
         protected TCanvas Canvas { get; set; }
 
         /// <summary>
@@ -52,20 +55,33 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         /// <param name="canvas">画布对象</param>
         protected Palette(TCanvas canvas) : this()
-    {
-        public List<IGraphic> Graphics { get; }
-
-        protected Palette()
         {
-            Graphics = new List<IGraphic>();
+            Canvas = canvas;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public override void Dispose()
+        {
+            Layers.Clear();
+            Layers = null;
         }
     }
 
     /// <summary>
-    /// Gdi图形画板
+    /// WinForm Gdi+图形画板
     /// </summary>
-    public class GdiPalette : Palette
+    public class GdiPalette : Palette<Graphics, Pen>
     {
+        protected override void DrawEllipse(Pen style, EllipseShape graphic)
+        {
+            throw new NotImplementedException();
+        }
 
+        protected override void DrawLine(Pen style, LineShape graphic)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
