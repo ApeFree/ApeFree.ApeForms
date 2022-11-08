@@ -10,7 +10,7 @@ namespace ApeFree.ApeForms.Core.Gdi
     /// <summary>
     /// 图形接口
     /// </summary>
-    public interface IGraphic
+    public interface IShape
     {
         /// <summary>
         /// 缩放
