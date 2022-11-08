@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ApeFree.ApeForms.Core.Gdi.Shapes
 {
-    public class EllipseGraphic : IGraphic
+    public class EllipseShape : IShape
     {
         public IEnumerable<PointF> Points => throw new NotImplementedException();
 

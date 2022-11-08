@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ApeFree.ApeForms.Core.Gdi.Shapes
 {
-    public class LineGraphic : IGraphic
+    public class LineShape : IShape
     {
         public PointF StartPoint { get; set; }
 

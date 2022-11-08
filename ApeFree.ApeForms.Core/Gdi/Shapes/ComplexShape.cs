@@ -10,14 +10,14 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
     /// <summary>
     /// 复合图形
     /// </summary>
-    public class ComplexGraphic : IGraphic
+    public class ComplexShape : IShape
     {
-        public ComplexGraphic()
+        public ComplexShape()
         {
-            Graphics = new LinkedList<IGraphic>();
+            Graphics = new LinkedList<IShape>();
         }
 
-        public LinkedList<IGraphic> Graphics { get; }
+        public LinkedList<IShape> Graphics { get; }
 
         public IEnumerable<PointF> Points => Graphics.SelectMany(g => g.Points);
 
@@ -28,7 +28,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         /// <param name="angle"></param>
         public void Rotate(PointF centralPoint, float angle)
         {
-            foreach (IGraphic g in Graphics)
+            foreach (IShape g in Graphics)
             {
                 g.Rotate(centralPoint, angle);
             }
@@ -40,7 +40,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         /// <param name="scaling"></param>
         public void Scale(float scaling)
         {
-            foreach (IGraphic g in Graphics)
+            foreach (IShape g in Graphics)
             {
                 g.Scale(scaling);
             }
@@ -53,7 +53,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         /// <param name="distanceY"></param>
         public void Translation(float distanceX, float distanceY)
         {
-            foreach (IGraphic g in Graphics)
+            foreach (IShape g in Graphics)
             {
                 g.Translation(distanceX, distanceY);
             }
