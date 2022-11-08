@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace ApeFree.ApeForms.Core.Gdi.Graphics
+namespace ApeFree.ApeForms.Core.Gdi.Shapes
 {
     public class LineGraphic : IGraphic
     {

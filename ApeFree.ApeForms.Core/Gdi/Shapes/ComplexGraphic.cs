@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApeFree.ApeForms.Core.Gdi.Graphics
+namespace ApeFree.ApeForms.Core.Gdi.Shapes
 {
     /// <summary>
     /// 复合图形
