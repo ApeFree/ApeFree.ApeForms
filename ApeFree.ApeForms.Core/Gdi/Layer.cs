@@ -26,6 +26,11 @@
         public Palette<TStyle> Parent { get; }
 
         /// <summary>
+        /// 可聚焦
+        /// </summary>
+        public bool Focusable { get; set; }
+
+        /// <summary>
         /// 构造图层
         /// </summary>
         /// <param name="parent">所属画板</param>
