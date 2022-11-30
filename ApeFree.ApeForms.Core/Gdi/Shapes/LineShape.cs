@@ -26,7 +26,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             throw new NotImplementedException();
         }
 
-        public void Translation(float distanceX, float distanceY)
+        public void Offset(float distanceX, float distanceY)
         {
             StartPoint = StartPoint.Add(distanceX, distanceY);
             EndPoint = EndPoint.Add(distanceX, distanceY);

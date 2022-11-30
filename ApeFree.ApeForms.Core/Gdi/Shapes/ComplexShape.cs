@@ -51,11 +51,11 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         /// </summary>
         /// <param name="distanceX"></param>
         /// <param name="distanceY"></param>
-        public void Translation(float distanceX, float distanceY)
+        public void Offset(float distanceX, float distanceY)
         {
             foreach (IShape g in Graphics)
             {
-                g.Translation(distanceX, distanceY);
+                g.Offset(distanceX, distanceY);
             }
         }
     }
