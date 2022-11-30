@@ -33,6 +33,13 @@ namespace ApeFree.ApeForms.Core.Gdi
         void Rotate(PointF centralPoint, float angle);
 
         /// <summary>
+        /// 指定点是否在图形内部
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        bool Contains(PointF point);
+
+        /// <summary>
         /// 当前图形上的点
         /// </summary>
         IEnumerable<PointF> Points { get; }
