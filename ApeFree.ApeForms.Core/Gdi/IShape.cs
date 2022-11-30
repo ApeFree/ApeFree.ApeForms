@@ -23,7 +23,7 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         /// <param name="distanceX">X轴平移距离</param>
         /// <param name="distanceY">Y轴平移距离</param>
-        void Translation(float distanceX, float distanceY);
+        void Offset(float distanceX, float distanceY);
 
         /// <summary>
         /// 旋转
