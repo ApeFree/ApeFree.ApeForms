@@ -79,9 +79,13 @@ namespace ApeFree.ApeForms.Core.Gdi
             throw new NotImplementedException();
         }
 
-        protected override void DrawLine(Pen style, LineShape graphic)
+        /// <summary>
+        /// 图形样式
+        /// </summary>
+        public class ShapeStyle
         {
-            throw new NotImplementedException();
+            public Pen Pen { get; set; }
+            public Brush Brush { get; set; }
         }
     }
 }
