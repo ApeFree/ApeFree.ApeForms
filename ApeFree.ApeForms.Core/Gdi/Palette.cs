@@ -14,7 +14,7 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// <summary>
         /// 图层
         /// </summary>
-        public List<Layer<TStyle>> Layers { get; protected internal set; }
+        public IList<Layer<TStyle>> Layers { get; protected internal set; }
 
         /// <summary>
         /// 构造画板
