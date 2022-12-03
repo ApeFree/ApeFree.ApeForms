@@ -45,6 +45,8 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         protected TCanvas Canvas { get; set; }
 
+
+
         /// <summary>
         /// 构造画板
         /// </summary>
@@ -72,11 +74,16 @@ namespace ApeFree.ApeForms.Core.Gdi
     /// <summary>
     /// WinForm Gdi+图形画板
     /// </summary>
-    public class GdiPalette : Palette<Graphics, Pen>
+    public class GdiPalette : Palette<Graphics, GdiPalette.ShapeStyle>
     {
-        protected override void DrawEllipse(Pen style, EllipseShape graphic)
+        protected override void DrawEllipse(ShapeStyle style, EllipseShape graphic)
         {
-            throw new NotImplementedException();
+            Canvas.DrawEllipse(style.Pen, new RectangleF();
+        }
+
+        protected override void DrawLine(ShapeStyle style, LineShape graphic)
+        {
+            Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
         }
 
         /// <summary>
