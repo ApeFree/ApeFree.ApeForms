@@ -91,7 +91,14 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         public class ShapeStyle
         {
+            /// <summary>
+            /// 画笔
+            /// </summary>
             public Pen Pen { get; set; }
+
+            /// <summary>
+            /// 画刷
+            /// </summary>
             public Brush Brush { get; set; }
         }
     }
