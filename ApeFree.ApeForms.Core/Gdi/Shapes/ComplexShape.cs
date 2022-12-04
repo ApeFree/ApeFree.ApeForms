@@ -58,5 +58,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
                 g.Offset(distanceX, distanceY);
             }
         }
+
+        public bool Contains(PointF point)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

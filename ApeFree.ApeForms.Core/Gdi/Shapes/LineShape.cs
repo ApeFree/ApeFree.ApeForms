@@ -31,5 +31,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             StartPoint = StartPoint.Add(distanceX, distanceY);
             EndPoint = EndPoint.Add(distanceX, distanceY);
         }
+
+        public bool Contains(PointF point)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

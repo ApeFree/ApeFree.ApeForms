@@ -9,7 +9,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
     /// <summary>
     /// 矩形形状
     /// </summary>
-    public class RectangleShape :IShape
+    public class RectangleShape : IShape
     {
         public IEnumerable<PointF> Points => throw new NotImplementedException();
 
@@ -19,11 +19,6 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         }
 
         public void Scale(float scaling)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Offset(float distanceX, float distanceY)
         {
             throw new NotImplementedException();
         }
@@ -192,6 +187,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             return !(left == right);
         }
 
+        /// <inheritdoc/>
         public bool Contains(float x, float y)
         {
             if (X <= x && x < X + Width && Y <= y)
@@ -202,6 +198,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             return false;
         }
 
+        /// <inheritdoc/>
         public bool Contains(PointF pt)
         {
             return Contains(pt.X, pt.Y);
@@ -300,6 +297,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             return new RectangleShape(r.X, r.Y, r.Width, r.Height);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "{X=" + X.ToString(CultureInfo.CurrentCulture) + ",Y=" + Y.ToString(CultureInfo.CurrentCulture) + ",Width=" + Width.ToString(CultureInfo.CurrentCulture) + ",Height=" + Height.ToString(CultureInfo.CurrentCulture) + "}";

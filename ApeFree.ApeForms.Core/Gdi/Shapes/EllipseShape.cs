@@ -22,5 +22,10 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         {
             throw new NotImplementedException();
         }
+
+        public bool Contains(PointF point)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
