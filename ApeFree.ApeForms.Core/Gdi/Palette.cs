@@ -45,8 +45,6 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         protected TCanvas Canvas { get; set; }
 
-
-
         /// <summary>
         /// 构造画板
         /// </summary>
@@ -78,7 +76,15 @@ namespace ApeFree.ApeForms.Core.Gdi
     {
         protected override void DrawEllipse(ShapeStyle style, EllipseShape graphic)
         {
-            Canvas.DrawEllipse(style.Pen, new RectangleF();
+            if (style.Pen != null)
+            {
+                Canvas.DrawEllipse(style.Pen, graphic.Location.X, graphic.Location.Y, graphic.Size.Width, graphic.Size.Height);
+            }
+
+            if (style.Brush != null)
+            {
+                Canvas.FillEllipse(style.Brush, graphic.Location.X, graphic.Location.Y, graphic.Size.Width, graphic.Size.Height);
+            }
         }
 
         protected override void DrawLine(ShapeStyle style, LineShape graphic)
