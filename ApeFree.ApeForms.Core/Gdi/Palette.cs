@@ -74,6 +74,11 @@ namespace ApeFree.ApeForms.Core.Gdi
     /// </summary>
     public class GdiPalette : Palette<Graphics, GdiPalette.ShapeStyle>
     {
+        /// <summary>
+        /// 绘制圆形
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="graphic"></param>
         protected override void DrawEllipse(ShapeStyle style, EllipseShape graphic)
         {
             if (style.Pen != null)
@@ -87,6 +92,11 @@ namespace ApeFree.ApeForms.Core.Gdi
             }
         }
 
+        /// <summary>
+        /// 绘制线
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="graphic"></param>
         protected override void DrawLine(ShapeStyle style, LineShape graphic)
         {
             Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
