@@ -31,6 +31,7 @@ namespace ApeFree.ApeForms.Core.Gdi
 
         protected abstract void DrawLine(TStyle style, LineShape graphic);
         protected abstract void DrawEllipse(TStyle style, EllipseShape graphic);
+        protected abstract void DrawRectangle(TStyle style, RectangleShape graphic);
     }
 
     /// <summary>
@@ -100,6 +101,24 @@ namespace ApeFree.ApeForms.Core.Gdi
         protected override void DrawLine(ShapeStyle style, LineShape graphic)
         {
             Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
+        }
+
+        /// <summary>
+        /// 绘制矩形
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="graphic"></param>
+        protected override void DrawRectangle(ShapeStyle style, RectangleShape graphic)
+        {
+            if (style.Pen != null)
+            {
+                Canvas.DrawRectangle(style.Pen, graphic.Location.X, graphic.Location.Y, graphic.Size.Width, graphic.Size.Height);
+            }
+
+            if (style.Brush != null)
+            {
+                Canvas.FillRectangle(style.Brush, graphic.Location.X, graphic.Location.Y, graphic.Size.Width, graphic.Size.Height);
+            }
         }
 
         /// <summary>
