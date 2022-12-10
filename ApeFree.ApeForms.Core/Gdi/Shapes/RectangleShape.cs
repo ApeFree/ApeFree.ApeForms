@@ -11,7 +11,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
     /// </summary>
     public class RectangleShape : IShape
     {
-        public IEnumerable<PointF> Points => throw new NotImplementedException();
+        public IEnumerable<PointF> Points => new PointF[] { Location };
 
         public void Rotate(PointF centralPoint, float angle)
         {
