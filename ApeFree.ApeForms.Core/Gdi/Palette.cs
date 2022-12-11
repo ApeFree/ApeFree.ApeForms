@@ -136,5 +136,15 @@ namespace ApeFree.ApeForms.Core.Gdi
             /// </summary>
             public Brush Brush { get; set; }
         }
+
+        public override void Refresh()
+        {
+            Canvas.SmoothingMode = SmoothingMode.AntiAlias;
+            Canvas.SmoothingMode = SmoothingMode.HighQuality;
+            Canvas.CompositingQuality = CompositingQuality.HighQuality;
+            Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            base.Refresh();
+        }
     }
 }
