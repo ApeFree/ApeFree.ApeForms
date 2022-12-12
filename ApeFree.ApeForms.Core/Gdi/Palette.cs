@@ -44,7 +44,7 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// <summary>
         /// 画布
         /// </summary>
-        protected TCanvas Canvas { get; set; }
+        public TCanvas Canvas { get; set; }
 
         /// <summary>
         /// 构造画板
