@@ -32,6 +32,13 @@ namespace ApeFree.ApeForms.Core.Gdi
         protected abstract void DrawLine(TStyle style, LineShape graphic);
         protected abstract void DrawEllipse(TStyle style, EllipseShape graphic);
         protected abstract void DrawRectangle(TStyle style, RectangleShape graphic);
+
+        public Layer<TStyle> Draw(TStyle style, IShape graphic)
+        {
+            var layer = new Layer<TStyle>(this, style, graphic);
+            Layers.Add(layer);
+            return layer;
+        }
     }
 
     /// <summary>
