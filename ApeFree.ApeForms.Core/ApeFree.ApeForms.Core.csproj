@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="ApeFree.CodePlus.Algorithm" Version="0.9.6" />
+    <PackageReference Include="STTech.CodePlus" Version="1.5.13" />
   </ItemGroup>
 
   <ItemGroup>
