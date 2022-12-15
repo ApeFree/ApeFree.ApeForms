@@ -29,6 +29,33 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         public abstract void Dispose();
 
+
+        public virtual void Refresh()
+        {
+            foreach (var layer in Layers)
+            {
+                // 跳过绘制不可见的图层
+                if (!layer.Visible)
+                {
+                    continue;
+                }
+
+                // 根据图形类型调用对应的绘制实现
+                switch (layer.Shape)
+                {
+                    case LineShape shape:
+                        DrawLine(layer.Style, shape);
+                        break;
+                    case EllipseShape shape:
+                        DrawEllipse(layer.Style, shape);
+                        break;
+                    case RectangleShape shape:
+                        DrawRectangle(layer.Style, shape);
+                        break;
+                }
+            }
+        }
+
         protected abstract void DrawLine(TStyle style, LineShape graphic);
         protected abstract void DrawEllipse(TStyle style, EllipseShape graphic);
         protected abstract void DrawRectangle(TStyle style, RectangleShape graphic);
