@@ -46,9 +46,14 @@ namespace ApeFree.ApeForms.Demo
             {
                 {"ApeDialogs",new Lazy<Control>(()=>new DialogDemoPanel()) },
             },
+
             new NavigationBarData("Extensions")
             {
                 {"Form",new Lazy<Control>(()=>new FormExtensionDemoPanel()) },
+            },
+            new NavigationBarData("GDI+")
+            {
+                {"GdiPalette",new Lazy<Control>(()=>new GdiPaletteDemoPanel()) },
             },
         };
 
@@ -56,7 +61,7 @@ namespace ApeFree.ApeForms.Demo
         {
             InitializeComponent();
 
-            Text = $"{this.ProductName} - V{this.ProductVersion}";
+            Text = $"{ProductName} - V{ProductVersion}";
         }
 
         private void DemoForm_Load(object sender, EventArgs e)
