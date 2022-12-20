@@ -19,7 +19,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <summary>
         /// 列表项
         /// </summary>
-        public EventableList<Control> Items { get; } = new EventableList<Control>();
+        public EventableList<Control> Items { get; } 
 
         [Browsable(true)]
         [Description("指定列表中控件的排列方向")]
@@ -41,12 +41,13 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public ControlListBox()
         {
-            InitializeComponent();
-
+            Items = new EventableList<Control>();
             Items.ItemAdded += ListItemAdded;
             Items.ItemInserted += ListItemInserted;
             Items.ItemRemoved += ListItemRemoved;
             Items.ItemsCleared += ListItemsCleared;
+
+            InitializeComponent();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
