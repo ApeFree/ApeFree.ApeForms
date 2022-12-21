@@ -50,9 +50,9 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             }
 
             // 绘制时针分针秒针，并将图层存到全局
-            layerSecond = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkRed, 1) }, new LineShape(new PointF(200, 200), 140, -90));
-            layerMinute = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkGreen, 3) }, new LineShape(new PointF(200, 200), 120, -93));
-            layerHour = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkBlue, 5) }, new LineShape(new PointF(200, 200), 100, -96));
+            layerSecond = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkRed, 1) }, new LineShape(centralPoint, clockRadius - 10, -90));
+            layerMinute = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkGreen, 3) }, new LineShape(centralPoint, clockRadius - 30, -90));
+            layerHour = palette.Draw(new GdiPalette.ShapeStyle() { Pen = new Pen(Color.DarkBlue, 5) }, new LineShape(centralPoint, clockRadius - 50, -90));
         }
 
         private void GbCanvas_Paint(object sender, PaintEventArgs e)
