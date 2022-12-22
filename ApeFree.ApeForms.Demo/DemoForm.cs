@@ -106,13 +106,14 @@ namespace ApeFree.ApeForms.Demo
             System.Diagnostics.Process.Start("https://blog.csdn.net/lgj123xj/category_11811822.html");
         }
 
-        private void btnForum_Click(object sender, EventArgs e)
+        private void btnGithub_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://tieba.baidu.com/p/7835587487");
+            System.Diagnostics.Process.Start("https://github.com/ApeFree/ApeFree.ApeForms");
         }
 
         private void btnContact_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Process.Start("https://qm.qq.com/cgi-bin/qm/qr?k=pa-gDVKW6EHScuoeIxLgncshyQJgM3jP&jump_from=webapi&authKey=7yeoSaM8AVK+Svc/FBskmAu6n478PQn1BgNdtTZArMjc9YbSBRfSC+pufaKUKWJM");
             Clipboard.SetDataObject("929371169");
             this.ShowToast("QQ群：929371169 (已复制)", ToastMode.Preemption, 5000);
         }

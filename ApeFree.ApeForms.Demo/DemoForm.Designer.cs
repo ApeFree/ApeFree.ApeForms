@@ -34,7 +34,7 @@ namespace ApeFree.ApeForms.Demo
             this.panel1 = new System.Windows.Forms.Panel();
             this.controlListBox1 = new ApeFree.ApeForms.Core.Controls.ControlListBox();
             this.btnDocument = new ApeFree.ApeForms.Core.Controls.SimpleButton();
-            this.btnForum = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnGithub = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.btnContact = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -65,7 +65,7 @@ namespace ApeFree.ApeForms.Demo
             this.controlListBox1.AutoScroll = true;
             this.controlListBox1.BackColor = System.Drawing.Color.Transparent;
             this.controlListBox1.Controls.Add(this.btnDocument);
-            this.controlListBox1.Controls.Add(this.btnForum);
+            this.controlListBox1.Controls.Add(this.btnGithub);
             this.controlListBox1.Controls.Add(this.btnContact);
             this.controlListBox1.Direction = System.Windows.Forms.FlowDirection.RightToLeft;
             this.controlListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -93,20 +93,20 @@ namespace ApeFree.ApeForms.Demo
             // 
             // btnForum
             // 
-            this.btnForum.AutoSize = true;
-            this.btnForum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
-            this.btnForum.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnForum.FlatAppearance.BorderSize = 0;
-            this.btnForum.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnForum.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnForum.Location = new System.Drawing.Point(452, 0);
-            this.btnForum.Name = "btnForum";
-            this.btnForum.Size = new System.Drawing.Size(91, 50);
-            this.btnForum.TabIndex = 1;
-            this.btnForum.Text = "Forum";
-            this.btnForum.Title = "Forum";
-            this.btnForum.UseVisualStyleBackColor = false;
-            this.btnForum.Click += new System.EventHandler(this.btnForum_Click);
+            this.btnGithub.AutoSize = true;
+            this.btnGithub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
+            this.btnGithub.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnGithub.FlatAppearance.BorderSize = 0;
+            this.btnGithub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGithub.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnGithub.Location = new System.Drawing.Point(452, 0);
+            this.btnGithub.Name = "btnGitHub";
+            this.btnGithub.Size = new System.Drawing.Size(91, 50);
+            this.btnGithub.TabIndex = 1;
+            this.btnGithub.Text = "GitHub";
+            this.btnGithub.Title = "GitHub";
+            this.btnGithub.UseVisualStyleBackColor = false;
+            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
             // 
             // btnContact
             // 
@@ -240,7 +240,7 @@ namespace ApeFree.ApeForms.Demo
         private System.Windows.Forms.Label label2;
         private ControlListBox controlListBox1;
         private SimpleButton btnDocument;
-        private SimpleButton btnForum;
+        private SimpleButton btnGithub;
         private SimpleButton btnContact;
     }
 }
