@@ -9,9 +9,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
 {
     public partial class ToastForm : Form
     {
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
-
         [Browsable(false)]
         public int Delay { get => timerWait.Interval; set { timerHide.Enabled = false; Opacity = 1; timerWait.Enabled = false; timerWait.Interval = value; timerWait.Enabled = true; } }
 
@@ -59,13 +56,13 @@ namespace ApeFree.ApeForms.Forms.Notifications
             var strSize = e.Graphics.MeasureString(Text, Font);
             this.Width = (int)(strSize.Width + 20);
             this.Height = (int)(strSize.Height + 20);
-            var strLocation = new Point(10,10);
+            var strLocation = new Point(10, 10);
             e.Graphics.DrawString(Text, Font, Brushes.White, strLocation);
         }
 
         public new void Show()
         {
-            ShowWindow(new HandleRef(this, this.Handle), 4);
+            this.ShowWindow(ShowWindowMode.ShowNoactivate);
         }
 
         private void TimerHide_Tick(object sender, EventArgs e)
