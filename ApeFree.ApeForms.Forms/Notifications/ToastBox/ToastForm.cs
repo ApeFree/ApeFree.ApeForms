@@ -5,15 +5,12 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ApeFree.ApeForms.Forms.Notification
+namespace ApeFree.ApeForms.Forms.Notifications
 {
     public partial class ToastForm : Form
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
-
-        [Browsable(true)]
-        public new string Text { get => labContent.Text; set { labContent.Text = value; Delay = Delay; } }
 
         [Browsable(false)]
         public int Delay { get => timerWait.Interval; set { timerHide.Enabled = false; Opacity = 1; timerWait.Enabled = false; timerWait.Interval = value; timerWait.Enabled = true; } }
@@ -23,12 +20,6 @@ namespace ApeFree.ApeForms.Forms.Notification
             InitializeComponent();
 
             Text = content;
-            var area = Screen.PrimaryScreen.WorkingArea;
-            var graphics = Graphics.FromImage(new Bitmap(area.Width, area.Height));
-            var size = graphics.MeasureString(content, Font);
-
-            Width = (int)size.Width + (Padding.Left + Padding.Right) + 30;
-            Height = (int)size.Height;
 
             // TODO: 可以通过自定义的attribute、全局属性、最小限制来确定Toast的显示位置（相对屏幕/相对窗体）
 
@@ -55,21 +46,27 @@ namespace ApeFree.ApeForms.Forms.Notification
             timerWait.Enabled = true;
         }
 
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            Refresh();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            e.Graphics.Clear(BackColor);
+            var strSize = e.Graphics.MeasureString(Text, Font);
+            this.Width = (int)(strSize.Width + 20);
+            this.Height = (int)(strSize.Height + 20);
+            var strLocation = new Point(10,10);
+            e.Graphics.DrawString(Text, Font, Brushes.White, strLocation);
+        }
+
         public new void Show()
         {
             ShowWindow(new HandleRef(this, this.Handle), 4);
         }
-
-        /*
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000; // 用双缓冲绘制窗口的所有子控件
-                return cp;
-            }
-        }*/
 
         private void TimerHide_Tick(object sender, EventArgs e)
         {
@@ -83,23 +80,21 @@ namespace ApeFree.ApeForms.Forms.Notification
             }
         }
 
-        private void ToastForm_Load(object sender, EventArgs e)
-        {
-        }
-
         private void TimerWait_Tick(object sender, EventArgs e)
         {
             timerWait.Enabled = false;
             timerHide.Enabled = true;
         }
 
-        private void LabContent_MouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
+            base.OnMouseMove(e);
             timerWait.Enabled = false;
         }
 
-        private void LabContent_MouseLeave(object sender, EventArgs e)
+        protected override void OnMouseLeave(EventArgs e)
         {
+            base.OnMouseLeave(e);
             timerWait.Enabled = true;
         }
     }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ApeFree.ApeForms.Forms.Notification
+namespace ApeFree.ApeForms.Forms.Notifications
 {
     public class Toast
     {

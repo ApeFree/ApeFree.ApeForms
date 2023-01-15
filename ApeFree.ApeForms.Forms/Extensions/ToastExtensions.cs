@@ -1,5 +1,4 @@
-﻿using ApeFree.ApeForms.Forms.Notification;
-using System.Drawing;
+﻿using ApeFree.ApeForms.Forms.Notifications;
 
 namespace System.Windows.Forms
 {
@@ -14,7 +13,8 @@ namespace System.Windows.Forms
         /// <param name="delay">延时(毫秒)</param>
         public static void ShowToast(this Control control, string content, ToastMode mode, int delay = 2000)
         {
-            control.ModifyInUI(() => { 
+            control.ModifyInUI(() =>
+            {
                 Toast.Show(content, delay, control, mode);
             });
         }
