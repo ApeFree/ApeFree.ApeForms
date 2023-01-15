@@ -1,7 +1,7 @@
 ﻿using ApeFree.ApeDialogs;
 using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Forms.Dialogs;
-using ApeFree.ApeForms.Forms.Notification;
+using ApeFree.ApeForms.Forms.Notifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
