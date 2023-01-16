@@ -69,17 +69,17 @@ namespace ApeFree.ApeForms.Core.Controls
             RefreshChildControlsSize();
         }
 
-        private void ListItemsCleared(object sender, EventArgs e) => Controls.Clear();
-        private void ListItemRemoved(object sender, ListItemsChangedEventArgs<Control> e) => Controls.Remove(e.Item);
-        private void ListItemInserted(object sender, ListItemsChangedEventArgs<Control> e) => Controls.Add(e.Item);// 不能做插入操作，当添加处理
+        private void ListItemsCleared(object sender, EventArgs e) => this.Controls.Clear();
+        private void ListItemRemoved(object sender, ListItemsChangedEventArgs<Control> e) => this.Controls.Remove(e.Item);
+        private void ListItemInserted(object sender, ListItemsChangedEventArgs<Control> e) => this.Controls.Add(e.Item);// 不能做插入操作，当添加处理
         private void ListItemAdded(object sender, ListItemsChangedEventArgs<Control> e) =>
-            Controls.Add(e.Item);
+            this.Controls.Add(e.Item);
 
         private void ListBoxOrientationChanged()
         {
             SuspendLayout();
             // 修改布局的Dock方向
-            foreach (Control item in Controls)
+            foreach (Control item in this.Controls)
             {
                 item.Dock = GetDockStyle();
             }
@@ -97,9 +97,9 @@ namespace ApeFree.ApeForms.Core.Controls
 
             // 判断是否启用滚动条
             // 如果未开启滚动条则将控件等宽平铺
-            if (!AutoScroll && Controls.Count > 0)
+            if (!AutoScroll && this.Controls.Count > 0)
             {
-                foreach (Control item in Controls)
+                foreach (Control item in this.Controls)
                 {
                     item.SuspendLayout();
                 }
@@ -108,22 +108,22 @@ namespace ApeFree.ApeForms.Core.Controls
                 // 如果是垂直方向需要平均高度
                 if (Direction == FlowDirection.LeftToRight || Direction == FlowDirection.RightToLeft)
                 {
-                    var width = Width / Controls.Count;
-                    foreach (Control item in Controls)
+                    var width = Width / this.Controls.Count;
+                    foreach (Control item in this.Controls)
                     {
                         item.Width = width;
                     }
                 }
                 else
                 {
-                    var height = Height / Controls.Count;
-                    foreach (Control item in Controls)
+                    var height = Height / this.Controls.Count;
+                    foreach (Control item in this.Controls)
                     {
                         item.Height = height;
                     }
                 }
 
-                foreach (Control item in Controls)
+                foreach (Control item in this.Controls)
                 {
                     item.ResumeLayout();
                 }
