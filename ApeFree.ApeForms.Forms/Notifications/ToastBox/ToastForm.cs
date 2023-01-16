@@ -20,6 +20,17 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             // TODO: 可以通过自定义的attribute、全局属性、最小限制来确定Toast的显示位置（相对屏幕/相对窗体）
 
+            
+            timerWait.Interval = delay;
+            timerWait.Enabled = true;
+        }
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+        }
+
+        private void Reposition()
+        {
             // 判断是否有活动窗体
             var parent = ActiveForm;
             // 如果活动窗体是DialogForm则不会被当做是Toast的背景窗体
@@ -38,9 +49,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 Left = (rect.Width - Width) / 2;
                 Top = rect.Height / 4 * 3;
             }
-
-            timerWait.Interval = delay;
-            timerWait.Enabled = true;
         }
 
         protected override void OnTextChanged(EventArgs e)
@@ -54,10 +62,12 @@ namespace ApeFree.ApeForms.Forms.Notifications
             base.OnPaint(e);
             e.Graphics.Clear(BackColor);
             var strSize = e.Graphics.MeasureString(Text, Font);
-            this.Width = (int)(strSize.Width + 20);
-            this.Height = (int)(strSize.Height + 20);
+            this.Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
+
             var strLocation = new Point(10, 10);
             e.Graphics.DrawString(Text, Font, Brushes.White, strLocation);
+
+            Reposition();
         }
 
         public new void Show()
