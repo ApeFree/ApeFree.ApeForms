@@ -22,6 +22,25 @@ namespace System.Windows.Forms
         {
             return ShowWindow(new HandleRef(form, form.Handle), (int)mode);
         }
+
+        private const int CS_DropShadow = 0x20000;
+        private const int GCL_Style = -26;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int SetClassLong(IntPtr hwnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetClassLong(IntPtr hwnd, int nIndex);
+
+        /// <summary>
+        /// 投射阴影
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        public static int DropShadow(this Form form)
+        {
+            return SetClassLong(form.Handle, GCL_Style, GetClassLong(form.Handle, GCL_Style) | CS_DropShadow);
+        }
     }
 
     /// <summary>
