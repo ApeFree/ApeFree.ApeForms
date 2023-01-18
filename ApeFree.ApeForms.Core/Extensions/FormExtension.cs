@@ -19,6 +19,15 @@ namespace System.Windows.Forms
         public static Task GraduallyShow(this Form form, double gradientValue = 0.1)
         {
             form.Opacity = 0;
+
+            // Show方法可能存在重写
+            var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Show" && !m.GetParameters().Any());
+            if (mi != null)
+            {
+                mi.Invoke(form, null);
+            }
+            else
+            {
             form.Show();
 
             return Task.Run(() =>
