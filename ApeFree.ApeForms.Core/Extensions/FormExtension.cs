@@ -14,9 +14,10 @@ namespace System.Windows.Forms
         /// 窗体透明度渐进显示
         /// </summary>
         /// <param name="form"></param>
-        /// <param name="gradientValue"></param>
+        /// <param name="stepSize">步长</param>
+        /// <param name="targetOpacityValue">目标值</param>
         /// <returns></returns>
-        public static Task GraduallyShow(this Form form, double gradientValue = 0.1)
+        public static Task GraduallyShow(this Form form, double stepSize = 0.1, double targetOpacityValue = 1)
         {
             form.Opacity = 0;
 
@@ -29,12 +30,12 @@ namespace System.Windows.Forms
             else
             {
             form.Show();
+            }
 
             return Task.Run(() =>
             {
                 AutoResetEvent evt = new AutoResetEvent(false);
 
-                double targetOpacityValue = 1;
                 bool hasError = false;
 
                 Timers.Timer timer = new Timers.Timer(10);
@@ -42,7 +43,7 @@ namespace System.Windows.Forms
                 {
                     timer.Stop();
 
-                    double value = form.Opacity + gradientValue;
+                    double value = form.Opacity + stepSize;
 
                     try
                     {
@@ -70,6 +71,7 @@ namespace System.Windows.Forms
 
                 evt.WaitOne();
             });
+        }
         }
 
         /// <summary>
