@@ -73,6 +73,12 @@ namespace System.Windows.Forms
             });
         }
 
+        /// <summary>
+        /// 窗体透明度渐进关闭
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="stepSize">步长</param>
+        /// <returns></returns>
         public static Task GraduallyClose(this Form form, double stepSize = 0.1)
         {
             var task = Task.Run(() =>
