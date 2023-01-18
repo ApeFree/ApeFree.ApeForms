@@ -72,6 +72,63 @@ namespace System.Windows.Forms
                 evt.WaitOne();
             });
         }
+
+        public static Task GraduallyClose(this Form form, double stepSize = 0.1)
+        {
+            var task = Task.Run(() =>
+            {
+                AutoResetEvent evt = new AutoResetEvent(false);
+
+                bool hasError = false;
+
+                Timers.Timer timer = new Timers.Timer(10);
+                timer.Elapsed += (s, e) =>
+                {
+                    timer.Stop();
+
+                    double value = form.Opacity - stepSize;
+
+                    try
+                    {
+                        form.Invoke(() =>
+                        {
+                            form.Opacity = value < 0 ? 0 : value;
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        hasError = true;
+                    }
+
+                    if (form.Opacity == 0 || hasError)
+                    {
+                        timer.Dispose();
+                        evt.Set();
+                    }
+                    else
+                    {
+                        timer.Start();
+                    }
+                };
+                timer.Start();
+
+                evt.WaitOne();
+
+                // Close方法可能存在重写
+                form.Invoke(() =>
+                {
+                    var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Close" && !m.GetParameters().Any());
+                    if (mi != null)
+                    {
+                        mi.Invoke(form, null);
+                    }
+                    else
+                    {
+                        form.Close();
+                    }
+                });
+            });
+            return task;
         }
 
         /// <summary>
