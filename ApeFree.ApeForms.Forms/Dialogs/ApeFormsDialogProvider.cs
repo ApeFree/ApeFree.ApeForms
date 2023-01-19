@@ -149,7 +149,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             dialog.ContentView = control;
 
             dialog.AddOption(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
-            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(true); });
+            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
             return dialog;
         }
 
