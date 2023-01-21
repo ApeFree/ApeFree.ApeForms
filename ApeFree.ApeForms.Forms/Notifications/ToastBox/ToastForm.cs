@@ -27,6 +27,23 @@ namespace ApeFree.ApeForms.Forms.Notifications
             timerWait.Interval = delay;
             timerWait.Enabled = true;
         }
+
+        /// <summary>
+        /// 让窗体不显示在alt+Tab视图窗体中
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_APPWINDOW = 0x40000;
+                const int WS_EX_TOOLWINDOW = 0x80;
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle &= (~WS_EX_APPWINDOW);
+                cp.ExStyle |= WS_EX_TOOLWINDOW;
+                return cp;
+            }
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -50,6 +67,18 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
                 // 如果是Dialog窗体则不会被当做是Toast的背景窗体
                 if (form is DialogForm)
+                {
+                    continue;
+                }
+
+                // 如果是Toast窗体则不会被当做是Toast的背景窗体
+                if (form is ToastForm)
+                {
+                    continue;
+                }
+
+                // 如果是Notificatio窗体则不会被当做是Toast的背景窗体
+                if (form is NotificationBox)
                 {
                     continue;
                 }
