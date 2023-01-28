@@ -17,12 +17,24 @@ namespace ApeFree.ApeForms.Core.Controls
         [Browsable(false)]
         public override Control HiddenControl { get; set; }
 
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Bindable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public override string Text { get => base.Text; set => base.Text = value; }
+
         public SimpleButtonShutter()
         {
             Controls.Add(new SimpleButton());
             Controls.Add(new Panel() { AutoSize = true,Height = 0 });
 
             MainControl.Click += MainControl_Click;
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            MainControl.Text= Text;
         }
 
         private void MainControl_Click(object sender, EventArgs e)
