@@ -1,7 +1,10 @@
 ﻿using ApeFree.ApeForms.Forms.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -20,7 +23,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             // TODO: 可以通过自定义的attribute、全局属性、最小限制来确定Toast的显示位置（相对屏幕/相对窗体）
 
-            
+
             timerWait.Interval = delay;
             timerWait.Enabled = true;
         }
@@ -31,24 +34,38 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
         private void Reposition()
         {
-            // 判断是否有活动窗体
-            var parent = ActiveForm;
-            // 如果活动窗体是DialogForm则不会被当做是Toast的背景窗体
-            if (parent is DialogForm)
+            // 将当前进程中打开的窗体依次压栈
+            Stack<Form> stack = new Stack<Form>();
+            foreach (Form f in Application.OpenForms)
             {
-                parent = null;
+                stack.Push(f);
             }
-            if (parent != null)
+
+            int left, top;
+
+            while (stack.Any())
             {
-                Left = (parent.Width - Width) / 2 + parent.Left;
-                Top = parent.Height / 4 * 3 + parent.Top;
+                // 判断是否有活动窗体
+                var form = stack.Pop();
+
+                // 如果是Dialog窗体则不会被当做是Toast的背景窗体
+                if (form is DialogForm)
+                {
+                    continue;
+                }
+
+                // Toast定位到父窗体的相对位置
+                left = (form.Width - Width) / 2 + form.Left;
+                top = form.Height / 4 * 3 + form.Top;
+                Location = new Point(left, top);
+                return;
             }
-            else
-            {
-                var rect = Screen.GetWorkingArea(this);
-                Left = (rect.Width - Width) / 2;
-                Top = rect.Height / 4 * 3;
-            }
+
+            // Toast定位到工作区的相对位置
+            var rect = Screen.GetWorkingArea(this);
+            left = (rect.Width - Width) / 2;
+            top = rect.Height / 4 * 3;
+            Location = new Point(left, top);
         }
 
         protected override void OnTextChanged(EventArgs e)
