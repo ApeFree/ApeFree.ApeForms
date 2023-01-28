@@ -30,7 +30,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
         /// <summary>
         /// 画布控件
         /// </summary>
-        private Control Canvas => gbCanvas;
+        private Control Canvas => panelCanvas;
 
         public GdiPaletteDemoPanel()
         {
@@ -68,7 +68,11 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
             // 将图绘制到控件
             e.Graphics.DrawImage(bmp, Canvas.ClientRectangle);
-            e.Graphics.Dispose();
+            // e.Graphics.Dispose();
+
+            // 释放临时图像
+            graph.Dispose();
+            bmp.Dispose();
         }
 
         private void timerClock_Tick(object sender, EventArgs e)

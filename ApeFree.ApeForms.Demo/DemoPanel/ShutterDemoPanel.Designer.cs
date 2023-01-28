@@ -28,18 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.simpleButtonShutter1 = new ApeFree.ApeForms.Core.Controls.SimpleButtonShutter();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.simpleButtonShutter1 = new ApeFree.ApeForms.Core.Controls.SimpleButtonShutter();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // simpleButtonShutter1
-            // 
-            this.simpleButtonShutter1.Location = new System.Drawing.Point(6, 20);
-            this.simpleButtonShutter1.Name = "simpleButtonShutter1";
-            this.simpleButtonShutter1.OpenState = false;
-            this.simpleButtonShutter1.Size = new System.Drawing.Size(131, 37);
-            this.simpleButtonShutter1.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -51,6 +43,15 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SimpleButtonShutter";
+            // 
+            // simpleButtonShutter1
+            // 
+            this.simpleButtonShutter1.Location = new System.Drawing.Point(6, 20);
+            this.simpleButtonShutter1.Name = "simpleButtonShutter1";
+            this.simpleButtonShutter1.OpenState = false;
+            this.simpleButtonShutter1.Size = new System.Drawing.Size(131, 35);
+            this.simpleButtonShutter1.TabIndex = 1;
+            this.simpleButtonShutter1.Text = "Shutter";
             // 
             // ShutterDemoPanel
             // 

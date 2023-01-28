@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.timerClock = new System.Windows.Forms.Timer(this.components);
             this.gbCanvas = new System.Windows.Forms.GroupBox();
+            this.panelCanvas = new System.Windows.Forms.Panel();
+            this.gbCanvas.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerClock
@@ -41,6 +43,7 @@
             // 
             // gbCanvas
             // 
+            this.gbCanvas.Controls.Add(this.panelCanvas);
             this.gbCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbCanvas.Location = new System.Drawing.Point(0, 0);
             this.gbCanvas.Name = "gbCanvas";
@@ -49,6 +52,14 @@
             this.gbCanvas.TabStop = false;
             this.gbCanvas.Text = "Canvas";
             // 
+            // panelCanvas
+            // 
+            this.panelCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCanvas.Location = new System.Drawing.Point(3, 17);
+            this.panelCanvas.Name = "panelCanvas";
+            this.panelCanvas.Size = new System.Drawing.Size(554, 343);
+            this.panelCanvas.TabIndex = 0;
+            // 
             // GdiPaletteDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -56,6 +67,7 @@
             this.Controls.Add(this.gbCanvas);
             this.Name = "GdiPaletteDemoPanel";
             this.Size = new System.Drawing.Size(560, 363);
+            this.gbCanvas.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -63,5 +75,6 @@
         #endregion
         private System.Windows.Forms.Timer timerClock;
         private System.Windows.Forms.GroupBox gbCanvas;
+        private System.Windows.Forms.Panel panelCanvas;
     }
 }
