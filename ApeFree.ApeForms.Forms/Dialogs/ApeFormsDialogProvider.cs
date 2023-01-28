@@ -43,6 +43,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var option = new SimpleButton();
             option.Text = text;
+            option.AutoSize= true;
             option.Click += (s, e) => onClick?.Invoke(this, option);
 
             InnerDialog.AddButton(option);
