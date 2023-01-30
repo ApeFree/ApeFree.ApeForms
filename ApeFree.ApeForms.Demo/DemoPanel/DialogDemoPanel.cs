@@ -31,7 +31,14 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnInputDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateInputDialog(new InputDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text }, null);
+            var dialog = provider.CreateInputDialog(new InputDialogSettings()
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                ClearOptionText = "Clear(清空)",
+                ConfirmOptionText = "Confirm(确定)",
+                CancelOptionText = "Cancel(取消)",
+            }, null);
             dialog.Show();
             if (dialog.Result.IsCancel)
             {
@@ -112,8 +119,8 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                     }
                     return b;
                 },
-                ItemDisplayTextConvertCallback = stu=> $"{stu.Name} ({stu.Description})",
-            }, students, null, null);;
+                ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})",
+            }, students, null, null); ;
             dialog.Show();
             if (dialog.Result.IsCancel)
             {
@@ -157,7 +164,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             }
             else
             {
-                Toast.Show($"结果：{string.Join("|", dialog.Result.Data.Select(s=>$"{s.Name}({s.Description})"))}");
+                Toast.Show($"结果：{string.Join("|", dialog.Result.Data.Select(s => $"{s.Name}({s.Description})"))}");
             }
         }
 

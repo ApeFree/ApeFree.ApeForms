@@ -33,17 +33,17 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ButtonDemoPanel));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.imageButton1 = new ApeFree.ApeForms.Core.Controls.ImageButton();
+            this.imageButton2 = new ApeFree.ApeForms.Core.Controls.ImageButton();
+            this.imageButton3 = new ApeFree.ApeForms.Core.Controls.ImageButton();
+            this.btnReplaceImage = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton1 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton2 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton3 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton4 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.imageButton1 = new ApeFree.ApeForms.Core.Controls.ImageButton();
-            this.imageButton2 = new ApeFree.ApeForms.Core.Controls.ImageButton();
-            this.imageButton3 = new ApeFree.ApeForms.Core.Controls.ImageButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnReplaceImage = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -75,51 +75,6 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.flowLayoutPanel1.Size = new System.Drawing.Size(499, 69);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // simpleButton1
-            // 
-            this.simpleButton1.AutoSize = true;
-            this.simpleButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.simpleButton1.ForeColor = System.Drawing.Color.White;
-            this.simpleButton1.Location = new System.Drawing.Point(3, 3);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(90, 40);
-            this.simpleButton1.TabIndex = 0;
-            this.simpleButton1.Title = "SimpleButton";
-            // 
-            // simpleButton2
-            // 
-            this.simpleButton2.AutoSize = true;
-            this.simpleButton2.BackColor = System.Drawing.Color.IndianRed;
-            this.simpleButton2.ForeColor = System.Drawing.Color.White;
-            this.simpleButton2.Location = new System.Drawing.Point(99, 3);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(90, 40);
-            this.simpleButton2.TabIndex = 1;
-            this.simpleButton2.Title = "SimpleButton";
-            // 
-            // simpleButton3
-            // 
-            this.simpleButton3.AutoSize = true;
-            this.simpleButton3.BackColor = System.Drawing.Color.SeaGreen;
-            this.simpleButton3.ForeColor = System.Drawing.Color.White;
-            this.simpleButton3.Location = new System.Drawing.Point(195, 3);
-            this.simpleButton3.Name = "simpleButton3";
-            this.simpleButton3.Size = new System.Drawing.Size(90, 40);
-            this.simpleButton3.TabIndex = 2;
-            this.simpleButton3.Title = "SimpleButton";
-            // 
-            // simpleButton4
-            // 
-            this.simpleButton4.AutoSize = true;
-            this.simpleButton4.BackColor = System.Drawing.Color.Transparent;
-            this.simpleButton4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.simpleButton4.ForeColor = System.Drawing.Color.Black;
-            this.simpleButton4.Location = new System.Drawing.Point(291, 3);
-            this.simpleButton4.Name = "simpleButton4";
-            this.simpleButton4.Size = new System.Drawing.Size(90, 40);
-            this.simpleButton4.TabIndex = 3;
-            this.simpleButton4.Title = "SimpleButton";
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.flowLayoutPanel2);
@@ -143,6 +98,19 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(499, 99);
             this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackgroundImage = global::ApeFree.ApeForms.Demo.Properties.Resources.ImageButton_1;
+            this.groupBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.groupBox3.Controls.Add(this.btnReplaceImage);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(3, 17);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(499, 132);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "PNG Image";
             // 
             // imageButton1
             // 
@@ -190,31 +158,90 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.imageButton3.UseAlphaChannel = true;
             this.imageButton3.UsePureColor = false;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.BackgroundImage = global::ApeFree.ApeForms.Demo.Properties.Resources.ImageButton_1;
-            this.groupBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.groupBox3.Controls.Add(this.btnReplaceImage);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(3, 17);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(499, 132);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "PNG Image";
-            // 
             // btnReplaceImage
             // 
             this.btnReplaceImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReplaceImage.AutoSize = true;
             this.btnReplaceImage.BackColor = System.Drawing.Color.IndianRed;
+            this.btnReplaceImage.BorderColor = System.Drawing.Color.Empty;
+            this.btnReplaceImage.BorderSize = 1;
+            this.btnReplaceImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReplaceImage.ForeColor = System.Drawing.Color.White;
             this.btnReplaceImage.Location = new System.Drawing.Point(431, 96);
             this.btnReplaceImage.Name = "btnReplaceImage";
             this.btnReplaceImage.Size = new System.Drawing.Size(62, 30);
             this.btnReplaceImage.TabIndex = 1;
+            this.btnReplaceImage.Text = "Replace";
             this.btnReplaceImage.Title = "Replace";
+            this.btnReplaceImage.UseVisualStyleBackColor = false;
             this.btnReplaceImage.Click += new System.EventHandler(this.btnReplaceImage_Click);
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.AutoSize = true;
+            this.simpleButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.simpleButton1.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton1.BorderSize = 0;
+            this.simpleButton1.FlatAppearance.BorderSize = 0;
+            this.simpleButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton1.ForeColor = System.Drawing.Color.White;
+            this.simpleButton1.Location = new System.Drawing.Point(3, 3);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(90, 40);
+            this.simpleButton1.TabIndex = 0;
+            this.simpleButton1.Text = "SimpleButton";
+            this.simpleButton1.Title = "SimpleButton";
+            this.simpleButton1.UseVisualStyleBackColor = false;
+            // 
+            // simpleButton2
+            // 
+            this.simpleButton2.AutoSize = true;
+            this.simpleButton2.BackColor = System.Drawing.Color.IndianRed;
+            this.simpleButton2.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton2.BorderSize = 0;
+            this.simpleButton2.FlatAppearance.BorderSize = 0;
+            this.simpleButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton2.ForeColor = System.Drawing.Color.White;
+            this.simpleButton2.Location = new System.Drawing.Point(99, 3);
+            this.simpleButton2.Name = "simpleButton2";
+            this.simpleButton2.Size = new System.Drawing.Size(90, 40);
+            this.simpleButton2.TabIndex = 1;
+            this.simpleButton2.Text = "SimpleButton";
+            this.simpleButton2.Title = "SimpleButton";
+            this.simpleButton2.UseVisualStyleBackColor = false;
+            // 
+            // simpleButton3
+            // 
+            this.simpleButton3.AutoSize = true;
+            this.simpleButton3.BackColor = System.Drawing.Color.SeaGreen;
+            this.simpleButton3.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton3.BorderSize = 0;
+            this.simpleButton3.FlatAppearance.BorderSize = 0;
+            this.simpleButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton3.ForeColor = System.Drawing.Color.White;
+            this.simpleButton3.Location = new System.Drawing.Point(195, 3);
+            this.simpleButton3.Name = "simpleButton3";
+            this.simpleButton3.Size = new System.Drawing.Size(90, 40);
+            this.simpleButton3.TabIndex = 2;
+            this.simpleButton3.Text = "SimpleButton";
+            this.simpleButton3.Title = "SimpleButton";
+            this.simpleButton3.UseVisualStyleBackColor = false;
+            // 
+            // simpleButton4
+            // 
+            this.simpleButton4.AutoSize = true;
+            this.simpleButton4.BackColor = System.Drawing.Color.Transparent;
+            this.simpleButton4.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton4.BorderSize = 1;
+            this.simpleButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton4.ForeColor = System.Drawing.Color.Black;
+            this.simpleButton4.Location = new System.Drawing.Point(291, 3);
+            this.simpleButton4.Name = "simpleButton4";
+            this.simpleButton4.Size = new System.Drawing.Size(90, 40);
+            this.simpleButton4.TabIndex = 3;
+            this.simpleButton4.Text = "SimpleButton";
+            this.simpleButton4.Title = "SimpleButton";
+            this.simpleButton4.UseVisualStyleBackColor = false;
             // 
             // ButtonDemoPanel
             // 
