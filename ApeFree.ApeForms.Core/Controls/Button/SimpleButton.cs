@@ -35,6 +35,9 @@ namespace ApeFree.ApeForms.Core.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BorderStyle BorderStyle { get; set; }
 
+        public int BorderSize { get => FlatAppearance.BorderSize; set => FlatAppearance.BorderSize = value; }
+        public Color BorderColor { get => FlatAppearance.BorderColor; set => FlatAppearance.BorderColor = value; }
+
         public new Color BackColor
         {
             get => normalBackColor;
@@ -66,7 +69,7 @@ namespace ApeFree.ApeForms.Core.Controls
             Size = new Size(50, 35);
 
             FlatStyle = FlatStyle.Flat;
-            FlatAppearance.BorderSize = 0;
+            BorderSize = 0;
 
             base.BackColor = BackColor = Color.FromArgb(0, 122, 204);
             base.ForeColor = ForeColor = Color.WhiteSmoke;
