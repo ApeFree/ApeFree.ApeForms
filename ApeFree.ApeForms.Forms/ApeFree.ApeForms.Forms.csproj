@@ -6,14 +6,14 @@
 
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
-		<Copyright>Copyright © 2022 ApeFree, All Rights Reserved.</Copyright>
+		<Copyright>Copyright © 2022-2023 ApeFree, All Rights Reserved.</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.9.11</Version>
+		<Version>0.9.12</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
