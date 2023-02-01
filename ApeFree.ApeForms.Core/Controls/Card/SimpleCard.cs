@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,13 +14,7 @@ namespace ApeFree.ApeForms.Core.Controls
     public partial class SimpleCard : UserControl
     {
         [Browsable(true)]
-        public Font TextFont { get => labText.Font; set => labText.Font = value; }
-
-        [Browsable(true)]
         public Image Image { get => picImage.Image; set => picImage.Image = value; }
-
-        [Browsable(true)]
-        public new string Text { get => labText.Text; set => labText.Text = value; }
 
         [Browsable(true)]
         [Description("图文内容的边距")]
@@ -36,8 +31,12 @@ namespace ApeFree.ApeForms.Core.Controls
         public SimpleCard()
         {
             InitializeComponent();
+
             labText.Click += SimpleCardClick;
             picImage.Click += SimpleCardClick;
+
+            labText.MouseClick += SimpleCardMouseClick;
+            picImage.MouseClick += SimpleCardMouseClick;
 
             labText.MouseMove += SimpleCardMouseMove;
             picImage.MouseMove += SimpleCardMouseMove;
@@ -58,6 +57,20 @@ namespace ApeFree.ApeForms.Core.Controls
             OnMouseMove(e);
         }
         private void SimpleCardClick(object sender, EventArgs e) => OnClick(e);
+        private void SimpleCardMouseClick(object sender, MouseEventArgs e) => OnMouseClick(e);
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            labText.Text = Text;
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            labText.Font = Font;
+        }
+
         protected virtual void LabText_FontChanged(object sender, EventArgs e)
         {
             // 获取字体的文字实例的高度
