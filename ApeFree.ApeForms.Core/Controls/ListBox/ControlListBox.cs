@@ -19,19 +19,31 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <summary>
         /// 列表项
         /// </summary>
-        public EventableList<Control> Items { get; } 
+        [Bindable(false)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public EventableList<Control> Items { get; }
 
+        private FlowDirection direction = FlowDirection.TopDown;
         [Browsable(true)]
         [Description("指定列表中控件的排列方向")]
-        public FlowDirection Direction { get => direction; set { direction = value; ListBoxOrientationChanged(); } }
-        private FlowDirection direction = FlowDirection.TopDown;
+        public FlowDirection Direction
+        {
+            get => direction; set
+            {
+                if (direction != value)
+                {
+                    direction = value; ListBoxOrientationChanged();
+                }
+            }
+        }
 
         public override bool AutoScroll
         {
-            get => base.AutoScroll; 
+            get => base.AutoScroll;
             set
             {
-                if(base.AutoScroll != value)
+                if (base.AutoScroll != value)
                 {
                     base.AutoScroll = value;
                     RefreshChildControlsSize();
