@@ -31,11 +31,7 @@ namespace ApeFree.ApeForms.Demo
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoForm));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.controlListBox1 = new ApeFree.ApeForms.Core.Controls.ControlListBox();
-            this.btnDocument = new ApeFree.ApeForms.Core.Controls.SimpleButton();
-            this.btnGithub = new ApeFree.ApeForms.Core.Controls.SimpleButton();
-            this.btnContact = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.panelHead = new System.Windows.Forms.Panel();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.labBlog = new System.Windows.Forms.LinkLabel();
@@ -43,87 +39,26 @@ namespace ApeFree.ApeForms.Demo
             this.label1 = new System.Windows.Forms.Label();
             this.slideTabControl = new ApeFree.ApeForms.Core.Controls.SlideTabControl();
             this.controlListBox = new ApeFree.ApeForms.Core.Controls.ControlListBox();
-            this.panel1.SuspendLayout();
-            this.controlListBox1.SuspendLayout();
+            this.controlListBox1 = new ApeFree.ApeForms.Core.Controls.ControlListBox();
+            this.btnDocument = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnGithub = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnContact = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.panelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.panel2.SuspendLayout();
+            this.controlListBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelHead
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(50)))));
-            this.panel1.Controls.Add(this.controlListBox1);
-            this.panel1.Controls.Add(this.picLogo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 50);
-            this.panel1.TabIndex = 1;
-            // 
-            // controlListBox1
-            // 
-            this.controlListBox1.AutoScroll = true;
-            this.controlListBox1.BackColor = System.Drawing.Color.Transparent;
-            this.controlListBox1.Controls.Add(this.btnDocument);
-            this.controlListBox1.Controls.Add(this.btnGithub);
-            this.controlListBox1.Controls.Add(this.btnContact);
-            this.controlListBox1.Direction = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.controlListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlListBox1.Location = new System.Drawing.Point(150, 0);
-            this.controlListBox1.Name = "controlListBox1";
-            this.controlListBox1.Size = new System.Drawing.Size(634, 50);
-            this.controlListBox1.TabIndex = 1;
-            // 
-            // btnDocument
-            // 
-            this.btnDocument.AutoSize = true;
-            this.btnDocument.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(45)))));
-            this.btnDocument.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDocument.FlatAppearance.BorderSize = 0;
-            this.btnDocument.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDocument.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnDocument.Location = new System.Drawing.Point(361, 0);
-            this.btnDocument.Name = "btnDocument";
-            this.btnDocument.Size = new System.Drawing.Size(91, 50);
-            this.btnDocument.TabIndex = 2;
-            this.btnDocument.Text = "Document";
-            this.btnDocument.Title = "Document";
-            this.btnDocument.UseVisualStyleBackColor = false;
-            this.btnDocument.Click += new System.EventHandler(this.btnDocument_Click);
-            // 
-            // btnForum
-            // 
-            this.btnGithub.AutoSize = true;
-            this.btnGithub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
-            this.btnGithub.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnGithub.FlatAppearance.BorderSize = 0;
-            this.btnGithub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGithub.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnGithub.Location = new System.Drawing.Point(452, 0);
-            this.btnGithub.Name = "btnGitHub";
-            this.btnGithub.Size = new System.Drawing.Size(91, 50);
-            this.btnGithub.TabIndex = 1;
-            this.btnGithub.Text = "GitHub";
-            this.btnGithub.Title = "GitHub";
-            this.btnGithub.UseVisualStyleBackColor = false;
-            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
-            // 
-            // btnContact
-            // 
-            this.btnContact.AutoSize = true;
-            this.btnContact.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(35)))));
-            this.btnContact.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnContact.FlatAppearance.BorderSize = 0;
-            this.btnContact.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnContact.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnContact.Location = new System.Drawing.Point(543, 0);
-            this.btnContact.Name = "btnContact";
-            this.btnContact.Size = new System.Drawing.Size(91, 50);
-            this.btnContact.TabIndex = 0;
-            this.btnContact.Text = "Contact";
-            this.btnContact.Title = "Contact";
-            this.btnContact.UseVisualStyleBackColor = false;
-            this.btnContact.Click += new System.EventHandler(this.btnContact_Click);
+            this.panelHead.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(50)))));
+            this.panelHead.Controls.Add(this.controlListBox1);
+            this.panelHead.Controls.Add(this.picLogo);
+            this.panelHead.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelHead.Location = new System.Drawing.Point(0, 0);
+            this.panelHead.Name = "panelHead";
+            this.panelHead.Size = new System.Drawing.Size(784, 50);
+            this.panelHead.TabIndex = 1;
             // 
             // picLogo
             // 
@@ -180,7 +115,7 @@ namespace ApeFree.ApeForms.Demo
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(624, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Copyright © 2022 Landriesnidis";
+            this.label1.Text = "Copyright © 2022-2023 Landriesnidis";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // slideTabControl
@@ -189,6 +124,7 @@ namespace ApeFree.ApeForms.Demo
             this.slideTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.slideTabControl.Location = new System.Drawing.Point(150, 50);
             this.slideTabControl.Name = "slideTabControl";
+            this.slideTabControl.Rate = 2;
             this.slideTabControl.Size = new System.Drawing.Size(634, 461);
             this.slideTabControl.TabIndex = 0;
             this.slideTabControl.TitleDock = System.Windows.Forms.DockStyle.Top;
@@ -205,6 +141,77 @@ namespace ApeFree.ApeForms.Demo
             this.controlListBox.Size = new System.Drawing.Size(150, 511);
             this.controlListBox.TabIndex = 3;
             // 
+            // controlListBox1
+            // 
+            this.controlListBox1.AutoScroll = true;
+            this.controlListBox1.BackColor = System.Drawing.Color.Transparent;
+            this.controlListBox1.Controls.Add(this.btnDocument);
+            this.controlListBox1.Controls.Add(this.btnGithub);
+            this.controlListBox1.Controls.Add(this.btnContact);
+            this.controlListBox1.Direction = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.controlListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controlListBox1.Location = new System.Drawing.Point(150, 0);
+            this.controlListBox1.Name = "controlListBox1";
+            this.controlListBox1.Size = new System.Drawing.Size(634, 50);
+            this.controlListBox1.TabIndex = 1;
+            // 
+            // btnDocument
+            // 
+            this.btnDocument.AutoSize = true;
+            this.btnDocument.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(45)))));
+            this.btnDocument.BorderColor = System.Drawing.Color.Empty;
+            this.btnDocument.BorderSize = 0;
+            this.btnDocument.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDocument.FlatAppearance.BorderSize = 0;
+            this.btnDocument.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDocument.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnDocument.Location = new System.Drawing.Point(361, 0);
+            this.btnDocument.Name = "btnDocument";
+            this.btnDocument.Size = new System.Drawing.Size(91, 50);
+            this.btnDocument.TabIndex = 2;
+            this.btnDocument.Text = "Document";
+            this.btnDocument.Title = "Document";
+            this.btnDocument.UseVisualStyleBackColor = false;
+            this.btnDocument.Click += new System.EventHandler(this.btnDocument_Click);
+            // 
+            // btnGithub
+            // 
+            this.btnGithub.AutoSize = true;
+            this.btnGithub.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
+            this.btnGithub.BorderColor = System.Drawing.Color.Empty;
+            this.btnGithub.BorderSize = 0;
+            this.btnGithub.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnGithub.FlatAppearance.BorderSize = 0;
+            this.btnGithub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGithub.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnGithub.Location = new System.Drawing.Point(452, 0);
+            this.btnGithub.Name = "btnGithub";
+            this.btnGithub.Size = new System.Drawing.Size(91, 50);
+            this.btnGithub.TabIndex = 1;
+            this.btnGithub.Text = "GitHub";
+            this.btnGithub.Title = "GitHub";
+            this.btnGithub.UseVisualStyleBackColor = false;
+            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            // 
+            // btnContact
+            // 
+            this.btnContact.AutoSize = true;
+            this.btnContact.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(35)))));
+            this.btnContact.BorderColor = System.Drawing.Color.Empty;
+            this.btnContact.BorderSize = 0;
+            this.btnContact.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnContact.FlatAppearance.BorderSize = 0;
+            this.btnContact.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnContact.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnContact.Location = new System.Drawing.Point(543, 0);
+            this.btnContact.Name = "btnContact";
+            this.btnContact.Size = new System.Drawing.Size(91, 50);
+            this.btnContact.TabIndex = 0;
+            this.btnContact.Text = "Contact";
+            this.btnContact.Title = "Contact";
+            this.btnContact.UseVisualStyleBackColor = false;
+            this.btnContact.Click += new System.EventHandler(this.btnContact_Click);
+            // 
             // DemoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -213,17 +220,17 @@ namespace ApeFree.ApeForms.Demo
             this.Controls.Add(this.slideTabControl);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.controlListBox);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelHead);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DemoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ApeForms Demo";
             this.Load += new System.EventHandler(this.DemoForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.controlListBox1.ResumeLayout(false);
-            this.controlListBox1.PerformLayout();
+            this.panelHead.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.controlListBox1.ResumeLayout(false);
+            this.controlListBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -231,7 +238,7 @@ namespace ApeFree.ApeForms.Demo
         #endregion
 
         private Core.Controls.SlideTabControl slideTabControl;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelHead;
         private System.Windows.Forms.Panel panel2;
         private ControlListBox controlListBox;
         private System.Windows.Forms.Label label1;

@@ -32,12 +32,12 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ControlListBoxDemoPanel));
             this.controlListBox1 = new ApeFree.ApeForms.Core.Controls.ControlListBox();
-            this.imageButton3 = new ApeFree.ApeForms.Core.Controls.ImageButton();
-            this.imageButton2 = new ApeFree.ApeForms.Core.Controls.ImageButton();
-            this.imageButton1 = new ApeFree.ApeForms.Core.Controls.ImageButton();
             this.simpleButton3 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton2 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.simpleButton1 = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.imageButton3 = new ApeFree.ApeForms.Core.Controls.ImageButton();
+            this.imageButton1 = new ApeFree.ApeForms.Core.Controls.ImageButton();
+            this.imageButton2 = new ApeFree.ApeForms.Core.Controls.ImageButton();
             this.alignCenterBox1 = new ApeFree.ApeForms.Core.Controls.AlignCenterBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -68,6 +68,60 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.controlListBox1.Size = new System.Drawing.Size(80, 404);
             this.controlListBox1.TabIndex = 0;
             // 
+            // simpleButton3
+            // 
+            this.simpleButton3.AutoSize = true;
+            this.simpleButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.simpleButton3.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton3.BorderSize = 0;
+            this.simpleButton3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.simpleButton3.FlatAppearance.BorderSize = 0;
+            this.simpleButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton3.ForeColor = System.Drawing.Color.White;
+            this.simpleButton3.Location = new System.Drawing.Point(0, 250);
+            this.simpleButton3.Name = "simpleButton3";
+            this.simpleButton3.Size = new System.Drawing.Size(80, 50);
+            this.simpleButton3.TabIndex = 3;
+            this.simpleButton3.Text = "Button3";
+            this.simpleButton3.Title = "Button3";
+            this.simpleButton3.UseVisualStyleBackColor = false;
+            // 
+            // simpleButton2
+            // 
+            this.simpleButton2.AutoSize = true;
+            this.simpleButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.simpleButton2.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton2.BorderSize = 0;
+            this.simpleButton2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.simpleButton2.FlatAppearance.BorderSize = 0;
+            this.simpleButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton2.ForeColor = System.Drawing.Color.White;
+            this.simpleButton2.Location = new System.Drawing.Point(0, 200);
+            this.simpleButton2.Name = "simpleButton2";
+            this.simpleButton2.Size = new System.Drawing.Size(80, 50);
+            this.simpleButton2.TabIndex = 2;
+            this.simpleButton2.Text = "Button2";
+            this.simpleButton2.Title = "Button2";
+            this.simpleButton2.UseVisualStyleBackColor = false;
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.AutoSize = true;
+            this.simpleButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.simpleButton1.BorderColor = System.Drawing.Color.Empty;
+            this.simpleButton1.BorderSize = 0;
+            this.simpleButton1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.simpleButton1.FlatAppearance.BorderSize = 0;
+            this.simpleButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.simpleButton1.ForeColor = System.Drawing.Color.White;
+            this.simpleButton1.Location = new System.Drawing.Point(0, 150);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(80, 50);
+            this.simpleButton1.TabIndex = 1;
+            this.simpleButton1.Text = "Button1";
+            this.simpleButton1.Title = "Button1";
+            this.simpleButton1.UseVisualStyleBackColor = false;
+            // 
             // imageButton3
             // 
             this.imageButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -83,22 +137,6 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.imageButton3.TabIndex = 9;
             this.imageButton3.UseAlphaChannel = true;
             this.imageButton3.UsePureColor = true;
-            // 
-            // imageButton2
-            // 
-            this.imageButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("imageButton2.BackgroundImage")));
-            this.imageButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.imageButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imageButton2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.imageButton2.ForeColor = System.Drawing.Color.White;
-            this.imageButton2.Location = new System.Drawing.Point(0, 0);
-            this.imageButton2.Margin = new System.Windows.Forms.Padding(2);
-            this.imageButton2.Name = "imageButton2";
-            this.imageButton2.Size = new System.Drawing.Size(80, 50);
-            this.imageButton2.TabIndex = 8;
-            this.imageButton2.UseAlphaChannel = true;
-            this.imageButton2.UsePureColor = true;
             // 
             // imageButton1
             // 
@@ -116,44 +154,21 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             this.imageButton1.UseAlphaChannel = true;
             this.imageButton1.UsePureColor = true;
             // 
-            // simpleButton3
+            // imageButton2
             // 
-            this.simpleButton3.AutoScroll = true;
-            this.simpleButton3.AutoSize = true;
-            this.simpleButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.simpleButton3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.simpleButton3.ForeColor = System.Drawing.Color.White;
-            this.simpleButton3.Location = new System.Drawing.Point(0, 250);
-            this.simpleButton3.Name = "simpleButton3";
-            this.simpleButton3.Size = new System.Drawing.Size(80, 50);
-            this.simpleButton3.TabIndex = 3;
-            this.simpleButton3.Title = "Button3";
-            // 
-            // simpleButton2
-            // 
-            this.simpleButton2.AutoScroll = true;
-            this.simpleButton2.AutoSize = true;
-            this.simpleButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.simpleButton2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.simpleButton2.ForeColor = System.Drawing.Color.White;
-            this.simpleButton2.Location = new System.Drawing.Point(0, 200);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(80, 50);
-            this.simpleButton2.TabIndex = 2;
-            this.simpleButton2.Title = "Button2";
-            // 
-            // simpleButton1
-            // 
-            this.simpleButton1.AutoScroll = true;
-            this.simpleButton1.AutoSize = true;
-            this.simpleButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.simpleButton1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.simpleButton1.ForeColor = System.Drawing.Color.White;
-            this.simpleButton1.Location = new System.Drawing.Point(0, 150);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(80, 50);
-            this.simpleButton1.TabIndex = 1;
-            this.simpleButton1.Title = "Button1";
+            this.imageButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.imageButton2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("imageButton2.BackgroundImage")));
+            this.imageButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.imageButton2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imageButton2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.imageButton2.ForeColor = System.Drawing.Color.White;
+            this.imageButton2.Location = new System.Drawing.Point(0, 0);
+            this.imageButton2.Margin = new System.Windows.Forms.Padding(2);
+            this.imageButton2.Name = "imageButton2";
+            this.imageButton2.Size = new System.Drawing.Size(80, 50);
+            this.imageButton2.TabIndex = 8;
+            this.imageButton2.UseAlphaChannel = true;
+            this.imageButton2.UsePureColor = true;
             // 
             // alignCenterBox1
             // 
@@ -245,13 +260,18 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             // 
             this.btnResetSize.AutoSize = true;
             this.btnResetSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnResetSize.BorderColor = System.Drawing.Color.Empty;
+            this.btnResetSize.BorderSize = 1;
             this.btnResetSize.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnResetSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetSize.ForeColor = System.Drawing.Color.White;
             this.btnResetSize.Location = new System.Drawing.Point(10, 123);
             this.btnResetSize.Name = "btnResetSize";
             this.btnResetSize.Size = new System.Drawing.Size(144, 31);
             this.btnResetSize.TabIndex = 5;
+            this.btnResetSize.Text = "Reset size";
             this.btnResetSize.Title = "Reset size";
+            this.btnResetSize.UseVisualStyleBackColor = false;
             this.btnResetSize.Click += new System.EventHandler(this.btnResetSize_Click);
             // 
             // ControlListBoxDemoPanel

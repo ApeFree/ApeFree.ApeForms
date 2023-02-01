@@ -44,8 +44,19 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 item.Image = kvp.Value.ToPureColor(Color.Black, false);
                 item.BorderSize = 5;                        // 设置边框的粗细
                 item.BorderColor = Color.LightBlue;         // 设置边框的颜色
+                item.ContextMenuStrip = contextMenuStrip1;
 
-                item.Click += (s,e)=> item.ShowToast($"当前单击项：{kvp.Key}",ToastMode.Reuse);
+                item.MouseClick += (s, e) =>
+                {
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        item.ShowToast($"当前单击项：{kvp.Key}", ToastMode.Reuse);
+                    }
+                    else
+                    {
+                        // contextMenuStrip1.Show(Control.MousePosition);
+                    }
+                };
 
                 flp.Controls.Add(item);
             }

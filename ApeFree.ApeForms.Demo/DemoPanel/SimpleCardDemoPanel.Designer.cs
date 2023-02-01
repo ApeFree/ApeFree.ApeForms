@@ -28,9 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flp = new System.Windows.Forms.FlowLayoutPanel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.option1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.option2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -53,6 +58,26 @@
             this.flp.Size = new System.Drawing.Size(562, 380);
             this.flp.TabIndex = 0;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.option1ToolStripMenuItem,
+            this.option2ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            // 
+            // option1ToolStripMenuItem
+            // 
+            this.option1ToolStripMenuItem.Name = "option1ToolStripMenuItem";
+            this.option1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.option1ToolStripMenuItem.Text = "Option1";
+            // 
+            // option2ToolStripMenuItem
+            // 
+            this.option2ToolStripMenuItem.Name = "option2ToolStripMenuItem";
+            this.option2ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.option2ToolStripMenuItem.Text = "Option2";
+            // 
             // SimpleCardDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -61,6 +86,7 @@
             this.Name = "SimpleCardDemoPanel";
             this.Size = new System.Drawing.Size(568, 400);
             this.groupBox1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -69,5 +95,8 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.FlowLayoutPanel flp;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem option1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem option2ToolStripMenuItem;
     }
 }
