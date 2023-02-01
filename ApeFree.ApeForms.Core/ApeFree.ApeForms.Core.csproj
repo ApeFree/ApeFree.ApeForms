@@ -13,7 +13,7 @@
 		<Description>WinForm窗体核心库，包含功能丰富的控件（Metro风格），为常用控件提供扩展功能，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.9.12</Version>
+		<Version>0.9.13-bate0202</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
