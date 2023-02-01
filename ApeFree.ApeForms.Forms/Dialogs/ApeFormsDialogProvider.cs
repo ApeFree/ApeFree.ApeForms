@@ -66,7 +66,26 @@ namespace ApeFree.ApeForms.Forms.Dialogs
     {
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
-            throw new NotImplementedException();
+            var view = new DatePicker();
+            
+            var dialog = new ApeFormsDialog<DateTime>(settings, v => (v as DatePicker).SelectedDate);
+            dialog.ContentView = view;
+
+            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            {
+                dialog.ExtractResultFromView();
+                if (dialog.PerformPrecheck())
+                {
+                    d.Dismiss(false);
+                }
+            };
+
+            // 添加选项按钮
+            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.AddOption(settings.CurrentTimeOptionText, (d, o) => view.SelectedDate = DateTime.Now);
+
+            return dialog;
         }
 
         public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
@@ -112,8 +131,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
             return dialog;
         }
-
-
 
         public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
