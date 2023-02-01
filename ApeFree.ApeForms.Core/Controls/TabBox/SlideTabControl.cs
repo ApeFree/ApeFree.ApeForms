@@ -13,7 +13,7 @@ namespace ApeFree.ApeForms.Core.Controls
 {
     public partial class SlideTabControl : UserControl, ITabBox<ToolStripItem>
     {
-        private StateColorSet stateColorSet = new StateColorSet(); 
+        private StateColorSet stateColorSet = new StateColorSet();
 
         public SlideTabControl()
         {
@@ -31,6 +31,10 @@ namespace ApeFree.ApeForms.Core.Controls
         [Browsable(true)]
         [Description("页面标题栏项目的对齐方式")]
         public ToolStripLayoutStyle TitleLayoutStyle { get => tsTitle.LayoutStyle; set => tsTitle.LayoutStyle = value; }
+
+        [Browsable(true)]
+        [Description("翻页时移动的速率，当Rate = 1时，无翻页动画效果，Rate值越大翻页越慢")]
+        public int Rate { get => slideBox.Rate; set => slideBox.Rate = value; }
 
         public int CurrentIndex { get; private set; }
 
