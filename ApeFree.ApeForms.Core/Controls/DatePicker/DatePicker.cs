@@ -19,9 +19,20 @@ namespace ApeFree.ApeForms.Core.Controls
         [Browsable(true)]
         public event DatePickedEventHandler DatePicked;
 
-
         private int year;
         private int month = 1;
+        private DateTime selectedDate;
+
+        public DateTime SelectedDate
+        {
+            get => selectedDate; set
+            {
+                selectedDate = value;
+                Year = value.Year;
+                Month = value.Month;
+            }
+        }
+
         public int Year
         {
             get { return year; }
@@ -43,7 +54,6 @@ namespace ApeFree.ApeForms.Core.Controls
                 daysPicker.Month = month;
             }
         }
-
 
         public DatePicker()
         {
@@ -75,7 +85,8 @@ namespace ApeFree.ApeForms.Core.Controls
             };
             daysPicker.DayPicked += (s, e) =>
             {
-                DatePicked?.Invoke(this, new DatePickedEventArgs() { Date = ((DayPickedEventArgs)e).Date });
+                SelectedDate = e.Date;
+                DatePicked?.Invoke(this, new DatePickedEventArgs() { Date = e.Date });
             };
 
         }
