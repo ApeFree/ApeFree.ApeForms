@@ -75,7 +75,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnPublishImageText_Click(object sender, EventArgs e)
         {
-            var notify = NotificationBox.Publish(tbNotificationTitle.Text, "Notification(Text)", Resources.Magnet_12, (uint)nudDisappearDelay.Value);
+            var notify = NotificationBox.Publish(tbNotificationTitle.Text, "Notification(Image + Text)", Resources.Magnet_12, (uint)nudDisappearDelay.Value);
             notify.AddOption("关闭通知栏", (s, args) =>
             {
                 Toast.Show("此按钮会关闭通知栏");
@@ -85,6 +85,17 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             {
                 args.IsDisappear = false;
                 Toast.Show("修改事件参数的IsDisappear属性，通知栏将不会被关闭");
+            });
+        }
+
+        private void btnPublishOptionDemo_Click(object sender, EventArgs e)
+        {
+            this.FindForm().WindowState = FormWindowState.Minimized;
+
+            var notify = NotificationBox.Publish("ApeForms", "Demo窗体已被最小化到开始栏，可通过下方按键还原窗体。", Resources.ImageButton_1, 10000);
+            notify.AddOption("窗口最大化", (s, args) =>
+            {
+                this.FindForm().WindowState = FormWindowState.Normal;
             });
         }
     }

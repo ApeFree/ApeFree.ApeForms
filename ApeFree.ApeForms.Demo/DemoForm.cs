@@ -38,7 +38,7 @@ namespace ApeFree.ApeForms.Demo
                 {"SlideBox",new Lazy<Control>(()=>new SlideBoxDemoPanel()) },
                 {"Shutter(preview)",new Lazy<Control>(()=>new ShutterDemoPanel()) },
             },
-            new NavigationBarData("Notification")
+            new NavigationBarData("Notifications")
             {
                 {"Toast",new Lazy<Control>(()=>new ToastDemoPanel()) },
                 {"Notification",new Lazy<Control>(()=>new NotificationBoxDemoPanel()) },

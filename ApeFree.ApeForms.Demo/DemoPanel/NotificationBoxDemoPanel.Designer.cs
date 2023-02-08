@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnPublishText = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btnChangeDefaultSzie = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.nudDefaultHeight = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.nudDefaultWidth = new System.Windows.Forms.NumericUpDown();
@@ -46,12 +44,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnPublishImageText = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tbNotificationTitle = new System.Windows.Forms.TextBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.nudDisappearDelay = new System.Windows.Forms.NumericUpDown();
+            this.btnPublishImageText = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnPublishText = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.btnChangeDefaultSzie = new ApeFree.ApeForms.Core.Controls.SimpleButton();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.btnPublishOptionDemo = new ApeFree.ApeForms.Core.Controls.SimpleButton();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDefaultHeight)).BeginInit();
@@ -65,24 +67,8 @@
             this.groupBox8.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDisappearDelay)).BeginInit();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnPublishText
-            // 
-            this.btnPublishText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnPublishText.BorderColor = System.Drawing.Color.Empty;
-            this.btnPublishText.BorderSize = 0;
-            this.btnPublishText.FlatAppearance.BorderSize = 0;
-            this.btnPublishText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPublishText.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnPublishText.Location = new System.Drawing.Point(6, 20);
-            this.btnPublishText.Name = "btnPublishText";
-            this.btnPublishText.Size = new System.Drawing.Size(95, 30);
-            this.btnPublishText.TabIndex = 0;
-            this.btnPublishText.Text = "Publish";
-            this.btnPublishText.Title = "Publish";
-            this.btnPublishText.UseVisualStyleBackColor = false;
-            this.btnPublishText.Click += new System.EventHandler(this.btnPublishText_Click);
             // 
             // groupBox1
             // 
@@ -113,24 +99,6 @@
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Default Size";
-            // 
-            // btnChangeDefaultSzie
-            // 
-            this.btnChangeDefaultSzie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnChangeDefaultSzie.BorderColor = System.Drawing.Color.Empty;
-            this.btnChangeDefaultSzie.BorderSize = 0;
-            this.btnChangeDefaultSzie.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnChangeDefaultSzie.FlatAppearance.BorderSize = 0;
-            this.btnChangeDefaultSzie.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangeDefaultSzie.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnChangeDefaultSzie.Location = new System.Drawing.Point(3, 125);
-            this.btnChangeDefaultSzie.Name = "btnChangeDefaultSzie";
-            this.btnChangeDefaultSzie.Size = new System.Drawing.Size(128, 30);
-            this.btnChangeDefaultSzie.TabIndex = 4;
-            this.btnChangeDefaultSzie.Text = "Chnage";
-            this.btnChangeDefaultSzie.Title = "Chnage";
-            this.btnChangeDefaultSzie.UseVisualStyleBackColor = false;
-            this.btnChangeDefaultSzie.Click += new System.EventHandler(this.btnChangeDefaultSzie_Click);
             // 
             // nudDefaultHeight
             // 
@@ -298,7 +266,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox5.Location = new System.Drawing.Point(0, 239);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(621, 100);
+            this.groupBox5.Size = new System.Drawing.Size(621, 60);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Notification(Text)";
@@ -307,29 +275,12 @@
             // 
             this.groupBox6.Controls.Add(this.btnPublishImageText);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox6.Location = new System.Drawing.Point(0, 339);
+            this.groupBox6.Location = new System.Drawing.Point(0, 299);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(621, 100);
+            this.groupBox6.Size = new System.Drawing.Size(621, 60);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Notification(Image + Text)";
-            // 
-            // btnPublishImageText
-            // 
-            this.btnPublishImageText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnPublishImageText.BorderColor = System.Drawing.Color.Empty;
-            this.btnPublishImageText.BorderSize = 0;
-            this.btnPublishImageText.FlatAppearance.BorderSize = 0;
-            this.btnPublishImageText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPublishImageText.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnPublishImageText.Location = new System.Drawing.Point(6, 20);
-            this.btnPublishImageText.Name = "btnPublishImageText";
-            this.btnPublishImageText.Size = new System.Drawing.Size(95, 30);
-            this.btnPublishImageText.TabIndex = 0;
-            this.btnPublishImageText.Text = "Publish";
-            this.btnPublishImageText.Title = "Publish";
-            this.btnPublishImageText.UseVisualStyleBackColor = false;
-            this.btnPublishImageText.Click += new System.EventHandler(this.btnPublishImageText_Click);
             // 
             // groupBox7
             // 
@@ -398,10 +349,91 @@
             0,
             0});
             // 
+            // btnPublishImageText
+            // 
+            this.btnPublishImageText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnPublishImageText.BorderColor = System.Drawing.Color.Empty;
+            this.btnPublishImageText.BorderSize = 0;
+            this.btnPublishImageText.FlatAppearance.BorderSize = 0;
+            this.btnPublishImageText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPublishImageText.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPublishImageText.Location = new System.Drawing.Point(6, 20);
+            this.btnPublishImageText.Name = "btnPublishImageText";
+            this.btnPublishImageText.Size = new System.Drawing.Size(95, 30);
+            this.btnPublishImageText.TabIndex = 0;
+            this.btnPublishImageText.Text = "Publish";
+            this.btnPublishImageText.Title = "Publish";
+            this.btnPublishImageText.UseVisualStyleBackColor = false;
+            this.btnPublishImageText.Click += new System.EventHandler(this.btnPublishImageText_Click);
+            // 
+            // btnPublishText
+            // 
+            this.btnPublishText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnPublishText.BorderColor = System.Drawing.Color.Empty;
+            this.btnPublishText.BorderSize = 0;
+            this.btnPublishText.FlatAppearance.BorderSize = 0;
+            this.btnPublishText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPublishText.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPublishText.Location = new System.Drawing.Point(6, 20);
+            this.btnPublishText.Name = "btnPublishText";
+            this.btnPublishText.Size = new System.Drawing.Size(95, 30);
+            this.btnPublishText.TabIndex = 0;
+            this.btnPublishText.Text = "Publish";
+            this.btnPublishText.Title = "Publish";
+            this.btnPublishText.UseVisualStyleBackColor = false;
+            this.btnPublishText.Click += new System.EventHandler(this.btnPublishText_Click);
+            // 
+            // btnChangeDefaultSzie
+            // 
+            this.btnChangeDefaultSzie.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnChangeDefaultSzie.BorderColor = System.Drawing.Color.Empty;
+            this.btnChangeDefaultSzie.BorderSize = 0;
+            this.btnChangeDefaultSzie.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnChangeDefaultSzie.FlatAppearance.BorderSize = 0;
+            this.btnChangeDefaultSzie.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangeDefaultSzie.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnChangeDefaultSzie.Location = new System.Drawing.Point(3, 125);
+            this.btnChangeDefaultSzie.Name = "btnChangeDefaultSzie";
+            this.btnChangeDefaultSzie.Size = new System.Drawing.Size(128, 30);
+            this.btnChangeDefaultSzie.TabIndex = 4;
+            this.btnChangeDefaultSzie.Text = "Chnage";
+            this.btnChangeDefaultSzie.Title = "Chnage";
+            this.btnChangeDefaultSzie.UseVisualStyleBackColor = false;
+            this.btnChangeDefaultSzie.Click += new System.EventHandler(this.btnChangeDefaultSzie_Click);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.btnPublishOptionDemo);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox10.Location = new System.Drawing.Point(0, 359);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(621, 60);
+            this.groupBox10.TabIndex = 5;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Notification(Option Demo)";
+            // 
+            // btnPublishOptionDemo
+            // 
+            this.btnPublishOptionDemo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnPublishOptionDemo.BorderColor = System.Drawing.Color.Empty;
+            this.btnPublishOptionDemo.BorderSize = 0;
+            this.btnPublishOptionDemo.FlatAppearance.BorderSize = 0;
+            this.btnPublishOptionDemo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPublishOptionDemo.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPublishOptionDemo.Location = new System.Drawing.Point(6, 20);
+            this.btnPublishOptionDemo.Name = "btnPublishOptionDemo";
+            this.btnPublishOptionDemo.Size = new System.Drawing.Size(95, 30);
+            this.btnPublishOptionDemo.TabIndex = 0;
+            this.btnPublishOptionDemo.Text = "Minimization";
+            this.btnPublishOptionDemo.Title = "Minimization";
+            this.btnPublishOptionDemo.UseVisualStyleBackColor = false;
+            this.btnPublishOptionDemo.Click += new System.EventHandler(this.btnPublishOptionDemo_Click);
+            // 
             // NotificationBoxDemoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox7);
@@ -425,6 +457,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudDisappearDelay)).EndInit();
+            this.groupBox10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -455,5 +488,7 @@
         private System.Windows.Forms.TextBox tbNotificationTitle;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.NumericUpDown nudDisappearDelay;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private Core.Controls.SimpleButton btnPublishOptionDemo;
     }
 }
