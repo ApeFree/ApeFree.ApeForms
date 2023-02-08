@@ -163,6 +163,12 @@
     <Compile Include="DemoPanel\MagnetDemoPanel.Designer.cs">
       <DependentUpon>MagnetDemoPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="DemoPanel\NotificationBoxDemoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DemoPanel\NotificationBoxDemoPanel.Designer.cs">
+      <DependentUpon>NotificationBoxDemoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DemoPanel\ShutterDemoPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -212,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\MagnetDemoPanel.resx">
       <DependentUpon>MagnetDemoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DemoPanel\NotificationBoxDemoPanel.resx">
+      <DependentUpon>NotificationBoxDemoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoPanel\ShutterDemoPanel.resx">
       <DependentUpon>ShutterDemoPanel.cs</DependentUpon>

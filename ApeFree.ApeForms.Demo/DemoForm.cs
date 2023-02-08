@@ -41,6 +41,7 @@ namespace ApeFree.ApeForms.Demo
             new NavigationBarData("Notification")
             {
                 {"Toast",new Lazy<Control>(()=>new ToastDemoPanel()) },
+                {"Notification",new Lazy<Control>(()=>new NotificationBoxDemoPanel()) },
             },
             new NavigationBarData("Dialogs")
             {
