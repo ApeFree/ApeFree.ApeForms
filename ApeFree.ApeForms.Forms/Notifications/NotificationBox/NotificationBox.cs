@@ -66,6 +66,22 @@ namespace ApeFree.ApeForms.Forms.Notifications
             panelSpareControl.Visible = SpareView != null;
         }
 
+        /// <summary>
+        /// 让窗体不显示在alt+Tab视图窗体中
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_APPWINDOW = 0x40000;
+                const int WS_EX_TOOLWINDOW = 0x80;
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle &= (~WS_EX_APPWINDOW);
+                cp.ExStyle |= WS_EX_TOOLWINDOW;
+                return cp;
+            }
+        }
+
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
