@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ApeFree Group")]
 [assembly: AssemblyProduct("ApeForms Demo")]
-[assembly: AssemblyCopyright("Copyright ©  2022 Landriesnidis")]
+[assembly: AssemblyCopyright("Copyright ©  2022-2023 Landriesnidis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
