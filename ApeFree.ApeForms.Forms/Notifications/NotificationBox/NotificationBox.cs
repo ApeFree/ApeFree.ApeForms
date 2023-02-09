@@ -167,7 +167,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             var btn = new SimpleButton();
             btn.Text = text;
-            btn.Size = new Size(65, 20);
+            btn.Size = new Size(65, 25);
             btn.BackColor = Color.LightGray;
             btn.ForeColor = Color.Black;
             btn.AutoSize = true;
