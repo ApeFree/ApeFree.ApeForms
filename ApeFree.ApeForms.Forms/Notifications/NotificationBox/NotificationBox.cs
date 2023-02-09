@@ -269,7 +269,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 }
                 else
                 {
-                    form.Show();
+                    form.GraduallyShow(0.03f, 0.9);
                     form.Location = point;
                 }
             }
