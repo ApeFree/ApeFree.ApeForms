@@ -147,9 +147,14 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             IsDisappear = true;
             timerDisappear.Enabled = false;
+            this.GraduallyClose(0.05).ContinueWith(t =>
+            {
+                this.Invoke(() =>
+                {
             NotifyForms.Remove(this);
-            Close();
             Dispose();
+                });
+            });
         }
 
         /// <summary>
