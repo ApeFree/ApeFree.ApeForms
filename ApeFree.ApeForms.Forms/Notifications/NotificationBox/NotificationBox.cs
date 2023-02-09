@@ -205,7 +205,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// <summary>
         /// 通知栏默认大小
         /// </summary>
-        public static Size DefaultFormsSize { get; set; } = new Size(300, 100);
+        public static Size DefaultFormsSize { get; set; } = new Size(350, 150);
 
         /// <summary>
         /// 通知排列方向
