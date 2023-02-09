@@ -238,13 +238,13 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
         public static INotification Publish(string title, string content, uint delay = 10000)
         {
-            var contentView = new Label { Text = content, AutoSize = false};
+            var contentView = new Label { Text = content, AutoSize = false };
             return Publish(title, contentView, null, delay);
         }
 
         public static INotification Publish(string title, string content, Image image, uint delay = 10000)
         {
-            var contentView = new Label { Text = content, AutoSize = false, Padding = new Padding(5, 0, 0, 0) };
+            var contentView = new Label { Text = content, AutoSize = false };
             var spareView = new PictureBox() { Image = image, SizeMode = PictureBoxSizeMode.Zoom };
             return Publish(title, contentView, spareView, delay);
         }
@@ -297,7 +297,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 top = h - (DefaultFormsSize.Height + SpacingDistance) * index - DefaultFormsSize.Height;
             }
 
-            var left = w - SpacingDistance - DefaultFormsSize.Width;
+            var left = w - 5 - DefaultFormsSize.Width;
 
             return new Point(left, top);
         }
