@@ -120,11 +120,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             try
             {
-            ShowWindow(new HandleRef(this, this.Handle), 4);
+                ShowWindow(new HandleRef(this, this.Handle), 4);
                 this.DropShadow();
-            timerDisappear.Interval = DisappearInterval;
-            timerDisappear.Enabled = true;
-        }
+                timerDisappear.Interval = DisappearInterval;
+                timerDisappear.Enabled = true;
+            }
             catch (Exception)
             {
 
@@ -151,8 +151,8 @@ namespace ApeFree.ApeForms.Forms.Notifications
             {
                 this.Invoke(() =>
                 {
-            NotifyForms.Remove(this);
-            Dispose();
+                    NotifyForms.Remove(this);
+                    Dispose();
                 });
             });
         }
