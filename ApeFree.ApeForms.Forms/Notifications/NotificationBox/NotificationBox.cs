@@ -121,7 +121,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
             try
             {
                 ShowWindow(new HandleRef(this, this.Handle), 4);
-                this.DropShadow();
+                // this.DropShadow();
                 timerDisappear.Interval = DisappearInterval;
                 timerDisappear.Enabled = true;
             }
