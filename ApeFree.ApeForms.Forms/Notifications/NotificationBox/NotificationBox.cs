@@ -36,6 +36,20 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// </summary>
         public Control SpareView { get; }
 
+        /// <summary>
+        /// 提醒色
+        /// </summary>
+        public Color ReminderColor
+        {
+            get => reminderColor; set
+            {
+                reminderColor = value;
+                // 关闭按钮前景色
+                btnClose.ForeColor = reminderColor;
+                Refresh();
+            }
+        }
+
         private NotificationBox()
         {
             InitializeComponent();
@@ -104,8 +118,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             base.OnPaintBackground(e);
 
-            Pen pen = new Pen(BackColor.Luminance(0.5f), 1);
-            e.Graphics.DrawRectangle(pen, new Rectangle(0, 0, Width - 1, Height - 1));
+            Pen pen = new Pen(ReminderColor, 5);
+            e.Graphics.DrawLine(pen, 0, 0, 0, Height);
+
+            Pen penBorder = new Pen(BackColor.Luminance(0.5f), 1);
+            e.Graphics.DrawRectangle(penBorder, new Rectangle(0, 0, Width - 1, Height - 1));
         }
 
         private void PanelSpareControl_SizeChanged(object sender, EventArgs e)
@@ -196,6 +213,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         // ==============================================================================================================================
 
         internal static readonly EventableList<NotificationBox> NotifyForms;
+        private Color reminderColor = SystemColors.Highlight;
 
         /// <summary>
         /// 通知栏之间的间隔距离
