@@ -21,8 +21,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             Text = content;
 
-            // TODO: 可以通过自定义的attribute、全局属性、最小限制来确定Toast的显示位置（相对屏幕/相对窗体）
-
+            var g = this.CreateGraphics();
+            var strSize = g.MeasureString(content, Font);
+            this.Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
+            g.Dispose();
+            Reposition();
 
             timerWait.Interval = delay;
             timerWait.Enabled = true;
@@ -106,13 +109,12 @@ namespace ApeFree.ApeForms.Forms.Notifications
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+
             e.Graphics.Clear(BackColor);
             var strSize = e.Graphics.MeasureString(Text, Font);
             this.Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
-
             var strLocation = new Point(10, 10);
             e.Graphics.DrawString(Text, Font, Brushes.White, strLocation);
-
             Reposition();
         }
 
