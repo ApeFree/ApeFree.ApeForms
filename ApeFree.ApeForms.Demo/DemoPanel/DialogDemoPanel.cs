@@ -35,6 +35,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             {
                 Title = tbTitle.Text,
                 Content = tbContent.Text,
+                DefaultContent = "You can set the default text in the input box by using the 'DefaultContent' property.",
                 ClearOptionText = "Clear(清空)",
                 ConfirmOptionText = "Confirm(确定)",
                 CancelOptionText = "Cancel(取消)",
@@ -52,7 +53,13 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnInputMultiLineDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateInputDialog(new InputDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text, IsMultiline = true }, null);
+            var dialog = provider.CreateInputDialog(new InputDialogSettings()
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DefaultContent = "You can set the default text in the input box by using the 'DefaultContent' property.",
+                IsMultiline = true
+            }, null);
             dialog.Show();
             if (dialog.Result.IsCancel)
             {

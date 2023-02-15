@@ -92,6 +92,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var view = new TextBox();
             view.Multiline = settings.IsMultiline;
+            view.Text = settings.DefaultContent;
 
             var dialog = new ApeFormsDialog<string>(settings, v => v.Text);
             dialog.ContentView = view;
