@@ -123,6 +123,10 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             Pen penBorder = new Pen(BackColor.Luminance(0.5f), 1);
             e.Graphics.DrawRectangle(penBorder, new Rectangle(0, 0, Width - 1, Height - 1));
+
+            pen.Dispose();
+            penBorder.Dispose();
+            e.Dispose();
         }
 
         private void PanelSpareControl_SizeChanged(object sender, EventArgs e)
@@ -164,6 +168,8 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             IsDisappear = true;
             timerDisappear.Enabled = false;
+            timerDisappear.Dispose();
+
             this.GraduallyClose(0.05).ContinueWith(t =>
             {
                 this.Invoke(() =>
@@ -284,6 +290,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 if (form.Visible)
                 {
                     form.LocationGradualChange(point);
+                    // form.Location = point;
                 }
                 else
                 {
