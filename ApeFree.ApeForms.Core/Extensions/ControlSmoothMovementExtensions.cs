@@ -29,19 +29,23 @@ namespace System.Windows.Forms
 
         public static void LocationGradualChange(this Control control, Point targetPoint, byte rate = 5)
         {
-            SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control,
-                () =>
-                {
-                    control.ModifyInUI(() =>
+            lock (control)
+            {
+                SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control,
+                    () =>
                     {
-                        control.Left = Gradual(control.Left, targetPoint.X, rate);
-                        control.Top = Gradual(control.Top, targetPoint.Y, rate);
-                    });
-                },
-                () =>
-                {
-                    return (control.Left == targetPoint.X) && (control.Top == targetPoint.Y);
-                }));
+                        control.ModifyInUI(() =>
+                        {
+                            var left = Gradual(control.Left, targetPoint.X, rate);
+                            var top = Gradual(control.Top, targetPoint.Y, rate);
+                            control.Location = new Point(left, top);
+                        });
+                    },
+                    () =>
+                    {
+                        return (control.Left == targetPoint.X) && (control.Top == targetPoint.Y);
+                    }));
+            }
         }
 
         private static int Gradual(int currentValue, int targetValue, byte rate)
@@ -80,20 +84,22 @@ namespace System.Windows.Forms
 
         private void Tasks_ItemRemoved(object sender, ListItemsChangedEventArgs<TimerTask> e) => timer.Enabled = tasks.Any();
         private void Tasks_ItemAdded(object sender, ListItemsChangedEventArgs<TimerTask> e) => timer.Enabled = true;
+
         public void AddTask(TimerTask task)
         {
-            var t = tasks.FirstOrDefault(i => i.Id == task.Id);
-            if (t == null)
+            lock (_lockerTaskListItemsChange)
             {
-                lock (_lockerTaskListItemsChange)
+                var t = tasks.FirstOrDefault(i => i.Id == task.Id);
+                if (t == null)
                 {
+
                     tasks.Add(task);
                 }
-            }
-            else
-            {
-                t.Run = task.Run;
-                t.IsFinish = task.IsFinish;
+                else
+                {
+                    t.Run = task.Run;
+                    t.IsFinish = task.IsFinish;
+                }
             }
         }
         private void Timer_Tick(object sender, EventArgs e)
