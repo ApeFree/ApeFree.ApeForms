@@ -1,11 +1,6 @@
 ﻿using ApeFree.CodePlus.Algorithm.DataStructure;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace System.Windows.Forms
 {
@@ -107,7 +102,6 @@ namespace System.Windows.Forms
         {
             lock (_lockerTaskListItemsChange)
             {
-                //List<TimerTask> deleteTasks = new List<TimerTask>();
                 for (int i = 0; i < tasks.Count; i++)
                 {
                     var task = tasks[i];
@@ -115,7 +109,6 @@ namespace System.Windows.Forms
                     {
                         if (task.IsFinish())
                         {
-                            //deleteTasks.Add(task);
                             tasks.RemoveAt(i--);
                         }
                         else
@@ -124,7 +117,6 @@ namespace System.Windows.Forms
                         }
                     }
                 }
-                //deleteTasks.ForEach(t => tasks.Remove(t));
             }
         }
 
