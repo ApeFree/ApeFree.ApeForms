@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452;net461</TargetFrameworks>
+		<TargetFrameworks>net6.0-windows;net452;net461</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
+		<UseWindowsForms>true</UseWindowsForms>
 
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
@@ -13,7 +14,7 @@
 		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.9.17</Version>
+		<Version>0.10.0-Alpha0219</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
@@ -31,10 +32,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
 	<ItemGroup>
