@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Core.Controls
@@ -14,26 +9,13 @@ namespace ApeFree.ApeForms.Core.Controls
     public class SimpleButton : Button
     {
         private Color normalBackColor;
-        private Color normalForeColor;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color PressedBackColor { get; private set; }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color PressedForeColor { get; private set; }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color TouchedBackColor { get; private set; }
-
-        public Color TouchedForeColor { get; private set; }
-
-        [Obsolete]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool AutoScroll { get; set; }
-
         [Obsolete]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public BorderStyle BorderStyle { get; set; }
+
+        [Obsolete("请使用Text属性")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Title { get => Text; set => Text = value; }
 
         public int BorderSize { get => FlatAppearance.BorderSize; set => FlatAppearance.BorderSize = value; }
         public Color BorderColor { get => FlatAppearance.BorderColor; set => FlatAppearance.BorderColor = value; }
@@ -43,26 +25,18 @@ namespace ApeFree.ApeForms.Core.Controls
             get => normalBackColor;
             set
             {
-                base.BackColor = value;
                 normalBackColor = value;
-                PressedBackColor = value.Luminance(0.9f);
-                TouchedBackColor = value.Luminance(1.1f);
+
+                if (Enabled)
+                {
+                    base.BackColor = value;
+
+                    FlatAppearance.MouseDownBackColor = value.Luminance(0.8f);
+                    FlatAppearance.MouseOverBackColor = value.Luminance(1.2f);
+                    FlatAppearance.CheckedBackColor = value.Luminance(1.1f);
+                }
             }
         }
-        public new Color ForeColor
-        {
-            get => normalForeColor;
-            set
-            {
-                base.ForeColor = value;
-                normalForeColor = value;
-                PressedForeColor = value.Luminance(0.9f);
-                TouchedForeColor = value.Luminance(1.1f);
-            }
-        }
-
-        public string Title { get => Text; set => Text = value; }
-
 
         public SimpleButton()
         {
@@ -75,32 +49,18 @@ namespace ApeFree.ApeForms.Core.Controls
             base.ForeColor = ForeColor = Color.WhiteSmoke;
         }
 
-        protected override void OnMouseDown(MouseEventArgs mevent)
+        protected override void OnEnabledChanged(EventArgs e)
         {
-            base.BackColor = PressedBackColor;
-            base.ForeColor = PressedForeColor;
-            base.OnMouseDown(mevent);
-        }
+            base.OnEnabledChanged(e);
 
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            base.BackColor = TouchedBackColor;
-            base.ForeColor = TouchedForeColor;
-            base.OnMouseEnter(e);
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            base.BackColor = BackColor;
-            base.ForeColor = ForeColor;
-            base.OnMouseLeave(e);
-        }
-
-        protected override void OnMouseUp(MouseEventArgs mevent)
-        {
-            base.BackColor = TouchedBackColor;
-            base.ForeColor = TouchedForeColor;
-            base.OnMouseUp(mevent);
+            if (Enabled)
+            {
+                BackColor = normalBackColor;
+            }
+            else
+            {
+                base.BackColor = Color.Gray;
+            }
         }
     }
 }
