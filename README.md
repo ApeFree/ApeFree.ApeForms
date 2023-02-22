@@ -5,6 +5,9 @@ ApeFree.ApeForms是一款基于WinForm框架的允许免费商用的UI库。ApeF
 
 ApeForms项目的开发将会是一个长期的、持续的工作，会随着贡献者共同成长，不断的增加新的功能。
 
+## Demo
+请移步仓库：https://github.com/ApeFree/ApeFree.ApeForms.Demo
+
 ## 加入我们
 欢迎体验ApeForms，加入我们一起交流吧
 
