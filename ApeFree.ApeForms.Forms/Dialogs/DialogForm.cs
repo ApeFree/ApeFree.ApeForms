@@ -20,7 +20,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public void SetContentView(Control view)
         {
-            if(view != null)
+            if (view != null)
             {
                 view.Dock = DockStyle.Fill;
                 panelView.Controls.Clear();
@@ -31,6 +31,18 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public void AddButton(Control button)
         {
             flpOptions.Controls.Add(button);
+        }
+
+        public Control FindButtonByText(string text)
+        {
+            foreach(Control c in flpOptions.Controls)
+            {
+                if(c.Text == text)
+                {
+                    return c;
+                }
+            }
+            return null;
         }
 
         public void ClearButtons()

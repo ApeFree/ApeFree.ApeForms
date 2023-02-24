@@ -12,8 +12,10 @@ using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Dialogs
 {
-    public class ApeFormsDialog<TResult> : BaseDialog<Control, Control, Control, TResult>
+    public class ApeFormsDialog<TResult> : BaseDialog<Control, OptionButton, Control, TResult>
     {
+        public static Size DefaultDialogSize = new Size(480, 240);
+
         public DialogForm InnerDialog { get; }
         public override string Title { get => InnerDialog.Text; set => InnerDialog.Text = value; }
         public override string Content { get => InnerDialog.Content; set => InnerDialog.Content = value; }
@@ -24,6 +26,13 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
             Title = settings.Title;
             Content = settings.Content;
+            InnerDialog.ControlBox = settings.Cancelable;
+            InnerDialog.Size = settings.DialogSize ?? DefaultDialogSize;
+
+            foreach (var item in settings.GetOptions())
+            {
+                AddOption(item);
+            }
 
             ExtractResultFromViewHandler = extractResultFromViewHandler;
         }
@@ -39,16 +48,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InnerDialog.ShowDialog();
         }
 
-        public override Control AddOption(string text, Action<IDialog, Control> onClick = null)
+        public override OptionButton AddOption(DialogOption option, Action<IDialog, OptionButton> onClick = null)
         {
-            var option = new SimpleButton();
-            option.Text = text;
-            option.AutoSize= true;
-            option.Click += (s, e) => onClick?.Invoke(this, option);
-
-            InnerDialog.AddButton(option);
-
-            return option;
+            var btn = CreateOptionHandler(option);
+            btn.Click += (s, e) => onClick?.Invoke(this, btn);
+            InnerDialog.AddButton(btn);
+            return btn;
         }
 
         public override void ClearOptions()
@@ -61,13 +66,51 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             // 抖动窗口
             InnerDialog.Shake();
         }
+
+        protected override OptionButton CreateOptionHandler(DialogOption option)
+        {
+            var btn = new OptionButton();
+            btn.Text = option.Text;
+            btn.Enabled = option.Enable;
+            btn.AutoSize = true;
+
+            switch (option.OptionType)
+            {
+                case DialogOptionType.Neutral:
+                    btn.BackColor = SystemColors.Highlight;
+                    break;
+                case DialogOptionType.Positive:
+                    btn.BackColor = Color.ForestGreen;
+                    break;
+                case DialogOptionType.Negative:
+                    btn.BackColor = Color.IndianRed;
+                    break;
+                case DialogOptionType.Functional:
+                    btn.BackColor = SystemColors.Highlight;
+                    break;
+                case DialogOptionType.Special:
+                    btn.BackColor = Color.MediumPurple;
+                    break;
+            }
+
+            return btn;
+        }
+
+        public void SetOptionClickAction(string optionText, Action<IDialog, OptionButton> onClick)
+        {
+            var btn = InnerDialog.FindButtonByText(optionText);
+            if (btn != null)
+            {
+                btn.Click += (s, e) => onClick?.Invoke(this, (OptionButton)btn);
+            }
+        }
     }
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
             var view = new DatePicker();
-            
+
             var dialog = new ApeFormsDialog<DateTime>(settings, v => (v as DatePicker).SelectedDate);
             dialog.ContentView = view;
 
@@ -81,9 +124,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             };
 
             // 添加选项按钮
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.AddOption(settings.CurrentTimeOptionText, (d, o) => view.SelectedDate = DateTime.Now);
+            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.CurrentTimeOptionText, (d, o) => view.SelectedDate = DateTime.Now);
 
             return dialog;
         }
@@ -107,9 +150,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             };
 
             // 添加选项按钮
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.AddOption(settings.ClearOptionText, (d, o) => view.Clear());
+            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.ClearOptionText, (d, o) => view.Clear());
 
             // 单行输入的模式下，在输入框内使用回车键可确认输入
             if (!view.Multiline)
@@ -129,7 +172,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
             return dialog;
         }
 
@@ -149,8 +192,8 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var dialog = new ApeFormsDialog<bool>(settings, ctrl => ctrl.Enabled);
             dialog.ContentView = control;
 
-            dialog.AddOption(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
-            dialog.AddOption(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
+            dialog.SetOptionClickAction(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
+            dialog.SetOptionClickAction(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
             return dialog;
         }
 
@@ -185,8 +228,8 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 }
             };
 
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
 
             return dialog;
         }
@@ -228,9 +271,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 }
             };
 
-            dialog.AddOption(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.AddOption(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.AddOption(settings.SelectAllOptionText, (d, o) =>
+            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.SelectAllOptionText, (d, o) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
@@ -238,7 +281,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                     view.SetItemChecked(i, true);
                 }
             });
-            dialog.AddOption(settings.ReverseSelectedOptionText, (d, o) =>
+            dialog.SetOptionClickAction(settings.ReverseSelectedOptionText, (d, o) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
