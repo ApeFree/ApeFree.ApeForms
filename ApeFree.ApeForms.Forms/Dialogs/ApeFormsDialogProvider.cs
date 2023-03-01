@@ -124,9 +124,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             };
 
             // 添加选项按钮
-            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.CurrentTimeOptionText, (d, o) => view.SelectedDate = DateTime.Now);
+            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.CurrentTimeOption.Text, (d, o) => view.SelectedDate = DateTime.Now);
 
             return dialog;
         }
@@ -150,9 +150,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             };
 
             // 添加选项按钮
-            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.ClearOptionText, (d, o) => view.Clear());
+            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.ClearOption.Text, (d, o) => view.Clear());
 
             // 单行输入的模式下，在输入框内使用回车键可确认输入
             if (!view.Multiline)
@@ -172,7 +172,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
-            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOption.Text, (d, o) => d.Dismiss(true));
             return dialog;
         }
 
@@ -192,8 +192,8 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var dialog = new ApeFormsDialog<bool>(settings, ctrl => ctrl.Enabled);
             dialog.ContentView = control;
 
-            dialog.SetOptionClickAction(settings.PositiveOptionText, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
-            dialog.SetOptionClickAction(settings.NegativeOptionText, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
+            dialog.SetOptionClickAction(settings.PositiveOption.Text, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
+            dialog.SetOptionClickAction(settings.NegativeOption.Text, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
             return dialog;
         }
 
@@ -228,8 +228,8 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 }
             };
 
-            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
 
             return dialog;
         }
@@ -271,9 +271,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 }
             };
 
-            dialog.SetOptionClickAction(settings.CancelOptionText, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOptionText, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.SelectAllOptionText, (d, o) =>
+            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
+            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
+            dialog.SetOptionClickAction(settings.SelectAllOption.Text, (d, o) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
@@ -281,7 +281,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                     view.SetItemChecked(i, true);
                 }
             });
-            dialog.SetOptionClickAction(settings.ReverseSelectedOptionText, (d, o) =>
+            dialog.SetOptionClickAction(settings.ReverseSelectedOption.Text, (d, o) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
