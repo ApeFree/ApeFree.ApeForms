@@ -6,105 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Dialogs
 {
-    public class ApeFormsDialog<TResult> : BaseDialog<Control, OptionButton, Control, TResult>
-    {
-        public static Size DefaultDialogSize = new Size(480, 240);
-
-        public DialogForm InnerDialog { get; }
-        public override string Title { get => InnerDialog.Text; set => InnerDialog.Text = value; }
-        public override string Content { get => InnerDialog.Content; set => InnerDialog.Content = value; }
-
-        public ApeFormsDialog(DialogSettings<TResult> settings, Func<Control, TResult> extractResultFromViewHandler = null) : base(settings)
-        {
-            InnerDialog = new DialogForm();
-
-            Title = settings.Title;
-            Content = settings.Content;
-            InnerDialog.ControlBox = settings.Cancelable;
-            InnerDialog.Size = settings.DialogSize ?? DefaultDialogSize;
-
-            foreach (var item in settings.GetOptions())
-            {
-                AddOption(item);
-            }
-
-            ExtractResultFromViewHandler = extractResultFromViewHandler;
-        }
-
-        protected override void DismissHandler()
-        {
-            InnerDialog.Close();
-        }
-
-        protected override void ShowHandler()
-        {
-            InnerDialog.SetContentView(ContentView);
-            InnerDialog.ShowDialog();
-        }
-
-        public override OptionButton AddOption(DialogOption option, Action<IDialog, OptionButton> onClick = null)
-        {
-            var btn = CreateOptionHandler(option);
-            btn.Click += (s, e) => onClick?.Invoke(this, btn);
-            InnerDialog.AddButton(btn);
-            return btn;
-        }
-
-        public override void ClearOptions()
-        {
-            InnerDialog.ClearButtons();
-        }
-
-        protected override void PrecheckFailsCallback()
-        {
-            // 抖动窗口
-            InnerDialog.Shake();
-        }
-
-        protected override OptionButton CreateOptionHandler(DialogOption option)
-        {
-            var btn = new OptionButton();
-            btn.Text = option.Text;
-            btn.Enabled = option.Enable;
-            btn.AutoSize = true;
-
-            switch (option.OptionType)
-            {
-                case DialogOptionType.Neutral:
-                    btn.BackColor = SystemColors.Highlight;
-                    break;
-                case DialogOptionType.Positive:
-                    btn.BackColor = Color.ForestGreen;
-                    break;
-                case DialogOptionType.Negative:
-                    btn.BackColor = Color.IndianRed;
-                    break;
-                case DialogOptionType.Functional:
-                    btn.BackColor = SystemColors.Highlight;
-                    break;
-                case DialogOptionType.Special:
-                    btn.BackColor = Color.MediumPurple;
-                    break;
-            }
-
-            return btn;
-        }
-
-        public void SetOptionClickAction(string optionText, Action<IDialog, OptionButton> onClick)
-        {
-            var btn = InnerDialog.FindButtonByText(optionText);
-            if (btn != null)
-            {
-                btn.Click += (s, e) => onClick?.Invoke(this, (OptionButton)btn);
-            }
-        }
-    }
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
@@ -114,19 +22,18 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var dialog = new ApeFormsDialog<DateTime>(settings, v => (v as DatePicker).SelectedDate);
             dialog.ContentView = view;
 
-            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
                 dialog.ExtractResultFromView();
                 if (dialog.PerformPrecheck())
                 {
-                    d.Dismiss(false);
+                    e.Dialog.Dismiss(false);
                 }
             };
 
             // 添加选项按钮
-            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.CurrentTimeOption.Text, (d, o) => view.SelectedDate = DateTime.Now);
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+            settings.CurrentTimeOption.OptionSelectedCallback = (s, e) => view.SelectedDate = DateTime.Now;
 
             return dialog;
         }
@@ -140,19 +47,17 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var dialog = new ApeFormsDialog<string>(settings, v => v.Text);
             dialog.ContentView = view;
 
-            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
                 dialog.ExtractResultFromView();
                 if (dialog.PerformPrecheck())
                 {
-                    d.Dismiss(false);
+                    e.Dialog.Dismiss(false);
                 }
             };
 
-            // 添加选项按钮
-            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.ClearOption.Text, (d, o) => view.Clear());
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+            settings.ClearOption.OptionSelectedCallback = (s, e) => view.Clear();
 
             // 单行输入的模式下，在输入框内使用回车键可确认输入
             if (!view.Multiline)
@@ -161,7 +66,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 {
                     if (e.KeyCode == Keys.Return)
                     {
-                        confirmOptionCallback.Invoke(dialog, view);
+                        confirmOptionCallback.Invoke(view, new OptionSelectedEventArgs(dialog, settings.ConfirmOption));
                     }
                 };
             }
@@ -172,7 +77,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
-            dialog.SetOptionClickAction(settings.ConfirmOption.Text, (d, o) => d.Dismiss(true));
+            settings.ConfirmOption.OptionSelectedCallback = (s, e) => e.Dialog.Dismiss(false);
             return dialog;
         }
 
@@ -185,15 +90,16 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
         {
-            Control control = new Control();
-            control.Visible = false;
-            control.Enabled = false;
+            //Control control = new Control();
+            //control.Visible = false;
+            //control.Enabled = false;
+            bool result = false;
+            var dialog = new ApeFormsDialog<bool>(settings, ctrl => result);
+            //dialog.ContentView = control;
 
-            var dialog = new ApeFormsDialog<bool>(settings, ctrl => ctrl.Enabled);
-            dialog.ContentView = control;
+            settings.PositiveOption.OptionSelectedCallback = (s, e) => { result = true; dialog.ExtractResultFromView(); e.Dialog.Dismiss(false); };
+            settings.NegativeOption.OptionSelectedCallback = (s, e) => { result = false; dialog.ExtractResultFromView(); e.Dialog.Dismiss(false); };
 
-            dialog.SetOptionClickAction(settings.PositiveOption.Text, (d, o) => { control.Enabled = true; dialog.ExtractResultFromView(); d.Dismiss(false); });
-            dialog.SetOptionClickAction(settings.NegativeOption.Text, (d, o) => { control.Enabled = false; dialog.ExtractResultFromView(); d.Dismiss(false); });
             return dialog;
         }
 
@@ -219,17 +125,16 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             });
             dialog.ContentView = view;
 
-            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
                 dialog.ExtractResultFromView();
                 if (dialog.PerformPrecheck())
                 {
-                    d.Dismiss(false);
+                    e.Dialog.Dismiss(false);
                 }
             };
 
-            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
 
             return dialog;
         }
@@ -262,33 +167,30 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             });
             dialog.ContentView = view;
 
-            Action<IDialog, Control> confirmOptionCallback = (d, o) =>
+            settings.ConfirmOption.OptionSelectedCallback = (s, e) =>
             {
                 dialog.ExtractResultFromView();
                 if (dialog.PerformPrecheck())
                 {
-                    d.Dismiss(false);
+                    e.Dialog.Dismiss(false);
                 }
             };
-
-            dialog.SetOptionClickAction(settings.CancelOption.Text, (d, o) => d.Dismiss(true));
-            dialog.SetOptionClickAction(settings.ConfirmOption.Text, confirmOptionCallback);
-            dialog.SetOptionClickAction(settings.SelectAllOption.Text, (d, o) =>
+            settings.SelectAllOption.OptionSelectedCallback = (s, e) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
                 {
                     view.SetItemChecked(i, true);
                 }
-            });
-            dialog.SetOptionClickAction(settings.ReverseSelectedOption.Text, (d, o) =>
+            };
+            settings.ReverseSelectedOption.OptionSelectedCallback = (s, e) =>
             {
                 view.SelectedIndex = -1;
                 for (int i = 0; i < view.Items.Count; i++)
                 {
                     view.SetItemChecked(i, !view.GetItemChecked(i));
                 }
-            });
+            };
 
             return dialog;
         }

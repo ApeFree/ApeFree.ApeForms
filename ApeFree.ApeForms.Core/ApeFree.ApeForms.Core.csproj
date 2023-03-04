@@ -28,7 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ApeFree.CodePlus.Algorithm" Version="0.9.6" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1">
 			<AllowExplicitVersion>true</AllowExplicitVersion>
 		</PackageReference>
