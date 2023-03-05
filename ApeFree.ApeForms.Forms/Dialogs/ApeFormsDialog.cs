@@ -27,40 +27,32 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 AddOption(item);
             }
-
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void DismissHandler()
         {
             InnerDialog.Close();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void ShowHandler()
         {
             InnerDialog.SetContentView(ContentView);
             InnerDialog.ShowDialog();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="option"><inheritdoc/></param>
+        /// <param name="onClick"><inheritdoc/></param>
+        /// <returns></returns>
         public override OptionButton AddOption(DialogOption option, Action<IDialog, OptionButton> onClick = null)
-        {
-            var btn = CreateOptionHandler(option);
-            btn.Click += (s, e) => onClick?.Invoke(this, btn);
-            InnerDialog.AddButton(btn);
-            return btn;
-        }
-
-        public override void ClearOptions()
-        {
-            InnerDialog.ClearButtons();
-        }
-
-        protected override void PrecheckFailsCallback()
-        {
-            // 抖动窗口
-            InnerDialog.Shake();
-        }
-
-        protected override OptionButton CreateOptionHandler(DialogOption option)
         {
             var btn = new OptionButton();
             btn.Text = option.Text;
@@ -68,35 +60,50 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             btn.AutoSize = true;
             btn.ClickCallback = e => option.OptionSelectedCallback?.Invoke(btn, new OptionSelectedEventArgs(this, option));
 
-            switch (option.OptionType)
+            //switch (option.OptionTag)
+            //{
+            //    case DialogOptionTag.Neutral:
+            //        btn.BackColor = SystemColors.Highlight;
+            //        break;
+            //    case DialogOptionTag.Positive:
+            //        btn.BackColor = Color.ForestGreen;
+            //        break;
+            //    case DialogOptionTag.Negative:
+            //        btn.BackColor = Color.IndianRed;
+            //        break;
+            //    case DialogOptionTag.Functional:
+            //        btn.BackColor = SystemColors.Highlight;
+            //        break;
+            //    case DialogOptionTag.Special:
+            //        btn.BackColor = Color.MediumPurple;
+            //        break;
+            //}
+
+            if(Settings.OptionTagColors?.TryGetValue(option.OptionTag,out Color color)!=null)
             {
-                case DialogOptionType.Neutral:
-                    btn.BackColor = SystemColors.Highlight;
-                    break;
-                case DialogOptionType.Positive:
-                    btn.BackColor = Color.ForestGreen;
-                    break;
-                case DialogOptionType.Negative:
-                    btn.BackColor = Color.IndianRed;
-                    break;
-                case DialogOptionType.Functional:
-                    btn.BackColor = SystemColors.Highlight;
-                    break;
-                case DialogOptionType.Special:
-                    btn.BackColor = Color.MediumPurple;
-                    break;
+                btn.BackColor = color;
             }
 
+            btn.Click += (s, e) => onClick?.Invoke(this, btn);
+            InnerDialog.AddButton(btn);
             return btn;
         }
 
-        //public void SetOptionClickAction(string optionText, Action<IDialog, OptionButton> onClick)
-        //{
-        //    var btn = InnerDialog.FindButtonByText(optionText);
-        //    if (btn != null)
-        //    {
-        //        btn.Click += (s, e) => onClick?.Invoke(this, (OptionButton)btn);
-        //    }
-        //}
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public override void ClearOptions()
+        {
+            InnerDialog.ClearButtons();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        protected override void PrecheckFailsCallback()
+        {
+            // 抖动窗口
+            InnerDialog.Shake();
+        }
     }
 }
