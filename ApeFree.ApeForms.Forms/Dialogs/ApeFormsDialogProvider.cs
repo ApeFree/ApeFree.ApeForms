@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +16,22 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 {
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
             var view = new DatePicker();
 
-            var dialog = new ApeFormsDialog<DateTime>(settings, v => (v as DatePicker).SelectedDate);
+            var dialog = new ApeFormsDialog<DateTime>(settings);
             dialog.ContentView = view;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                dialog.ExtractResultFromView();
+                dialog.Result.UpdateResultData(view.SelectedDate);
                 if (dialog.PerformPrecheck())
                 {
                     e.Dialog.Dismiss(false);
@@ -38,18 +45,40 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
         {
             var view = new TextBox();
             view.Multiline = settings.IsMultiline;
-            view.Text = settings.DefaultContent;
+            view.Text = settings.DefaultText;
 
-            var dialog = new ApeFormsDialog<string>(settings, v => v.Text);
+            if(settings.PrecheckResult == null)
+            {
+                settings.PrecheckResult = text =>
+                {
+                    if (!settings.AllowEmpty && string.IsNullOrEmpty(text))
+                    {
+                        return false;
+                    }
+                    if (text.Length > settings.MaximumLength || text.Length < settings.MinimumLength)
+                    {
+                        return false;
+                    }
+                    return true;
+                };
+            }
+
+            var dialog = new ApeFormsDialog<string>(settings);
             dialog.ContentView = view;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                dialog.ExtractResultFromView();
+                dialog.Result.UpdateResultData(view.Text);
                 if (dialog.PerformPrecheck())
                 {
                     e.Dialog.Dismiss(false);
@@ -74,6 +103,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
@@ -81,6 +116,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
             ApeFormsDialog<string> dialog = (ApeFormsDialog<string>)CreateInputDialog(settings, context);
@@ -88,21 +129,30 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
         {
-            //Control control = new Control();
-            //control.Visible = false;
-            //control.Enabled = false;
-            bool result = false;
-            var dialog = new ApeFormsDialog<bool>(settings, ctrl => result);
-            //dialog.ContentView = control;
-
-            settings.PositiveOption.OptionSelectedCallback = (s, e) => { result = true; dialog.ExtractResultFromView(); e.Dialog.Dismiss(false); };
-            settings.NegativeOption.OptionSelectedCallback = (s, e) => { result = false; dialog.ExtractResultFromView(); e.Dialog.Dismiss(false); };
+            var dialog = new ApeFormsDialog<bool>(settings);
+            settings.PositiveOption.OptionSelectedCallback = (s, e) => { dialog.Result.UpdateResultData(true); e.Dialog.Dismiss(false); };
+            settings.NegativeOption.OptionSelectedCallback = (s, e) => { dialog.Result.UpdateResultData(false); e.Dialog.Dismiss(false); };
 
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <typeparam name="T"><inheritdoc/></typeparam>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="collection"><inheritdoc/></param>
+        /// <param name="defaultSelectedItem"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
             var view = new CheckedListBox();
@@ -118,16 +168,14 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 view.Items.Add(settings.ItemDisplayTextConvertCallback(item), item.Equals(defaultSelectedItem));
             }
-            var dialog = new ApeFormsDialog<T>(settings, v =>
-            {
-                var index = (v as CheckedListBox).SelectedIndex;
-                return index >= 0 ? collection.ElementAt(index) : default(T);
-            });
+            var dialog = new ApeFormsDialog<T>(settings);
             dialog.ContentView = view;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                dialog.ExtractResultFromView();
+                var value = view.SelectedIndex >= 0 ? collection.ElementAt(view.SelectedIndex) : default;
+                dialog.Result.UpdateResultData(value);
+
                 if (dialog.PerformPrecheck())
                 {
                     e.Dialog.Dismiss(false);
@@ -139,9 +187,20 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return dialog;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <typeparam name="T"><inheritdoc/></typeparam>
+        /// <param name="settings"><inheritdoc/></param>
+        /// <param name="collection"><inheritdoc/></param>
+        /// <param name="defaultSelectedItems"><inheritdoc/></param>
+        /// <param name="context"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
         {
             var view = new CheckedListBox();
+
+            // 关联Selected与Checked（使操作变简单）
             view.SelectedIndexChanged += (s, e) =>
             {
                 if (view.SelectedIndex != -1)
@@ -149,27 +208,19 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                     view.SetItemChecked(view.SelectedIndex, !view.GetItemChecked(view.SelectedIndex));
                 }
             };
+
+            // 添加选项集合到列表控件
             foreach (var item in collection)
             {
                 view.Items.Add(settings.ItemDisplayTextConvertCallback(item), defaultSelectedItems?.Contains(item) ?? false);
             }
-            var dialog = new ApeFormsDialog<IEnumerable<T>>(settings, v =>
-            {
-                List<T> selectedItems = new List<T>();
-                for (int i = 0; i < view.Items.Count; i++)
-                {
-                    if (view.GetItemChecked(i))
-                    {
-                        selectedItems.Add(collection.ElementAt(i));
-                    }
-                }
-                return selectedItems;
-            });
+            var dialog = new ApeFormsDialog<IEnumerable<T>>(settings);
             dialog.ContentView = view;
 
             settings.ConfirmOption.OptionSelectedCallback = (s, e) =>
             {
-                dialog.ExtractResultFromView();
+                var items = view.CheckedItems.Cast<object>().Select(str => view.Items.IndexOf(str)).Select(i => collection.ElementAt(i));
+                dialog.Result.UpdateResultData(items);
                 if (dialog.PerformPrecheck())
                 {
                     e.Dialog.Dismiss(false);
