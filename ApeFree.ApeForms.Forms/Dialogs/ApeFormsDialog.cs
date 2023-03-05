@@ -14,7 +14,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         public override string Title { get => InnerDialog.Text; set => InnerDialog.Text = value; }
         public override string Content { get => InnerDialog.Content; set => InnerDialog.Content = value; }
 
-        public ApeFormsDialog(DialogSettings<TResult> settings, Func<Control, TResult> extractResultFromViewHandler = null) : base(settings)
+        public ApeFormsDialog(DialogSettings<TResult> settings) : base(settings)
         {
             InnerDialog = new DialogForm();
 
@@ -28,7 +28,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 AddOption(item);
             }
 
-            ExtractResultFromViewHandler = extractResultFromViewHandler;
         }
 
         protected override void DismissHandler()
