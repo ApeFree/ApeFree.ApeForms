@@ -20,7 +20,7 @@ namespace ApeFree.ApeForms.Core.Controls
         public int BorderSize { get => FlatAppearance.BorderSize; set => FlatAppearance.BorderSize = value; }
         public Color BorderColor { get => FlatAppearance.BorderColor; set => FlatAppearance.BorderColor = value; }
 
-        public new Color BackColor
+        public override Color BackColor
         {
             get => normalBackColor;
             set
