@@ -170,13 +170,9 @@ namespace ApeFree.ApeForms.Forms.Notifications
             timerDisappear.Enabled = false;
             timerDisappear.Dispose();
 
-            this.GraduallyClose(0.05).ContinueWith(t =>
+            this.GraduallyClose(0.05, f =>
             {
-                this.Invoke(() =>
-                {
-                    NotifyForms.Remove(this);
-                    Dispose();
-                });
+                NotifyForms.Remove(this);
             });
         }
 

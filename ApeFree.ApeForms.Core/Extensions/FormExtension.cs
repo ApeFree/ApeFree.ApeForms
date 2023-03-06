@@ -16,8 +16,9 @@ namespace System.Windows.Forms
         /// <param name="form"></param>
         /// <param name="stepSize">步长</param>
         /// <param name="targetOpacityValue">目标值</param>
+        /// <param name="finishCallback">完成回调</param>
         /// <returns></returns>
-        public static Task GraduallyShow(this Form form, double stepSize = 0.1, double targetOpacityValue = 1)
+        public static void GraduallyShow<T>(this T form, double stepSize = 0.1, double targetOpacityValue = 1, Action<T> finishCallback = null) where T : Form
         {
             form.Opacity = 0;
 
@@ -29,48 +30,10 @@ namespace System.Windows.Forms
             }
             else
             {
-            form.Show();
+                form.Show();
             }
 
-            return Task.Run(() =>
-            {
-                AutoResetEvent evt = new AutoResetEvent(false);
-
-                bool hasError = false;
-
-                Timers.Timer timer = new Timers.Timer(10);
-                timer.Elapsed += (s, e) =>
-                {
-                    timer.Stop();
-
-                    double value = form.Opacity + stepSize;
-
-                    try
-                    {
-                        form.Invoke(() =>
-                        {
-                            form.Opacity = value > targetOpacityValue ? targetOpacityValue : value;
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        hasError = true;
-                    }
-
-                    if (form.Opacity == targetOpacityValue || hasError)
-                    {
-                        timer.Dispose();
-                        evt.Set();
-                    }
-                    else
-                    {
-                        timer.Start();
-                    }
-                };
-                timer.Start();
-
-                evt.WaitOne();
-            });
+            form.OpacityGradualChange(targetOpacityValue, (byte)(255 * stepSize), finishCallback);
         }
 
         /// <summary>
@@ -78,47 +41,13 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="form"></param>
         /// <param name="stepSize">步长</param>
+        /// <param name="finishCallback"></param>
         /// <returns></returns>
-        public static Task GraduallyClose(this Form form, double stepSize = 0.1)
+        public static void GraduallyClose<T>(this T form, double stepSize = 0.1, Action<T> finishCallback = null) where T : Form
         {
-            var task = Task.Run(() =>
+            form.OpacityGradualChange(0, (byte)(255 * stepSize), f =>
             {
-                AutoResetEvent evt = new AutoResetEvent(false);
-
-                bool hasError = false;
-
-                Timers.Timer timer = new Timers.Timer(10);
-                timer.Elapsed += (s, e) =>
-                {
-                    timer.Stop();
-
-                    double value = form.Opacity - stepSize;
-
-                    try
-                    {
-                        form.Invoke(() =>
-                        {
-                            form.Opacity = value < 0 ? 0 : value;
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        hasError = true;
-                    }
-
-                    if (form.Opacity == 0 || hasError)
-                    {
-                        timer.Dispose();
-                        evt.Set();
-                    }
-                    else
-                    {
-                        timer.Start();
-                    }
-                };
-                timer.Start();
-
-                evt.WaitOne();
+                finishCallback?.Invoke(f);
 
                 // Close方法可能存在重写
                 form.Invoke(() =>
@@ -134,7 +63,6 @@ namespace System.Windows.Forms
                     }
                 });
             });
-            return task;
         }
 
         /// <summary>
