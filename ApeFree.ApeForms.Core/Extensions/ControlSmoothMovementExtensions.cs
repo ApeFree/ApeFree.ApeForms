@@ -1,6 +1,8 @@
 ﻿using ApeFree.ApeForms.Core.Utils;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace System.Windows.Forms
 {
@@ -8,9 +10,9 @@ namespace System.Windows.Forms
     {
         private const int MINIMUM_SPEED = 5;
 
-        public static void SizeGradualChange(this Control control, Size targetSize, byte rate = 5)
+        public static void SizeGradualChange<T>(this T control, Size targetSize, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
-            SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control, () =>
+            SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
             {
                 control.ModifyInUI(() =>
                 {
@@ -20,14 +22,14 @@ namespace System.Windows.Forms
             }, () =>
             {
                 return (control.Width == targetSize.Width) && (control.Height == targetSize.Height);
-            }));
+            }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
         }
 
-        public static void LocationGradualChange(this Control control, Point targetPoint, byte rate = 5)
+        public static void LocationGradualChange<T>(this T control, Point targetPoint, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
             lock (control)
             {
-                SmoothMovementTaskManager.Manager.AddTask(new SmoothMovementTaskManager.TimerTask(control,
+                SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.LocationGradualChange,
                     () =>
                     {
                         control.ModifyInUI(() =>
@@ -40,24 +42,49 @@ namespace System.Windows.Forms
                     () =>
                     {
                         return (control.Left == targetPoint.X) && (control.Top == targetPoint.Y);
-                    }));
+                    }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
+            }
+        }
+
+        public static void OpacityGradualChange<T>(this T form, double targetOpacity, byte rate = 50, Action<T> finishCallback = null) where T : Form
+        {
+            lock (form)
+            {
+                SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(form, TimedTaskTag.OpacityGradualChange,
+                    () =>
+                    {
+                        form.ModifyInUI(() =>
+                        {
+                            var no = Gradual((int)(form.Opacity * 100), (int)(targetOpacity * 100), rate);
+                            form.Opacity = no / 100.0;
+                        });
+                    },
+                    () =>
+                    {
+                        return form.Opacity == targetOpacity;
+                    }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
             }
         }
 
         private static int Gradual(int currentValue, int targetValue, byte rate)
         {
             if (Math.Abs(targetValue - currentValue) <= MINIMUM_SPEED)
+            {
                 return targetValue;
+            }
+
             var speed = (currentValue - targetValue) / rate;
+
             if (Math.Abs(speed) <= MINIMUM_SPEED)
             {
                 speed = currentValue < targetValue ? -MINIMUM_SPEED : MINIMUM_SPEED;
             }
+
             return currentValue - speed;
         }
     }
 
-    public class SmoothMovementTaskManager
+    internal class SmoothMovementTaskManager
     {
         private static readonly Lazy<SmoothMovementTaskManager> manager = new Lazy<SmoothMovementTaskManager>(() => new SmoothMovementTaskManager());
         public static SmoothMovementTaskManager Manager { get { return manager.Value; } }
@@ -66,71 +93,105 @@ namespace System.Windows.Forms
 
         private readonly object _lockerTaskListItemsChange = new object();
 
-        private readonly EventableList<TimerTask> tasks;
+        private readonly EventableList<TimedTaskItem> TaskItems;
 
         private SmoothMovementTaskManager()
         {
             timer = new Timer() { Interval = 10 };
             timer.Tick += Timer_Tick;
 
-            tasks = new EventableList<TimerTask>();
-            tasks.ItemAdded += Tasks_ItemAdded;
-            tasks.ItemRemoved += Tasks_ItemRemoved;
+            TaskItems = new EventableList<TimedTaskItem>();
+            TaskItems.ItemAdded += (s, e) =>
+            {
+                timer.Enabled = TaskItems.Any();
+                LOG();
+            };
+            TaskItems.ItemRemoved += (s, e) =>
+            {
+                timer.Enabled = true;
+                LOG();
+            };
         }
 
-        private void Tasks_ItemRemoved(object sender, ListItemsChangedEventArgs<TimerTask> e) => timer.Enabled = tasks.Any();
-        private void Tasks_ItemAdded(object sender, ListItemsChangedEventArgs<TimerTask> e) => timer.Enabled = true;
+        private void LOG()
+        {
+            Debug.WriteLine(TaskItems.Select(i=>((Control)i.Context).Text).Join(", "));
+        }
 
-        public void AddTask(TimerTask task)
+        public void AddTask(TimedTaskItem item)
         {
             lock (_lockerTaskListItemsChange)
             {
-                var t = tasks.FirstOrDefault(i => i.Id == task.Id);
+                var t = TaskItems.FirstOrDefault(i => i.Context == item.Context && i.Tag == item.Tag);
                 if (t == null)
                 {
-
-                    tasks.Add(task);
+                    TaskItems.Add(item);
                 }
                 else
                 {
-                    t.Run = task.Run;
-                    t.IsFinish = task.IsFinish;
+                    t.StepAction = item.StepAction;
+                    t.CheckFinishCallback = item.CheckFinishCallback;
+                    t.FinishCallback = item.FinishCallback;
                 }
             }
         }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             lock (_lockerTaskListItemsChange)
             {
-                for (int i = 0; i < tasks.Count; i++)
+                for (int i = 0; i < TaskItems.Count; i++)
                 {
-                    var task = tasks[i];
-                    lock (task)
+                    var item = TaskItems[i];
+                    lock (item)
                     {
-                        if (task.IsFinish())
+                        if (item.CheckFinishCallback())
                         {
-                            tasks.RemoveAt(i--);
+                            TaskItems.RemoveAt(i--);
+                            if (item.FinishCallback != null)
+                            {
+                                item.InvokeFinishCallback();
+                                // Task.Run(item.InvokeFinishCallback);
+                            }
                         }
                         else
                         {
-                            task.Run();
+                            item.StepAction();
+                            // Task.Run(item.StepAction);
                         }
                     }
                 }
             }
         }
+    }
 
-        public class TimerTask
+    /// <summary>
+    /// 定时任务项
+    /// </summary>
+    internal class TimedTaskItem
+    {
+        public object Context { get; }
+        public TimedTaskTag Tag { get; }
+        public Action StepAction { get; set; }
+        public Func<bool> CheckFinishCallback { get; set; }
+        public Action<object> FinishCallback { get; set; }
+
+        public TimedTaskItem(object context, TimedTaskTag tag, Action stepAction, Func<bool> isFinish, Action<object> finishCallback = null)
         {
-            public object Id { get; }
-            public Action Run { get; set; }
-            public Func<bool> IsFinish { get; set; }
-            public TimerTask(object id, Action run, Func<bool> isFinish)
-            {
-                Id = id;
-                Run = run;
-                IsFinish = isFinish;
-            }
+            Context = context;
+            Tag = tag;
+            StepAction = stepAction;
+            CheckFinishCallback = isFinish;
+            FinishCallback = finishCallback;
         }
+
+        public void InvokeFinishCallback() => FinishCallback?.Invoke(Context);
+    }
+
+    internal enum TimedTaskTag
+    {
+        SizeGradualChange,
+        LocationGradualChange,
+        OpacityGradualChange,
     }
 }
