@@ -50,18 +50,15 @@ namespace System.Windows.Forms
                 finishCallback?.Invoke(f);
 
                 // Close方法可能存在重写
-                form.Invoke(() =>
+                var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Close" && !m.GetParameters().Any());
+                if (mi != null)
                 {
-                    var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Close" && !m.GetParameters().Any());
-                    if (mi != null)
-                    {
-                        mi.Invoke(form, null);
-                    }
-                    else
-                    {
-                        form.Close();
-                    }
-                });
+                    mi.Invoke(form, null);
+                }
+                else
+                {
+                    form.Close();
+                }
             });
         }
 
