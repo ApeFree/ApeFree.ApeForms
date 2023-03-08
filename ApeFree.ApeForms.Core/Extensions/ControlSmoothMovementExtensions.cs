@@ -14,11 +14,8 @@ namespace System.Windows.Forms
         {
             SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
             {
-                control.ModifyInUI(() =>
-                {
-                    control.Width = Gradual(control.Width, targetSize.Width, rate);
-                    control.Height = Gradual(control.Height, targetSize.Height, rate);
-                });
+                control.Width = Gradual(control.Width, targetSize.Width, rate);
+                control.Height = Gradual(control.Height, targetSize.Height, rate);
             }, () =>
             {
                 return (control.Width == targetSize.Width) && (control.Height == targetSize.Height);
@@ -32,12 +29,9 @@ namespace System.Windows.Forms
                 SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.LocationGradualChange,
                     () =>
                     {
-                        control.ModifyInUI(() =>
-                        {
-                            var left = Gradual(control.Left, targetPoint.X, rate);
-                            var top = Gradual(control.Top, targetPoint.Y, rate);
-                            control.Location = new Point(left, top);
-                        });
+                        var left = Gradual(control.Left, targetPoint.X, rate);
+                        var top = Gradual(control.Top, targetPoint.Y, rate);
+                        control.Location = new Point(left, top);
                     },
                     () =>
                     {
@@ -53,11 +47,8 @@ namespace System.Windows.Forms
                 SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(form, TimedTaskTag.OpacityGradualChange,
                     () =>
                     {
-                        form.ModifyInUI(() =>
-                        {
-                            var no = Gradual((int)(form.Opacity * 100), (int)(targetOpacity * 100), rate);
-                            form.Opacity = no / 100.0;
-                        });
+                        var no = Gradual((int)(form.Opacity * 100), (int)(targetOpacity * 100), rate);
+                        form.Opacity = no / 100.0;
                     },
                     () =>
                     {
@@ -104,18 +95,11 @@ namespace System.Windows.Forms
             TaskItems.ItemAdded += (s, e) =>
             {
                 timer.Enabled = TaskItems.Any();
-                LOG();
             };
             TaskItems.ItemRemoved += (s, e) =>
             {
                 timer.Enabled = true;
-                LOG();
             };
-        }
-
-        private void LOG()
-        {
-            Debug.WriteLine(TaskItems.Select(i=>((Control)i.Context).Text).Join(", "));
         }
 
         public void AddTask(TimedTaskItem item)
