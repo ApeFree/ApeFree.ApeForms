@@ -12,7 +12,7 @@ namespace System.Windows.Forms
 
         public static void SizeGradualChange<T>(this T control, Size targetSize, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
-            SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
+            SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
             {
                 control.ModifyInUI(() =>
                 {
@@ -29,7 +29,7 @@ namespace System.Windows.Forms
         {
             lock (control)
             {
-                SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.LocationGradualChange,
+                SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.LocationGradualChange,
                     () =>
                     {
                         control.ModifyInUI(() =>
@@ -50,7 +50,7 @@ namespace System.Windows.Forms
         {
             lock (form)
             {
-                SmoothMovementTaskManager.Manager.AddTask(new TimedTaskItem(form, TimedTaskTag.OpacityGradualChange,
+                SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(form, TimedTaskTag.OpacityGradualChange,
                     () =>
                     {
                         form.ModifyInUI(() =>
@@ -84,10 +84,10 @@ namespace System.Windows.Forms
         }
     }
 
-    internal class SmoothMovementTaskManager
+    internal class SharedTimedTaskManager
     {
-        private static readonly Lazy<SmoothMovementTaskManager> manager = new Lazy<SmoothMovementTaskManager>(() => new SmoothMovementTaskManager());
-        public static SmoothMovementTaskManager Manager { get { return manager.Value; } }
+        private static readonly Lazy<SharedTimedTaskManager> manager = new Lazy<SharedTimedTaskManager>(() => new SharedTimedTaskManager());
+        public static SharedTimedTaskManager Manager { get { return manager.Value; } }
 
         private readonly Timer timer;
 
@@ -95,7 +95,7 @@ namespace System.Windows.Forms
 
         private readonly EventableList<TimedTaskItem> TaskItems;
 
-        private SmoothMovementTaskManager()
+        private SharedTimedTaskManager()
         {
             timer = new Timer() { Interval = 10 };
             timer.Tick += Timer_Tick;
