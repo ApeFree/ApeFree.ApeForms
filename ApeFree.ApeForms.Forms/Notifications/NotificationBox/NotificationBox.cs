@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -22,6 +23,9 @@ namespace ApeFree.ApeForms.Forms.Notifications
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
 
+        /// <summary>
+        /// 自动消失时间间隔
+        /// </summary>
         public int DisappearInterval { get; set; } = 5000;
 
         internal bool IsDisappear { get; set; } = false;
@@ -141,14 +145,14 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             try
             {
-                ShowWindow(new HandleRef(this, this.Handle), 4);
+                ShowWindow(new HandleRef(null, this.Handle), 4);
                 // this.DropShadow();
                 timerDisappear.Interval = DisappearInterval;
                 timerDisappear.Enabled = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                //Debug.WriteLine(ex);
             }
         }
 
@@ -170,9 +174,10 @@ namespace ApeFree.ApeForms.Forms.Notifications
             timerDisappear.Enabled = false;
             timerDisappear.Dispose();
 
-            this.GraduallyClose(0.05, f =>
+            this.GraduallyClose(0.05, box =>
             {
-                NotifyForms.Remove(this);
+                NotifyForms.Remove(box);
+                box.Dispose();
             });
         }
 
