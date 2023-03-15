@@ -14,7 +14,7 @@
 		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.10.4</Version>
+		<Version>0.10.5</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
