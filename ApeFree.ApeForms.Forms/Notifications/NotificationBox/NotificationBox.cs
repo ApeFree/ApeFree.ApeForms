@@ -115,6 +115,17 @@ namespace ApeFree.ApeForms.Forms.Notifications
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            foreach (var ctrl in this.GetChildControls(true))
+            {
+                ctrl.MouseLeave += NotificationBox_MouseLeave;
+                ctrl.MouseEnter += NotificationBox_MouseEnter;
+            }
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
@@ -328,6 +339,22 @@ namespace ApeFree.ApeForms.Forms.Notifications
         private void btnClose_Click(object sender, EventArgs e)
         {
             Disappear();
+        }
+
+        private void NotificationBox_MouseEnter(object sender, EventArgs e)
+        {
+            MousePositionChanged();
+        }
+
+        private void NotificationBox_MouseLeave(object sender, EventArgs e)
+        {
+            MousePositionChanged();
+    }
+
+        private void MousePositionChanged()
+        {
+            var rect = new Rectangle(Location, Size);
+            timerDisappear.Enabled = !rect.Contains(MousePosition);
         }
     }
 

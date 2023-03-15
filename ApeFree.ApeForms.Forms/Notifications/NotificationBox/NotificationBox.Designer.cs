@@ -121,6 +121,8 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.TopMost = true;
+            this.MouseEnter += new System.EventHandler(this.NotificationBox_MouseEnter);
+            this.MouseLeave += new System.EventHandler(this.NotificationBox_MouseLeave);
             this.ResumeLayout(false);
             this.PerformLayout();
 
