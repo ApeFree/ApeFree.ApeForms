@@ -28,9 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1">
-			<AllowExplicitVersion>true</AllowExplicitVersion>
-		</PackageReference>
 		<PackageReference Include="STTech.CodePlus" Version="1.5.14" />
 	</ItemGroup>
 
