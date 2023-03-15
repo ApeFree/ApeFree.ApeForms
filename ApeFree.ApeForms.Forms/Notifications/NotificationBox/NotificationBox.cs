@@ -20,9 +20,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// <returns></returns>
         public delegate void OptionClickEventHandler(object sender, OptionClickEventArgs e);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
-
         /// <summary>
         /// 自动消失时间间隔
         /// </summary>
@@ -145,7 +142,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             try
             {
-                ShowWindow(new HandleRef(null, this.Handle), 4);
+                this.ShowWindow(ShowWindowMode.ShowNoactivate);
                 // this.DropShadow();
                 timerDisappear.Interval = DisappearInterval;
                 timerDisappear.Enabled = true;
