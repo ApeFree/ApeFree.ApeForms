@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,39 +68,39 @@ namespace System.Windows.Forms
         /// 用Json数组为DataGridView填充数据
         /// </summary>
         /// <param name="jarr">JArray格式数据</param>
-        public static void LoadDataFromJArray(this DataGridView dgv, JArray jarr)
-        {
-            // 检查数据是否为空
-            if (jarr == null || jarr.Count == 0) return;
+        //public static void LoadDataFromJArray(this DataGridView dgv, JArray jarr)
+        //{
+        //    // 检查数据是否为空
+        //    if (jarr == null || jarr.Count == 0) return;
 
-            // 清空
-            dgv.Columns.Clear();
+        //    // 清空
+        //    dgv.Columns.Clear();
 
-            // 获取模板数据
-            JObject jobj = jarr[0].ToObject<JObject>();
+        //    // 获取模板数据
+        //    JObject jobj = jarr[0].ToObject<JObject>();
 
-            // 创建列
-            List<DataGridViewColumn> cols = new List<DataGridViewColumn>();
+        //    // 创建列
+        //    List<DataGridViewColumn> cols = new List<DataGridViewColumn>();
 
-            // 根据模板数据添加列
-            foreach (var kv in jobj)
-            {
-                cols.Add(new DataGridViewTextBoxColumn() { HeaderText = kv.Key });
-            }
-            dgv.Columns.AddRange(cols.ToArray());
+        //    // 根据模板数据添加列
+        //    foreach (var kv in jobj)
+        //    {
+        //        cols.Add(new DataGridViewTextBoxColumn() { HeaderText = kv.Key });
+        //    }
+        //    dgv.Columns.AddRange(cols.ToArray());
 
-            // 添加行
-            foreach (var jtkn in jarr)
-            {
-                JObject obj = jtkn.ToObject<JObject>();
-                List<object> values = new List<object>();
-                foreach (var kv in obj)
-                {
-                    values.Add(kv.Value);
-                }
-                dgv.Rows.Add(values.ToArray());
-            }
-        }
+        //    // 添加行
+        //    foreach (var jtkn in jarr)
+        //    {
+        //        JObject obj = jtkn.ToObject<JObject>();
+        //        List<object> values = new List<object>();
+        //        foreach (var kv in obj)
+        //        {
+        //            values.Add(kv.Value);
+        //        }
+        //        dgv.Rows.Add(values.ToArray());
+        //    }
+        //}
 
         /// <summary>
         /// 显示行号
