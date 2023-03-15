@@ -36,6 +36,9 @@ namespace ApeFree.ApeForms.Core.Controls
         [Description("翻页时移动的速率，当Rate = 1时，无翻页动画效果，Rate值越大翻页越慢")]
         public int Rate { get => slideBox.Rate; set => slideBox.Rate = value; }
 
+        public string ClosePageOptionText { get => tsmiClose.Text; set => tsmiClose.Text = value; }
+        public string CloseAllPagesOptionText { get => tsmiCloseAll.Text; set => tsmiCloseAll.Text = value; }
+
         public int CurrentIndex { get; private set; }
 
         public ToolStripItem AddPage(string title, Control content, Image icon = null)
@@ -154,13 +157,18 @@ namespace ApeFree.ApeForms.Core.Controls
             }
         }
 
-        public void RemovePage(int index)
+        public Control RemovePage(int index)
         {
+            Control content = null;
             if (index < Pages.Count)
             {
-                tsTitle.Items.RemoveAt(index);
+                var tsi = tsTitle.Items.Cast<ToolStripItem>().ElementAt(index);
+                content = Pages[tsi];
+                tsTitle.Items.Remove(tsi);
+                // tsTitle.Items.RemoveAt(index);
                 Jump(CurrentIndex);
             }
+            return content;
         }
 
         private void TsTitle_ItemAdded(object sender, ToolStripItemEventArgs e)
@@ -198,9 +206,6 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 ActiveContextMenuTitleItem = (ToolStripItem)sender;
 
-                // cmsTitleItem.Items[0].Text = ActiveContextMenuTitleItem.Text;
-
-                tsmiClose.Text = $"Close {ActiveContextMenuTitleItem.Text}";
                 tsmiClose.Image = ActiveContextMenuTitleItem.Image;
 
                 Point mousePoint = Control.MousePosition;
@@ -293,12 +298,16 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private void tsmiClose_Click(object sender, EventArgs e)
         {
-            RemovePage(tsTitle.Items.IndexOf(ActiveContextMenuTitleItem));
+            RemovePage(tsTitle.Items.IndexOf(ActiveContextMenuTitleItem)).Dispose();
         }
 
         private void tsmiCloseAll_Click(object sender, EventArgs e)
         {
-            tsTitle.Items.Clear();
+            while (tsTitle.Items.Count > 0)
+            {
+                tsTitle.Items[0].Dispose();
+            }
+            // tsTitle.Items.Clear();
             Pages.Clear();
         }
 
@@ -310,6 +319,11 @@ namespace ApeFree.ApeForms.Core.Controls
         private void tsmiNextPage_Click(object sender, EventArgs e)
         {
             NextPage();
+        }
+
+        private void SlideTabControl_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

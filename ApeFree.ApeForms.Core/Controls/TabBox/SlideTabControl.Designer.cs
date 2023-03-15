@@ -49,7 +49,7 @@ namespace ApeFree.ApeForms.Core.Controls
             this.tsTitle.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsTitle.Location = new System.Drawing.Point(0, 0);
             this.tsTitle.Name = "tsTitle";
-            this.tsTitle.Size = new System.Drawing.Size(456, 25);
+            this.tsTitle.Size = new System.Drawing.Size(532, 25);
             this.tsTitle.TabIndex = 0;
             this.tsTitle.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.TsTitle_ItemAdded);
             this.tsTitle.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.TsTitle_ItemClicked);
@@ -61,19 +61,19 @@ namespace ApeFree.ApeForms.Core.Controls
             this.tsmiClose,
             this.tsmiCloseAll});
             this.cmsTitleItem.Name = "cmsTitleItem";
-            this.cmsTitleItem.Size = new System.Drawing.Size(181, 70);
+            this.cmsTitleItem.Size = new System.Drawing.Size(126, 48);
             // 
             // tsmiClose
             // 
             this.tsmiClose.Name = "tsmiClose";
-            this.tsmiClose.Size = new System.Drawing.Size(180, 22);
+            this.tsmiClose.Size = new System.Drawing.Size(125, 22);
             this.tsmiClose.Text = "Close";
             this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
             // 
             // tsmiCloseAll
             // 
             this.tsmiCloseAll.Name = "tsmiCloseAll";
-            this.tsmiCloseAll.Size = new System.Drawing.Size(180, 22);
+            this.tsmiCloseAll.Size = new System.Drawing.Size(125, 22);
             this.tsmiCloseAll.Text = "Close all";
             this.tsmiCloseAll.Click += new System.EventHandler(this.tsmiCloseAll_Click);
             // 
@@ -107,17 +107,19 @@ namespace ApeFree.ApeForms.Core.Controls
             this.slideBox.Name = "slideBox";
             this.slideBox.Rate = 1;
             this.slideBox.ReviseValue = 5;
-            this.slideBox.Size = new System.Drawing.Size(456, 247);
+            this.slideBox.Size = new System.Drawing.Size(532, 360);
             this.slideBox.TabIndex = 1;
             // 
             // SlideTabControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.slideBox);
             this.Controls.Add(this.tsTitle);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "SlideTabControl";
-            this.Size = new System.Drawing.Size(456, 272);
+            this.Size = new System.Drawing.Size(532, 385);
+            this.Load += new System.EventHandler(this.SlideTabControl_Load);
             this.cmsTitleItem.ResumeLayout(false);
             this.cmsTitle.ResumeLayout(false);
             this.ResumeLayout(false);

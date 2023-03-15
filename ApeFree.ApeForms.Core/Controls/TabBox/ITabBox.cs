@@ -21,8 +21,8 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <param name="icon">图标</param>
         T AddPage(string title, Control content, Image icon = null);
         Control RemovePage(string title);
+        Control RemovePage(int index);
         void RemovePage(Control content);
-        void RemovePage(int index);
 
         void Jump(string title);
         void Jump(Control content);
