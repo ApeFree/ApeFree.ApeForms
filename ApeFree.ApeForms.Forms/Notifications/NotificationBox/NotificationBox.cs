@@ -155,6 +155,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
             {
                 this.ShowWindow(ShowWindowMode.ShowNoactivate);
                 // this.DropShadow();
+
+                var args = new EventArgs();
+                OnLoad(args);
+                OnShown(args);
+
                 timerDisappear.Interval = DisappearInterval;
                 timerDisappear.Enabled = true;
             }
@@ -349,7 +354,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         private void NotificationBox_MouseLeave(object sender, EventArgs e)
         {
             MousePositionChanged();
-    }
+        }
 
         private void MousePositionChanged()
         {
@@ -363,7 +368,14 @@ namespace ApeFree.ApeForms.Forms.Notifications
     /// </summary>
     public enum NotifyOrientation
     {
+        /// <summary>
+        /// 队列模式
+        /// </summary>
         Queue,
+
+        /// <summary>
+        /// 栈模式
+        /// </summary>
         Stack,
     }
 
@@ -372,7 +384,14 @@ namespace ApeFree.ApeForms.Forms.Notifications
     /// </summary>
     public enum NotifyPrimeDirection
     {
+        /// <summary>
+        /// 自顶部开始
+        /// </summary>
         Top,
+
+        /// <summary>
+        /// 自底部开始
+        /// </summary>
         Bottom,
     }
 
