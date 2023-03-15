@@ -91,6 +91,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 tf.Show();
                 tf.FormClosed += (s, e) =>
                 {
+                    CurrentToastForm.Dispose();
                     CurrentToastForm = null;
                     ShowNextMsg();
                 };

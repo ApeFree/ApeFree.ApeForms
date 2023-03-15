@@ -15,7 +15,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         [Browsable(false)]
         public int Delay { get => timerWait.Interval; set { timerHide.Enabled = false; Opacity = 1; timerWait.Enabled = false; timerWait.Interval = value; timerWait.Enabled = true; } }
 
-        public ToastForm(string content, int delay = 2000)
+        internal ToastForm(string content, int delay = 2000)
         {
             InitializeComponent();
 
@@ -23,7 +23,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             var g = this.CreateGraphics();
             var strSize = g.MeasureString(content, Font);
-            this.Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
+            Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
             g.Dispose();
             Reposition();
 
@@ -131,6 +131,8 @@ namespace ApeFree.ApeForms.Forms.Notifications
             }
             else
             {
+                timerHide.Stop();
+                timerHide.Dispose();
                 Close();
             }
         }
