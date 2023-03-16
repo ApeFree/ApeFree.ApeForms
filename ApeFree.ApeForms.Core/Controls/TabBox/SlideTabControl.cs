@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ApeFree.ApeForms.Core.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ApeFree.ApeForms.Core.Controls
 {
@@ -20,7 +21,16 @@ namespace ApeFree.ApeForms.Core.Controls
             InitializeComponent();
         }
 
-        public event ITabBox<ToolStripItem>.PageChangedEventHandler PageChanged;
+        /// <summary>
+        /// 页面切换时触发此事件
+        /// </summary>
+        public event EventHandler<PageChangedEventArgs> PageChanged;
+
+        /// <summary>
+        /// 页面移除时触发此事件
+        /// </summary>
+        public event EventHandler<PageRemovedEventArgs> PageRemoved;
+
 
         public Dictionary<ToolStripItem, Control> Pages = new Dictionary<ToolStripItem, Control>();
 
@@ -138,6 +148,9 @@ namespace ApeFree.ApeForms.Core.Controls
                 {
                     Control control = Pages[item];
                     tsTitle.Items.Remove(item);
+
+                    PageRemoved?.Invoke(this, new PageRemovedEventArgs(control));
+
                     return control;
                 }
             }
@@ -155,6 +168,11 @@ namespace ApeFree.ApeForms.Core.Controls
                     return;
                 }
             }
+
+            if (content != null)
+            {
+                PageRemoved?.Invoke(this, new PageRemovedEventArgs(content));
+            }
         }
 
         public Control RemovePage(int index)
@@ -168,6 +186,12 @@ namespace ApeFree.ApeForms.Core.Controls
                 // tsTitle.Items.RemoveAt(index);
                 Jump(CurrentIndex);
             }
+
+            if (content != null)
+            {
+                PageRemoved?.Invoke(this, new PageRemovedEventArgs(content));
+            }
+
             return content;
         }
 
@@ -196,6 +220,9 @@ namespace ApeFree.ApeForms.Core.Controls
         }
 
         ToolStripItem ActiveContextMenuTitleItem;
+
+
+
         private void Item_MouseDown(object sender, MouseEventArgs e)
         {
             // 当无页面的时候不做处理
@@ -298,16 +325,23 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private void tsmiClose_Click(object sender, EventArgs e)
         {
-            RemovePage(tsTitle.Items.IndexOf(ActiveContextMenuTitleItem)).Dispose();
+            RemovePage(tsTitle.Items.IndexOf(ActiveContextMenuTitleItem));
         }
 
         private void tsmiCloseAll_Click(object sender, EventArgs e)
         {
-            while (tsTitle.Items.Count > 0)
+            var controls = Pages.Values.Cast<Control>();
+
+            foreach (Control control in controls)
             {
-                tsTitle.Items[0].Dispose();
+                if (control != null)
+                {
+                    RemovePage(control);
+                    PageRemoved?.Invoke(this, new PageRemovedEventArgs(control));
+                }
             }
-            // tsTitle.Items.Clear();
+
+            tsTitle.Items.Clear();
             Pages.Clear();
         }
 
@@ -319,11 +353,6 @@ namespace ApeFree.ApeForms.Core.Controls
         private void tsmiNextPage_Click(object sender, EventArgs e)
         {
             NextPage();
-        }
-
-        private void SlideTabControl_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

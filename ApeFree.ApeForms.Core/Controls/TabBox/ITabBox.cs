@@ -10,8 +10,8 @@ namespace ApeFree.ApeForms.Core.Controls
 {
     public interface ITabBox<T>
     {
-        public delegate void PageChangedEventHandler(object sender, PageChangedEventArgs e);
-        public event PageChangedEventHandler PageChanged;
+        public event EventHandler<PageChangedEventArgs> PageChanged;
+        public event EventHandler<PageRemovedEventArgs> PageRemoved;
 
         /// <summary>
         /// 添加新的页面
@@ -44,5 +44,15 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             PageIndex = pageIndex;
         }
+    }
+
+    public class PageRemovedEventArgs : EventArgs
+    {
+        public PageRemovedEventArgs(Control page)
+        {
+            PageControl = page;
+        }
+
+        public Control PageControl { get; }
     }
 }

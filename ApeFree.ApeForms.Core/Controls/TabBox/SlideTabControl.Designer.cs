@@ -119,7 +119,6 @@ namespace ApeFree.ApeForms.Core.Controls
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "SlideTabControl";
             this.Size = new System.Drawing.Size(532, 385);
-            this.Load += new System.EventHandler(this.SlideTabControl_Load);
             this.cmsTitleItem.ResumeLayout(false);
             this.cmsTitle.ResumeLayout(false);
             this.ResumeLayout(false);
