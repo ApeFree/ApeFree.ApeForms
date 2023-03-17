@@ -47,7 +47,6 @@ namespace System.Windows.Forms
         {
             form.OpacityGradualChange(0, (byte)(255 * stepSize), f =>
             {
-                finishCallback?.Invoke(f);
 
                 // Close方法可能存在重写
                 var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Close" && !m.GetParameters().Any());
@@ -59,6 +58,9 @@ namespace System.Windows.Forms
                 {
                     form.Close();
                 }
+
+                finishCallback?.Invoke(f);
+
             });
         }
 
