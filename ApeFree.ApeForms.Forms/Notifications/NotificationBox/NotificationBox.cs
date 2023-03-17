@@ -10,16 +10,8 @@ using ApeFree.ApeForms.Core.Utils;
 
 namespace ApeFree.ApeForms.Forms.Notifications
 {
-    public partial class NotificationBox : Form, INotification
+    public partial class NotificationBox : Form, INotificationBox
     {
-        /// <summary>
-        /// 选项单击事件委托
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public delegate void OptionClickEventHandler(object sender, OptionClickEventArgs e);
-
         /// <summary>
         /// 自动消失时间间隔
         /// </summary>
@@ -30,7 +22,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// <summary>
         /// 内容控件
         /// </summary>
-        public Control ContentView { get; }
+        public Control MainView { get; }
 
         /// <summary>
         /// 备用控件
@@ -42,7 +34,8 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// </summary>
         public Color ReminderColor
         {
-            get => reminderColor; set
+            get => reminderColor;
+            set
             {
                 reminderColor = value;
                 // 关闭按钮前景色
@@ -50,26 +43,27 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 Refresh();
             }
         }
+        private Color reminderColor;
 
         private NotificationBox()
         {
             InitializeComponent();
-            Size = DefaultFormsSize;
+            Size = Notification.DefaultFormsSize;
         }
 
-        internal NotificationBox(Control contentView, Control spareView = null)
+        internal NotificationBox(Control contentView, Control spareView = null) : this()
         {
-            InitializeComponent();
-            Size = DefaultFormsSize;
+            //InitializeComponent();
+            //Size = Notification.DefaultFormsSize;
 
-            ContentView = contentView;
+            MainView = contentView;
             SpareView = spareView;
 
-            if (ContentView != null)
+            if (MainView != null)
             {
-                ContentView.Dock = DockStyle.Fill;
-                panelMain.Controls.Add(ContentView);
-                ContentView.BringToFront();
+                MainView.Dock = DockStyle.Fill;
+                panelMain.Controls.Add(MainView);
+                MainView.BringToFront();
             }
 
             if (SpareView != null)
@@ -170,15 +164,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
         }
 
         /// <summary>
-        /// 激活窗体，重置消失倒计时
-        /// </summary>
-        public void Active()
-        {
-            timerDisappear.Enabled = false;
-            timerDisappear.Enabled = true;
-        }
-
-        /// <summary>
         /// 使窗体消失
         /// </summary>
         public void Disappear()
@@ -187,9 +172,18 @@ namespace ApeFree.ApeForms.Forms.Notifications
             timerDisappear.Enabled = false;
             timerDisappear.Dispose();
 
+            // this.LocationGradualChange(new Point(Location.X + Width * 2, Location.Y), 5);
             this.GraduallyClose(0.05, box =>
             {
                 NotifyForms.Remove(box);
+
+                MainView?.Dispose();
+                SpareView?.Dispose();
+                foreach(Control control in flpOptions.Controls)
+                {
+                    control.Dispose();
+                }
+
                 box.Dispose();
             });
         }
@@ -197,22 +191,21 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// <summary>
         /// 添加选项
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="onClick"></param>
+        /// <param name="option">选项设置</param>
         /// <returns></returns>
-        public Control AddOption(string text, OptionClickEventHandler onClick)
+        public Control AddOption(NotificationOption option)
         {
             var btn = new SimpleButton();
-            btn.Text = text;
-            btn.Size = new Size(65, 25);
-            btn.BackColor = Color.LightGray;
-            btn.ForeColor = Color.Black;
+            btn.Text = option.Text;
+            btn.Size = new Size(50, 25);
+            btn.BackColor = option.BackColor;
+            btn.ForeColor = option.ForeColor;
             btn.AutoSize = true;
             btn.TabStop = false;
             btn.Click += (s, e) =>
             {
                 var args = new OptionClickEventArgs(this, btn);
-                onClick?.Invoke(btn, args);
+                option.OptionClickHandler?.Invoke(btn, args);
 
                 if (args.IsDisappear)
                 {
@@ -233,27 +226,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
         // ==============================================================================================================================
 
         internal static readonly EventableList<NotificationBox> NotifyForms;
-        private Color reminderColor = SystemColors.Highlight;
-
-        /// <summary>
-        /// 通知栏之间的间隔距离
-        /// </summary>
-        public static int SpacingDistance { get; set; } = 10;
-
-        /// <summary>
-        /// 通知栏默认大小
-        /// </summary>
-        public static Size DefaultFormsSize { get; set; } = new Size(350, 150);
-
-        /// <summary>
-        /// 通知排列方向
-        /// </summary>
-        public static NotifyOrientation Orientation { get; set; } = NotifyOrientation.Stack;
-
-        /// <summary>
-        /// 通知起始方向
-        /// </summary>
-        public static NotifyPrimeDirection PrimeDirection { get; set; } = NotifyPrimeDirection.Bottom;
 
         static NotificationBox()
         {
@@ -263,30 +235,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
             NotifyForms.ItemInserted += NotifyForms_ItemChanged;
             NotifyForms.ItemRemoved += NotifyForms_ItemChanged;
         }
-
-        public static INotification Publish(string title, Control contentView, Control spareView = null, uint delay = 10000)
-        {
-            var form = new NotificationBox(contentView, spareView);
-            form.Text = title;
-            form.DisappearInterval = (int)delay;
-
-            NotifyForms.Add(form);
-            return form;
-        }
-
-        public static INotification Publish(string title, string content, uint delay = 10000)
-        {
-            var contentView = new Label { Text = content, AutoSize = false };
-            return Publish(title, contentView, null, delay);
-        }
-
-        public static INotification Publish(string title, string content, Image image, uint delay = 10000)
-        {
-            var contentView = new Label { Text = content, AutoSize = false };
-            var spareView = new PictureBox() { Image = image, SizeMode = PictureBoxSizeMode.Zoom };
-            return Publish(title, contentView, spareView, delay);
-        }
-
 
         private static void NotifyForms_ItemChanged(object sender, ListItemsChangedEventArgs<NotificationBox> e)
         {
@@ -308,7 +256,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 }
                 else
                 {
-                    form.GraduallyShow(0.03f, 0.9);
+                    form.GraduallyShow(0.03f, 0.7);
                     form.Location = point;
                 }
             }
@@ -321,22 +269,22 @@ namespace ApeFree.ApeForms.Forms.Notifications
             var w = screen.WorkingArea.Width;
 
             // 排列方向
-            if (Orientation == NotifyOrientation.Stack)
+            if (Notification.Orientation == NotifyOrientation.Stack)
             {
                 index = NotifyForms.Count - index - 1;
             }
 
             var top = 0;
-            if (PrimeDirection == NotifyPrimeDirection.Top)
+            if (Notification.PrimeDirection == NotifyPrimeDirection.Top)
             {
-                top = (DefaultFormsSize.Height + SpacingDistance) * index + SpacingDistance;
+                top = (Notification.DefaultFormsSize.Height + Notification.SpacingDistance) * index + Notification.SpacingDistance;
             }
-            else if (PrimeDirection == NotifyPrimeDirection.Bottom)
+            else if (Notification.PrimeDirection == NotifyPrimeDirection.Bottom)
             {
-                top = h - (DefaultFormsSize.Height + SpacingDistance) * index - DefaultFormsSize.Height;
+                top = h - (Notification.DefaultFormsSize.Height + Notification.SpacingDistance) * index - Notification.DefaultFormsSize.Height;
             }
 
-            var left = w - 5 - DefaultFormsSize.Width;
+            var left = w - 5 - Notification.DefaultFormsSize.Width;
 
             return new Point(left, top);
         }
@@ -359,7 +307,18 @@ namespace ApeFree.ApeForms.Forms.Notifications
         private void MousePositionChanged()
         {
             var rect = new Rectangle(Location, Size);
-            timerDisappear.Enabled = !rect.Contains(MousePosition);
+            var isInside = rect.Contains(MousePosition);
+
+            timerDisappear.Enabled = !isInside;
+
+            if (!IsDisappear)
+            {
+                // 使用透明度渐变效果
+                // this.OpacityGradualChange(isInside ? 1 : 0.7);
+
+                // 直接调节透明度
+                this.Opacity = isInside ? 1 : 0.7;
+            }
         }
     }
 
@@ -393,22 +352,5 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// 自底部开始
         /// </summary>
         Bottom,
-    }
-
-    /// <summary>
-    /// 选项单击事件
-    /// </summary>
-    public class OptionClickEventArgs : EventArgs
-    {
-        public OptionClickEventArgs(NotificationBox notificationBox, Control optionControl)
-        {
-            NotificationBox = notificationBox;
-            OptionControl = optionControl;
-            IsDisappear = true;
-        }
-
-        public NotificationBox NotificationBox { get; }
-        public Control OptionControl { get; }
-        public bool IsDisappear { get; set; }
     }
 }

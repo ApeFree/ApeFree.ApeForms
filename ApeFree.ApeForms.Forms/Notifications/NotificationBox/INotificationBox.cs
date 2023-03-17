@@ -8,14 +8,14 @@ using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Notifications
 {
-    public interface INotification
+    public interface INotificationBox
     {
-        Control ContentView { get; }
+        Control MainView { get; }
         Control SpareView { get; }
         Color ReminderColor { get; set; }
 
-        void Active();
-        Control AddOption(string text, NotificationBox.OptionClickEventHandler onClick);
+        Control AddOption(NotificationOption option);
+
         void Disappear();
     }
 }
