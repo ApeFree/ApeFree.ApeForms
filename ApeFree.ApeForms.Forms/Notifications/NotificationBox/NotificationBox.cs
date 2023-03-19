@@ -256,7 +256,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 }
                 else
                 {
-                    form.GraduallyShow(0.03f, 0.7);
+                    form.GraduallyShow(0.03f, Notification.UnhoveringOpacity);
                     form.Location = point;
                 }
             }
@@ -314,10 +314,10 @@ namespace ApeFree.ApeForms.Forms.Notifications
             if (!IsDisappear)
             {
                 // 使用透明度渐变效果
-                // this.OpacityGradualChange(isInside ? 1 : 0.7);
+                // this.OpacityGradualChange(isInside ? 1 : Notification.UnhoveringOpacity);
 
                 // 直接调节透明度
-                this.Opacity = isInside ? 1 : 0.7;
+                this.Opacity = isInside ? 1 : Notification.UnhoveringOpacity;
             }
         }
     }

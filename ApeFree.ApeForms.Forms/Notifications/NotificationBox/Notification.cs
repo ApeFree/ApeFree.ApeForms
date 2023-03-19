@@ -26,6 +26,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
         public static NotifyPrimeDirection PrimeDirection { get; set; } = NotifyPrimeDirection.Bottom;
 
         /// <summary>
+        /// 无鼠标悬停时的不透明度
+        /// </summary>
+        public static float UnhoveringOpacity { get; set; } = 0.75f;
+
+        /// <summary>
         /// 通知构造器
         /// </summary>
         public static NotificationBuilder Builder { get; } = new NotificationBuilder();
