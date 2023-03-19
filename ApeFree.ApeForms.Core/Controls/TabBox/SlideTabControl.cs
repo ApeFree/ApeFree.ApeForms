@@ -165,14 +165,17 @@ namespace ApeFree.ApeForms.Core.Controls
                 {
                     tsTitle.Items.Remove(kv.Key);
                     Jump(CurrentIndex);
+
+                    if (content != null)
+                    {
+                        PageRemoved?.Invoke(this, new PageRemovedEventArgs(content));
+                    }
+
                     return;
                 }
             }
 
-            if (content != null)
-            {
-                PageRemoved?.Invoke(this, new PageRemovedEventArgs(content));
-            }
+
         }
 
         public Control RemovePage(int index)
@@ -330,14 +333,13 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private void tsmiCloseAll_Click(object sender, EventArgs e)
         {
-            var controls = Pages.Values.Cast<Control>();
+            var controls = Pages.Values.Cast<Control>().ToArray();
 
             foreach (Control control in controls)
             {
                 if (control != null)
                 {
                     RemovePage(control);
-                    PageRemoved?.Invoke(this, new PageRemovedEventArgs(control));
                 }
             }
 
