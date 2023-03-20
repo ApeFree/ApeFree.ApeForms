@@ -256,7 +256,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 }
                 else
                 {
-                    form.GraduallyShow(0.03f, Notification.UnhoveringOpacity);
+                    form.GraduallyShow(0.03f, Notification.UnhoveringOpacity, box =>
+                    {
+                        box.timerDisappear.Interval = box.DisappearInterval;
+                        box.timerDisappear.Enabled = true;
+                    });
                     form.Location = point;
                 }
             }
