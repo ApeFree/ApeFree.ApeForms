@@ -113,6 +113,8 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             base.OnLoad(e);
 
+            this.SetWindowToTopWithoutFocus();
+
             foreach (var ctrl in this.GetChildControls(true))
             {
                 ctrl.MouseLeave += NotificationBox_MouseLeave;
@@ -153,9 +155,6 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 var args = new EventArgs();
                 OnLoad(args);
                 OnShown(args);
-
-                timerDisappear.Interval = DisappearInterval;
-                timerDisappear.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -179,7 +178,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
                 MainView?.Dispose();
                 SpareView?.Dispose();
-                foreach(Control control in flpOptions.Controls)
+                foreach (Control control in flpOptions.Controls)
                 {
                     control.Dispose();
                 }
