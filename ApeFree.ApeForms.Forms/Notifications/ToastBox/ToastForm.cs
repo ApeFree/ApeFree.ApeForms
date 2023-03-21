@@ -121,6 +121,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         public new void Show()
         {
             this.ShowWindow(ShowWindowMode.ShowNoactivate);
+            this.SetWindowToTopWithoutFocus();
         }
 
         private void TimerHide_Tick(object sender, EventArgs e)
