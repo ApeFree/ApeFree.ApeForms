@@ -68,14 +68,13 @@ namespace ApeFree.ApeForms.Core.Controls
 
             foreach (Control page in panel.Controls)
             {
-                page.Width = Width;
-                page.Height = panel.Height;
+                page.Size = Size;
             }
 
             panel.ResumeLayout();
 
             // 检查内部页面数量是否为0
-            if(panel.Controls.Count == 0)
+            if (panel.Controls.Count == 0)
             {
                 return;
             }
@@ -86,7 +85,6 @@ namespace ApeFree.ApeForms.Core.Controls
                     panel.Left = -panel.Controls[pageIndex].Left;
                 }
             }
-
         }
 
         public int AddPage(Control control)
@@ -102,7 +100,11 @@ namespace ApeFree.ApeForms.Core.Controls
             p.ControlRemoved += (s, e) =>
             {
                 // 当控件移除时，SlideBox和Page之间的Panel也需要移除
-                if (p.Controls.Count == 0) panel.Controls.Remove(p);
+                if (p.Controls.Count == 0)
+                {
+                    panel.Controls.Remove(p);
+                    p.Dispose();
+                }
             };
             control.Dock = DockStyle.Fill;
             panel.SuspendLayout();
