@@ -28,63 +28,64 @@ partial class DialogForm
     /// </summary>
     private void InitializeComponent()
     {
-            this.flpOptions = new System.Windows.Forms.FlowLayoutPanel();
-            this.labContent = new ApeFree.ApeForms.Core.Controls.TallerLabel();
-            this.panelView = new System.Windows.Forms.Panel();
-            this.SuspendLayout();
-            // 
-            // flpOptions
-            // 
-            this.flpOptions.AutoSize = true;
-            this.flpOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flpOptions.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpOptions.Location = new System.Drawing.Point(10, 151);
-            this.flpOptions.Name = "flpOptions";
-            this.flpOptions.Size = new System.Drawing.Size(414, 0);
-            this.flpOptions.TabIndex = 0;
-            // 
-            // labContent
-            // 
-            this.labContent.AutoEllipsis = true;
-            this.labContent.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labContent.Location = new System.Drawing.Point(10, 10);
-            this.labContent.Name = "labContent";
-            this.labContent.Size = new System.Drawing.Size(414, 12);
-            this.labContent.TabIndex = 2;
-            this.labContent.Text = "Content";
-            // 
-            // panelView
-            // 
-            this.panelView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelView.Location = new System.Drawing.Point(10, 22);
-            this.panelView.Name = "panelView";
-            this.panelView.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.panelView.Size = new System.Drawing.Size(414, 129);
-            this.panelView.TabIndex = 3;
-            // 
-            // DialogForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(254)))), ((int)(((byte)(253)))));
-            this.ClientSize = new System.Drawing.Size(434, 161);
-            this.Controls.Add(this.panelView);
-            this.Controls.Add(this.labContent);
-            this.Controls.Add(this.flpOptions);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "DialogForm";
-            this.Padding = new System.Windows.Forms.Padding(10);
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ToastForm";
-            this.TopMost = true;
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+        flpOptions = new System.Windows.Forms.FlowLayoutPanel();
+        labContent = new Core.Controls.TallerLabel();
+        panelView = new System.Windows.Forms.Panel();
+        SuspendLayout();
+        // 
+        // flpOptions
+        // 
+        flpOptions.AutoSize = true;
+        flpOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
+        flpOptions.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+        flpOptions.Location = new System.Drawing.Point(12, 214);
+        flpOptions.Margin = new System.Windows.Forms.Padding(4);
+        flpOptions.Name = "flpOptions";
+        flpOptions.Size = new System.Drawing.Size(482, 0);
+        flpOptions.TabIndex = 0;
+        // 
+        // labContent
+        // 
+        labContent.AutoEllipsis = true;
+        labContent.Dock = System.Windows.Forms.DockStyle.Top;
+        labContent.Location = new System.Drawing.Point(12, 14);
+        labContent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        labContent.Name = "labContent";
+        labContent.Size = new System.Drawing.Size(482, 17);
+        labContent.TabIndex = 2;
+        labContent.Text = "Content";
+        // 
+        // panelView
+        // 
+        panelView.Dock = System.Windows.Forms.DockStyle.Fill;
+        panelView.Location = new System.Drawing.Point(12, 31);
+        panelView.Margin = new System.Windows.Forms.Padding(4);
+        panelView.Name = "panelView";
+        panelView.Padding = new System.Windows.Forms.Padding(0, 14, 0, 0);
+        panelView.Size = new System.Drawing.Size(482, 183);
+        panelView.TabIndex = 3;
+        // 
+        // DialogForm
+        // 
+        AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        BackColor = System.Drawing.Color.FromArgb(255, 254, 253);
+        ClientSize = new System.Drawing.Size(506, 228);
+        Controls.Add(panelView);
+        Controls.Add(labContent);
+        Controls.Add(flpOptions);
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+        Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+        MaximizeBox = false;
+        MinimizeBox = false;
+        Name = "DialogForm";
+        Padding = new System.Windows.Forms.Padding(12, 14, 12, 14);
+        ShowIcon = false;
+        ShowInTaskbar = false;
+        StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+        Text = "ToastForm";
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion

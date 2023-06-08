@@ -18,6 +18,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InitializeComponent();
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            this.SetWindowToTopWithoutFocus();
+        }
+
         public void SetContentView(Control view)
         {
             if (view != null)
@@ -35,9 +41,9 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public Control FindButtonByText(string text)
         {
-            foreach(Control c in flpOptions.Controls)
+            foreach (Control c in flpOptions.Controls)
             {
-                if(c.Text == text)
+                if (c.Text == text)
                 {
                     return c;
                 }
