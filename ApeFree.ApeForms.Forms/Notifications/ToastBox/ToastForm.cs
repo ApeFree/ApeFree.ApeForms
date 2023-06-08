@@ -12,14 +12,17 @@ namespace ApeFree.ApeForms.Forms.Notifications
 {
     public partial class ToastForm : Form
     {
+        public Control Context { get; internal set; }
+
         [Browsable(false)]
         public int Delay { get => timerWait.Interval; set { timerHide.Enabled = false; Opacity = 1; timerWait.Enabled = false; timerWait.Interval = value; timerWait.Enabled = true; } }
 
-        internal ToastForm(string content, int delay = 2000)
+        internal ToastForm(string content, int delay = 2000, Control context = null)
         {
             InitializeComponent();
 
             Text = content;
+            this.Context = context;
 
             var g = this.CreateGraphics();
             var strSize = g.MeasureString(content, Font);
@@ -52,27 +55,32 @@ namespace ApeFree.ApeForms.Forms.Notifications
             base.OnSizeChanged(e);
         }
 
-        private void Reposition()
+        internal void Reposition()
         {
-            // 将当前进程中打开的窗体依次压栈
-            Stack<Form> stack = new Stack<Form>();
-            foreach (Form f in Application.OpenForms)
+            int left, top;
+
+            var contextForm = Context?.FindForm();
+            if (contextForm !=null)
             {
-                stack.Push(f);
+                left = (contextForm.Width - Width) / 2 + contextForm.Left;
+                top = contextForm.Height / 4 * 3 + contextForm.Top;
+                Location = new Point(left, top);
+                return;
             }
 
-            int left, top;
+            // 将当前进程中打开的窗体依次压栈
+            Stack<Form> stack = new Stack<Form>(Application.OpenForms.Cast<Form>());
+
+            // 当前工作区域
+            var rect = Screen.GetWorkingArea(this);
+
+            // 当前工作区的面积
+            float area = rect.Width * rect.Height;
 
             while (stack.Any())
             {
                 // 判断是否有活动窗体
                 var form = stack.Pop();
-
-                // 如果是Dialog窗体则不会被当做是Toast的背景窗体
-                if (form is DialogForm)
-                {
-                    continue;
-                }
 
                 // 如果是Toast窗体则不会被当做是Toast的背景窗体
                 if (form is ToastForm)
@@ -86,6 +94,12 @@ namespace ApeFree.ApeForms.Forms.Notifications
                     continue;
                 }
 
+                // 如果窗体的面积是否达到阈值则不会被当做是Toast的背景窗体
+                if ((form.Height * form.Width / area) < 0.15)
+                {
+                    continue;
+                }
+
                 // Toast定位到父窗体的相对位置
                 left = (form.Width - Width) / 2 + form.Left;
                 top = form.Height / 4 * 3 + form.Top;
@@ -94,7 +108,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
             }
 
             // Toast定位到工作区的相对位置
-            var rect = Screen.GetWorkingArea(this);
+            // var rect = Screen.GetWorkingArea(this);
             left = (rect.Width - Width) / 2;
             top = rect.Height / 4 * 3;
             Location = new Point(left, top);
@@ -118,8 +132,25 @@ namespace ApeFree.ApeForms.Forms.Notifications
             Reposition();
         }
 
-        public new void Show()
+        //public new void Show()
+        //{
+        //    this.TopMost = true;
+        //    this.ShowWindow(ShowWindowMode.ShowNoactivate);
+        //    this.SetWindowToTopWithoutFocus();
+        //}
+
+        protected override void OnShown(EventArgs e)
         {
+            base.OnShown(e);
+
+            this.ShowWindow(ShowWindowMode.ShowNoactivate);
+            this.SetWindowToTopWithoutFocus();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
             this.ShowWindow(ShowWindowMode.ShowNoactivate);
             this.SetWindowToTopWithoutFocus();
         }

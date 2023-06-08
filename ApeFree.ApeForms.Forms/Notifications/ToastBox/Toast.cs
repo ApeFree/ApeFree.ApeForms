@@ -46,8 +46,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
                 try
                 {
                     // 重置延时和文本信息
+                    CurrentToastForm.Context = ContextControl;
                     CurrentToastForm.Delay = delay;
                     CurrentToastForm.Text = content;
+                    CurrentToastForm.Reposition();
+                    CurrentToastForm.Activate();
 
                     // 复用模式直接退出
                     return;
@@ -57,7 +60,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
             else
             {
                 // 将新消息加入队列
-                QueueMsg.Enqueue(new ToastMsg(content, delay));
+                QueueMsg.Enqueue(new ToastMsg(content, delay, context));
             }
 
             if (!IsBusy)
@@ -85,7 +88,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             if (QueueMsg.TryDequeue(out ToastMsg tm))
             {
-                ToastForm tf = new ToastForm(tm.Content, tm.Delay);
+                ToastForm tf = new ToastForm(tm.Content, tm.Delay, tm.Context);
                 tf.TopMost = true;
                 CurrentToastForm = tf;
                 tf.Show();
@@ -114,10 +117,13 @@ namespace ApeFree.ApeForms.Forms.Notifications
         {
             public string Content { get; set; }
             public int Delay { get; set; }
-            public ToastMsg(string content, int delay)
+            public Control Context { get; }
+
+            public ToastMsg(string content, int delay, Control context)
             {
                 Content = content;
                 Delay = delay;
+                Context = context;
             }
         }
     }
