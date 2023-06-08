@@ -2,6 +2,7 @@
 using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Core.Controls;
+using ApeFree.ApeForms.Forms.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ApeFree.ApeForms.Forms.Dialogs
+namespace ApeFree.ApeDialogs
 {
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
@@ -57,7 +58,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             view.Multiline = settings.IsMultiline;
             view.Text = settings.DefaultText;
 
-            if(settings.PrecheckResult == null)
+            if (settings.PrecheckResult == null)
             {
                 settings.PrecheckResult = text =>
                 {
@@ -243,6 +244,25 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 }
             };
 
+            return dialog;
+        }
+
+        public override IDialog<DataEntrySheet> CreateDataEntrySheetDialog(DataEntrySheet sheet, DataEntrySheetDialogSettings settings, Control context = null)
+        {
+            var view = new DataEntryView();
+            view.Fields = sheet.Fields.ToArray();
+
+            var dialog = new ApeFormsDialog<DataEntrySheet>(settings);
+            dialog.ContentView = view;
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
+            {
+                dialog.Result.UpdateResultData(sheet);
+                if (dialog.PerformPrecheck())
+                {
+                    e.Dialog.Dismiss(false);
+                }
+            };
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
             return dialog;
         }
     }
