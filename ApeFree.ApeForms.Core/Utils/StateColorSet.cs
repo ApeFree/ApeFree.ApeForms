@@ -9,15 +9,15 @@ namespace ApeFree.ApeForms.Core.Utils
 {
     public class StateColorSet
     {
-        public Color MouseMoveForegroundColor { get; set; } = Color.White;
-        public Color MouseMoveBackgroundColor { get; set; } = Color.FromArgb(82, 176, 239);
-        public Color MouseLeaveForegroundColor { get; set; } = Color.White;
-        public Color MouseLeaveBackgroundColor { get; set; } = Color.FromArgb(0, 122, 204);
-        public Color MouseDownForegroundColor { get; set; } = Color.White;
-        public Color MouseDownBackgroundColor { get; set; } = Color.FromArgb(14, 97, 152);
-        public Color LostFocusForegroundColor { get; set; } = Color.FromArgb(30, 30, 30);
-        public Color LostFocusBackgroundColor { get; set; } = Color.FromArgb(251, 251, 251);
-        public Color GotFocusForegroundColor { get; set; } = Color.White;
-        public Color GotFocusBackgroundColor { get; set; } = Color.FromArgb(0, 122, 204);
+        public Color MouseMoveForeColor { get; set; } = Color.White;
+        public Color MouseMoveBackColor { get; set; } = Color.FromArgb(82, 176, 239);
+        public Color MouseLeaveForeColor { get; set; } = Color.White;
+        public Color MouseLeaveBackColor { get; set; } = Color.FromArgb(0, 122, 204);
+        public Color MouseDownForeColor { get; set; } = Color.White;
+        public Color MouseDownBackColor { get; set; } = Color.FromArgb(14, 97, 152);
+        public Color LostFocusForeColor { get; set; } = Color.FromArgb(30, 30, 30);
+        public Color LostFocusBackColor { get; set; } = Color.FromArgb(251, 251, 251);
+        public Color GotFocusForeColor { get; set; } = Color.White;
+        public Color GotFocusBackColor { get; set; } = Color.FromArgb(0, 122, 204);
     }
 }

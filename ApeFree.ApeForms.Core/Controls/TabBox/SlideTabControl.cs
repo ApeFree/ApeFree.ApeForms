@@ -14,7 +14,7 @@ namespace ApeFree.ApeForms.Core.Controls
 {
     public partial class SlideTabControl : UserControl, ITabBox<ToolStripItem>
     {
-        private StateColorSet stateColorSet = new StateColorSet();
+        public StateColorSet StateColorSet { get; set; } = new StateColorSet();
 
         public SlideTabControl()
         {
@@ -293,13 +293,13 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 if (item == e.ClickedItem)
                 {
-                    item.BackColor = stateColorSet.GotFocusBackgroundColor;
-                    item.ForeColor = stateColorSet.GotFocusForegroundColor;
+                    item.BackColor = StateColorSet.GotFocusBackColor;
+                    item.ForeColor = StateColorSet.GotFocusForeColor;
                 }
                 else
                 {
-                    item.BackColor = stateColorSet.LostFocusBackgroundColor;
-                    item.ForeColor = stateColorSet.LostFocusForegroundColor;
+                    item.BackColor = StateColorSet.LostFocusBackColor;
+                    item.ForeColor = StateColorSet.LostFocusForeColor;
                 }
             }
         }
@@ -315,13 +315,13 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 if (item == sender)
                 {
-                    item.BackColor = stateColorSet.GotFocusBackgroundColor;
-                    item.ForeColor = stateColorSet.GotFocusForegroundColor;
+                    item.BackColor = StateColorSet.GotFocusBackColor;
+                    item.ForeColor = StateColorSet.GotFocusForeColor;
                 }
                 else
                 {
-                    item.BackColor = stateColorSet.LostFocusBackgroundColor;
-                    item.ForeColor = stateColorSet.LostFocusForegroundColor;
+                    item.BackColor = StateColorSet.LostFocusBackColor;
+                    item.ForeColor = StateColorSet.LostFocusForeColor;
                 }
             }
         }
