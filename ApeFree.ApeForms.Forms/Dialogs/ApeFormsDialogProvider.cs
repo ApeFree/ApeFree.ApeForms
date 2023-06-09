@@ -258,6 +258,15 @@ namespace ApeFree.ApeDialogs
             dialog.ContentView = view;
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
+                foreach(var field in sheet.Fields)
+                {
+                    if (field.DataValidityCheck != null && !field.DataValidityCheck(field.Data))
+                    {
+                        dialog.InnerDialog.Shake();
+                        return;
+                    }
+                }
+
                 dialog.Result.UpdateResultData(sheet);
                 if (dialog.PerformPrecheck())
                 {
