@@ -44,7 +44,7 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public SimpleButton AddChildButton(string text,EventHandler clickHandler = null)
         {
-            var btn = new SimpleButton();
+            var btn = new TabButton();
             btn.Text = text;
             if(clickHandler!= null)
             {
