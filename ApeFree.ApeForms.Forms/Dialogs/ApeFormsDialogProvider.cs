@@ -25,14 +25,16 @@ namespace ApeFree.ApeDialogs
         /// <returns><inheritdoc/></returns>
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
-            var view = new DatePicker();
+            var view = new DateTimePicker();
+            view.Format = DateTimePickerFormat.Custom;
+            view.CustomFormat = settings.DateTimeFormat;
 
             var dialog = new ApeFormsDialog<DateTime>(settings);
             dialog.ContentView = view;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                dialog.Result.UpdateResultData(view.SelectedDate);
+                dialog.Result.UpdateResultData(view.Value);
                 if (dialog.PerformPrecheck())
                 {
                     e.Dialog.Dismiss(false);
@@ -41,7 +43,7 @@ namespace ApeFree.ApeDialogs
 
             // 添加选项按钮
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-            settings.CurrentTimeOption.OptionSelectedCallback = (s, e) => view.SelectedDate = DateTime.Now;
+            settings.CurrentTimeOption.OptionSelectedCallback = (s, e) => view.Value = DateTime.Now;
 
             return dialog;
         }
