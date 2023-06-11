@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Core.Controls
@@ -8,6 +11,9 @@ namespace ApeFree.ApeForms.Core.Controls
     [ToolboxItem(false)]
     public class TabButton : SimpleButton
     {
+        private readonly static Lazy<Dictionary<TabButton, byte>> lazyButtonGroupDict = new Lazy<Dictionary<TabButton, byte>>();
+        private byte groupId;
+
         public Color? SidelineColor { get; set; }
 
         public int SidelineWidth { get; set; } = 5;
@@ -16,19 +22,44 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public Color? SelectedBackColor { get; set; }
 
+        public byte GroupId
+        {
+            get => groupId; set
+            {
+                groupId = value;
+                lazyButtonGroupDict.Value[this] = groupId;
+            }
+        }
+
         private bool IsDrawSideline { get; set; } = false;
         private Color BackupColor { get; set; }
+
+        public TabButton()
+        {
+            lazyButtonGroupDict.Value[this] = GroupId;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            lazyButtonGroupDict.Value.Remove(this);
+            base.Dispose(disposing);
+        }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
-            foreach (TabButton btn in Parent.Controls)
+            foreach (var kvp in lazyButtonGroupDict.Value.Where(p => p.Value == GroupId))
             {
-                if (btn is TabButton && btn.IsDrawSideline)
+                var btn = kvp.Key;
+                if (btn.IsDrawSideline)
                 {
-                    btn.IsDrawSideline = false;
-                    btn.BackColor = btn.BackupColor;
+                    try
+                    {
+                        btn.IsDrawSideline = false;
+                        btn.BackColor = btn.BackupColor;
+                    }
+                    catch (Exception) { }
                 }
             }
 
