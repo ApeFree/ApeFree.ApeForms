@@ -11,6 +11,8 @@ namespace ApeFree.ApeForms.Core.Controls
     [ToolboxItem(true)]
     public class SimpleButtonShutter : Shutter
     {
+        private byte buttonGroupId;
+
         [Browsable(false)]
         public new SimpleButton MainControl { get => (SimpleButton)base.MainControl; set => base.MainControl = value; }
 
@@ -23,10 +25,27 @@ namespace ApeFree.ApeForms.Core.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public override string Text { get => base.Text; set => base.Text = value; }
 
+        /// <summary>
+        /// 按钮分组编号
+        /// </summary>
+        public byte ButtonGroupId
+        {
+            get => buttonGroupId;
+            set
+            {
+                buttonGroupId = value;
+                var btns = HiddenControl.Controls.Cast<Control>().Where(c => c is TabButton).Select(b => (TabButton)b);
+                foreach (var btn in btns)
+                {
+                    btn.GroupId = buttonGroupId;
+                }
+            }
+        }
+
         public SimpleButtonShutter()
         {
             Controls.Add(new SimpleButton());
-            Controls.Add(new Panel() { AutoSize = true,Height = 0 });
+            Controls.Add(new Panel() { AutoSize = true, Height = 0 });
 
             MainControl.Click += MainControl_Click;
         }
@@ -34,7 +53,7 @@ namespace ApeFree.ApeForms.Core.Controls
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
-            MainControl.Text= Text;
+            MainControl.Text = Text;
         }
 
         private void MainControl_Click(object sender, EventArgs e)
@@ -42,11 +61,12 @@ namespace ApeFree.ApeForms.Core.Controls
             OpenState = !OpenState;
         }
 
-        public SimpleButton AddChildButton(string text,EventHandler clickHandler = null)
+        public TabButton AddChildButton(string text, EventHandler clickHandler = null)
         {
             var btn = new TabButton();
             btn.Text = text;
-            if(clickHandler!= null)
+            btn.GroupId = ButtonGroupId;
+            if (clickHandler != null)
             {
                 btn.Click += clickHandler;
             }
