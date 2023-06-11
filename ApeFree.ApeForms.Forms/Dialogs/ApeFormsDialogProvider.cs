@@ -260,7 +260,7 @@ namespace ApeFree.ApeDialogs
             {
                 foreach(var field in sheet.Fields)
                 {
-                    if (field.DataValidityCheck != null && !field.DataValidityCheck(field.Data))
+                    if (!field.ValidityCheck())
                     {
                         dialog.InnerDialog.Shake();
                         return;
