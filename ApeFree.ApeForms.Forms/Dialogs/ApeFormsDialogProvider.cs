@@ -28,6 +28,7 @@ namespace ApeFree.ApeDialogs
             var view = new DateTimePicker();
             view.Format = DateTimePickerFormat.Custom;
             view.CustomFormat = settings.DateTimeFormat;
+            view.Value = settings.DefaultDateTime;
 
             var dialog = new ApeFormsDialog<DateTime>(settings);
             dialog.ContentView = view;
@@ -258,7 +259,7 @@ namespace ApeFree.ApeDialogs
             dialog.ContentView = view;
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                foreach(var field in sheet.Fields)
+                foreach (var field in sheet.Fields)
                 {
                     if (!field.ValidityCheck())
                     {
