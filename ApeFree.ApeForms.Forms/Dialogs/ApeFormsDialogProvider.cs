@@ -3,6 +3,7 @@ using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Core.Controls;
 using ApeFree.ApeForms.Forms.Dialogs;
+using ApeFree.ApeForms.Forms.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +18,8 @@ namespace ApeFree.ApeDialogs
 {
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
+        private ErrorProvider errorProvider = new ErrorProvider() { BlinkStyle = ErrorBlinkStyle.BlinkIfDifferentError, BlinkRate = 100 };
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -36,10 +39,11 @@ namespace ApeFree.ApeDialogs
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
                 dialog.Result.UpdateResultData(view.Value);
-                if (dialog.PerformPrecheck())
-                {
-                    e.Dialog.Dismiss(false);
-                }
+                var result = dialog.PerformPrecheck();
+                //if (result.IsSuccess)
+                //{
+                //    e.Dialog.Dismiss(false);
+                //}
             };
 
             // 添加选项按钮
@@ -60,22 +64,7 @@ namespace ApeFree.ApeDialogs
             var view = new TextBox();
             view.Multiline = settings.IsMultiline;
             view.Text = settings.DefaultText;
-
-            if (settings.PrecheckResult == null)
-            {
-                settings.PrecheckResult = text =>
-                {
-                    if (!settings.AllowEmpty && string.IsNullOrEmpty(text))
-                    {
-                        return false;
-                    }
-                    if (text.Length > settings.MaximumLength || text.Length < settings.MinimumLength)
-                    {
-                        return false;
-                    }
-                    return true;
-                };
-            }
+            view.MaxLength = settings.MaximumLength;
 
             var dialog = new ApeFormsDialog<string>(settings);
             dialog.ContentView = view;
@@ -83,10 +72,11 @@ namespace ApeFree.ApeDialogs
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
                 dialog.Result.UpdateResultData(view.Text);
-                if (dialog.PerformPrecheck())
-                {
-                    e.Dialog.Dismiss(false);
-                }
+                var result = dialog.PerformPrecheck();
+                //if (result.IsSuccess)
+                //{
+                //    e.Dialog.Dismiss(false);
+                //}
             };
 
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
@@ -179,11 +169,11 @@ namespace ApeFree.ApeDialogs
             {
                 var value = view.SelectedIndex >= 0 ? collection.ElementAt(view.SelectedIndex) : default;
                 dialog.Result.UpdateResultData(value);
-
-                if (dialog.PerformPrecheck())
-                {
-                    e.Dialog.Dismiss(false);
-                }
+                var result = dialog.PerformPrecheck();
+                //if (result.IsSuccess)
+                //{
+                //    e.Dialog.Dismiss(false);
+                //}
             };
 
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
@@ -225,10 +215,11 @@ namespace ApeFree.ApeDialogs
             {
                 var items = view.CheckedItems.Cast<object>().Select(str => view.Items.IndexOf(str)).Select(i => collection.ElementAt(i));
                 dialog.Result.UpdateResultData(items);
-                if (dialog.PerformPrecheck())
-                {
-                    e.Dialog.Dismiss(false);
-                }
+                var result = dialog.PerformPrecheck();
+                //if (result.IsSuccess)
+                //{
+                //    e.Dialog.Dismiss(false);
+                //}
             };
             settings.SelectAllOption.OptionSelectedCallback = (s, e) =>
             {
@@ -250,6 +241,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
+
         public override IDialog<DataEntrySheet> CreateDataEntrySheetDialog(DataEntrySheet sheet, DataEntrySheetDialogSettings settings, Control context = null)
         {
             var view = new DataEntryView();
@@ -261,18 +253,30 @@ namespace ApeFree.ApeDialogs
             {
                 foreach (var field in sheet.Fields)
                 {
-                    if (!field.ValidityCheck())
+                    var vcr = field.ValidityCheck();
+                    if (!vcr.IsSuccess)
                     {
-                        dialog.InnerDialog.Shake();
+                        var ctrl = view.GetFieldControlByTitle(field.Title);
+                        errorProvider.SetIconAlignment(ctrl, ErrorIconAlignment.TopRight);
+                        errorProvider.SetIconPadding(ctrl, -20);
+                        errorProvider.SetError(ctrl, vcr.ErrorMessage);
+                        Toast.Show(vcr.ErrorMessage, 2000, null, ToastMode.Reuse);
+                        // dialog.InnerDialog.Shake();
+
+                        // 将垂直滚动条滚动到校验失败的控件的位置
+                        view.VerticalScroll.Value = ctrl.Top - view.AutoScrollPosition.Y;
+                        view.PerformLayout();
+
                         return;
                     }
                 }
 
                 dialog.Result.UpdateResultData(sheet);
-                if (dialog.PerformPrecheck())
-                {
-                    e.Dialog.Dismiss(false);
-                }
+                var result = dialog.PerformPrecheck();
+                //if (result.IsSuccess)
+                //{
+                //    e.Dialog.Dismiss(false);
+                //}
             };
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
             return dialog;
