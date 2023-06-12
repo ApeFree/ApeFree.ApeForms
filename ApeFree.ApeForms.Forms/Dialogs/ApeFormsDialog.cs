@@ -1,5 +1,6 @@
 ﻿using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeForms.Forms.Notifications;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -79,7 +80,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             //        break;
             //}
 
-            if(Settings.OptionTagColors?.TryGetValue(option.OptionTag,out Color color)!=null)
+            if (Settings.OptionTagColors?.TryGetValue(option.OptionTag, out Color color) != null)
             {
                 btn.BackColor = color;
             }
@@ -100,10 +101,13 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        protected override void PrecheckFailsCallback()
+        protected override void PrecheckFailsCallback(FormatCheckResult result)
         {
             // 抖动窗口
             InnerDialog.Shake();
+
+            // 消息提示
+            Toast.Show(result.ErrorMessage, 2000, null, ToastMode.Reuse);
         }
     }
 }
