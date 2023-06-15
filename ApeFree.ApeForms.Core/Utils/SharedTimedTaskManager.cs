@@ -109,6 +109,7 @@ namespace ApeFree.ApeForms.Core.Utils
             SizeGradualChange,
             LocationGradualChange,
             OpacityGradualChange,
+            VerticalScrollGradualChange,
         }
     }
 

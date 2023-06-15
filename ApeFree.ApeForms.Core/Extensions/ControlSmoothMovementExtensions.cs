@@ -11,6 +11,14 @@ namespace System.Windows.Forms
     {
         private const int MINIMUM_SPEED = 5;
 
+        /// <summary>
+        /// 尺寸渐进改变
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="control"></param>
+        /// <param name="targetSize"></param>
+        /// <param name="rate"></param>
+        /// <param name="finishCallback"></param>
         public static void SizeGradualChange<T>(this T control, Size targetSize, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
             SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
@@ -23,6 +31,14 @@ namespace System.Windows.Forms
             }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
         }
 
+        /// <summary>
+        /// 位置渐进改变
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="control"></param>
+        /// <param name="targetPoint"></param>
+        /// <param name="rate"></param>
+        /// <param name="finishCallback"></param>
         public static void LocationGradualChange<T>(this T control, Point targetPoint, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
             lock (control)
@@ -41,6 +57,46 @@ namespace System.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// 垂直滚动条渐进滑动
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="control"></param>
+        /// <param name="childControl"></param>
+        /// <param name="offset"></param>
+        /// <param name="rate"></param>
+        /// <param name="finishCallback"></param>
+        public static void VerticalScrollGradualChange<T>(this T control, Control childControl,int offset = 0, byte rate = 5, Action<T> finishCallback = null) where T : ScrollableControl
+        {
+            lock (control)
+            {
+                
+                SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.VerticalScrollGradualChange,
+                    () =>
+                    {
+                        var targetY = childControl.Top - control.AutoScrollPosition.Y;
+                        control.ModifyInUI(() =>
+                        {
+                            control.VerticalScroll.Value = Gradual(control.VerticalScroll.Value, targetY, rate);
+                            control.Invalidate();
+                        });
+                    },
+                    () =>
+                    {
+                        var targetY = childControl.Top - control.AutoScrollPosition.Y;
+                        return control.VerticalScroll.Value == targetY;
+                    }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
+            }
+        }
+
+        /// <summary>
+        /// 透明度渐进改变
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="form"></param>
+        /// <param name="targetOpacity"></param>
+        /// <param name="rate"></param>
+        /// <param name="finishCallback"></param>
         public static void OpacityGradualChange<T>(this T form, double targetOpacity, byte rate = 50, Action<T> finishCallback = null) where T : Form
         {
             lock (form)
