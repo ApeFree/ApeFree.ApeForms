@@ -50,7 +50,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
                     CurrentToastForm.Delay = delay;
                     CurrentToastForm.Text = content;
                     CurrentToastForm.Reposition();
-                    CurrentToastForm.Activate();
+                    //CurrentToastForm.Activate();
 
                     // 复用模式直接退出
                     return;
