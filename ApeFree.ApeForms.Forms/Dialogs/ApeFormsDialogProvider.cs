@@ -251,6 +251,8 @@ namespace ApeFree.ApeDialogs
             dialog.ContentView = view;
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
+                errorProvider.Clear();
+
                 foreach (var field in sheet.Fields)
                 {
                     var vcr = field.ValidityCheck();
@@ -264,8 +266,9 @@ namespace ApeFree.ApeDialogs
                         // dialog.InnerDialog.Shake();
 
                         // 将垂直滚动条滚动到校验失败的控件的位置
-                        view.VerticalScroll.Value = ctrl.Top - view.AutoScrollPosition.Y;
-                        view.PerformLayout();
+                        //view.VerticalScroll.Value = ctrl.Top - view.AutoScrollPosition.Y;
+                        //view.PerformLayout();
+                        view.VerticalScrollGradualChange(ctrl);
 
                         return;
                     }
