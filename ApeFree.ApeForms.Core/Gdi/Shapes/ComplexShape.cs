@@ -19,14 +19,14 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
 
         public LinkedList<IShape> Graphics { get; }
 
-        public IEnumerable<PointF> Points => Graphics.SelectMany(g => g.Points);
+        public IEnumerable<Point> Points => Graphics.SelectMany(g => g.Points);
 
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         /// <param name="centralPoint"></param>
         /// <param name="angle"></param>
-        public void Rotate(PointF centralPoint, float angle)
+        public void Rotate(Point centralPoint, float angle)
         {
             foreach (IShape g in Graphics)
             {
@@ -51,7 +51,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
         /// </summary>
         /// <param name="distanceX"></param>
         /// <param name="distanceY"></param>
-        public void Offset(float distanceX, float distanceY)
+        public void Offset(int distanceX, int distanceY)
         {
             foreach (IShape g in Graphics)
             {
@@ -59,7 +59,7 @@ namespace ApeFree.ApeForms.Core.Gdi.Shapes
             }
         }
 
-        public bool Contains(PointF point)
+        public bool Contains(Point point)
         {
             throw new NotImplementedException();
         }
