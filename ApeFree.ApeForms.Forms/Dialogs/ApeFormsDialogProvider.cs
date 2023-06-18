@@ -268,7 +268,7 @@ namespace ApeFree.ApeDialogs
                         // 将垂直滚动条滚动到校验失败的控件的位置
                         //view.VerticalScroll.Value = ctrl.Top - view.AutoScrollPosition.Y;
                         //view.PerformLayout();
-                        view.VerticalScrollGradualChange(ctrl);
+                        view.VerticalScrollGradualChange(ctrl, 0, 2);
 
                         return;
                     }
