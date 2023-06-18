@@ -52,4 +52,20 @@
             Shape = shape;
         }
     }
+
+    public class Layer<TStyle, TShape> : Layer<TStyle> where TShape : IShape
+    {
+        /// <summary>
+        /// 图形
+        /// </summary>
+        public new TShape Shape { get => (TShape)base.Shape; set => base.Shape = value; }
+
+        internal Layer(Palette<TStyle> parent) : base(parent)
+        {
+        }
+
+        internal Layer(Palette<TStyle> parent, TStyle style, IShape shape) : base(parent, style, shape)
+        {
+        }
+    }
 }
