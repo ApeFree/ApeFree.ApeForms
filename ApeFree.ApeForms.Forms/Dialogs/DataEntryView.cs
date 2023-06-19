@@ -107,8 +107,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var box = new ComboBox();
             box.DropDownStyle = ComboBoxStyle.DropDownList;
             box.Items.AddRange(field.Items.Select(item => field.ItemDisplayTextConvertHandler(item)).ToArray());
-            box.SelectedValueChanged += (s, e) => 
-                field.Data = field.Items[box.SelectedIndex];
+            box.SelectedValueChanged += (s, e) => field.Data = field.Items[box.SelectedIndex];
             box.Text = field.ItemDisplayTextConvertHandler(field.Data ?? field.Items.FirstOrDefault() ?? string.Empty);
             box.Dock = DockStyle.Top;
             box.Parent = group;
