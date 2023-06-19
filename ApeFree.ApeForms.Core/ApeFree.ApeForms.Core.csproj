@@ -19,14 +19,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Gdi\Shapes\**" />
-	  <EmbeddedResource Remove="Gdi\Shapes\**" />
-	  <None Remove="Gdi\Shapes\**" />
-	</ItemGroup>
-
-
-
-	<ItemGroup>
 		<None Include="..\ApeFree_64px.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
@@ -35,6 +27,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="STTech.CodePlus" Version="1.5.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
