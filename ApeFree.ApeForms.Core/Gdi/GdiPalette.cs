@@ -63,8 +63,6 @@ namespace ApeFree.ApeForms.Core.Gdi
             }
         }
 
-
-
         ///<inheritdoc/>
         protected override void DrawRectangleHandler(GdiStyle style, RectangleShape graphic)
         {
@@ -107,6 +105,20 @@ namespace ApeFree.ApeForms.Core.Gdi
         protected override void DrawLineHandler(GdiStyle style, LineShape graphic)
         {
             Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
+        }
+
+        ///<inheritdoc/>
+        protected override void DrawPolygonHandler(GdiStyle style, PolygonShape shape)
+        {
+            if (style.Pen != null)
+            {
+                Canvas.DrawPolygon(style.Pen, shape.Points.ToArray());
+            }
+
+            if (style.Brush != null)
+            {
+                Canvas.FillPolygon(style.Brush, shape.Points.ToArray());
+            }
         }
     }
 }
