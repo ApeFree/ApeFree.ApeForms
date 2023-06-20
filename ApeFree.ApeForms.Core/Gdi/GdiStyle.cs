@@ -1,12 +1,24 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace ApeFree.ApeForms.Core.Gdi
 {
     /// <summary>
     /// GDI+图形样式
     /// </summary>
-    public class GdiStyle
+    public class GdiStyle : IDisposable
     {
+        public GdiStyle(Pen pen = null, Brush brush = null)
+        {
+            Pen = pen;
+            Brush = brush;
+        }
+
+        public GdiStyle(Brush brush)
+        {
+            Brush = brush;
+        }
+
         /// <summary>
         /// 画笔
         /// </summary>
@@ -16,5 +28,15 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// 画刷
         /// </summary>
         public Brush Brush { get; set; }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Pen?.Dispose();
+            Brush?.Dispose();
+
+            Pen = null;
+            Brush = null;
+        }
     }
 }
