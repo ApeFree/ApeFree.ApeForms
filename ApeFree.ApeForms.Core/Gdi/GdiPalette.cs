@@ -33,19 +33,26 @@ namespace ApeFree.ApeForms.Core.Gdi
         {
             Image?.Dispose();
             Canvas?.Dispose();
+            if (clientRectangle.Width > 0 && clientRectangle.Height > 0)
+            {
             Image = new Bitmap(clientRectangle.Width, clientRectangle.Height);
             Canvas = Graphics.FromImage(Image);
+        }
         }
 
         ///<inheritdoc/>
         public override void UpdateCanvas()
         {
+            try
+            {
             Canvas.SmoothingMode = SmoothingMode.AntiAlias;
             Canvas.SmoothingMode = SmoothingMode.HighQuality;
             Canvas.CompositingQuality = CompositingQuality.HighQuality;
             Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             base.UpdateCanvas();
+        }
+            catch (System.Exception) { }
         }
 
         ///<inheritdoc/>
