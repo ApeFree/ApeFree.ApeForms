@@ -37,14 +37,28 @@ namespace ApeFree.ApeForms.Core.Gdi
         /// </summary>
         public Brush Brush { get; set; }
 
+        /// <summary>
+        /// 字体
+        /// </summary>
+        public Font Font { get; set; }
+
+        /// <summary>
+        /// 文本格式
+        /// </summary>
+        public StringFormat StringFormat { get; set; }
+
         /// <inheritdoc/>
-        public void Dispose()
+        public void Clear()
         {
             Pen?.Dispose();
             Brush?.Dispose();
+            Font?.Dispose();
+            StringFormat?.Dispose();
 
             Pen = null;
             Brush = null;
+            Font = null;
+            StringFormat = null;
         }
     }
 }
