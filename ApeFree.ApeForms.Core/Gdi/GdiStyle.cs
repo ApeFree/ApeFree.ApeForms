@@ -6,12 +6,20 @@ namespace ApeFree.ApeForms.Core.Gdi
     /// <summary>
     /// GDI+图形样式
     /// </summary>
-    public class GdiStyle : IDisposable
+    public class GdiStyle
     {
-        public GdiStyle(Pen pen = null, Brush brush = null)
+        public GdiStyle(Pen pen = null, Brush brush = null, Font font = null, StringFormat stringFormat = null)
         {
             Pen = pen;
             Brush = brush;
+            Font = font;
+            StringFormat = stringFormat;
+        }
+
+        public GdiStyle(Font font, StringFormat stringFormat)
+        {
+            Font = font;
+            StringFormat = stringFormat;
         }
 
         public GdiStyle(Brush brush)
