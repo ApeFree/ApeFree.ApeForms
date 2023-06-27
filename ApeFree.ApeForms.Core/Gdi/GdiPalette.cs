@@ -35,9 +35,9 @@ namespace ApeFree.ApeForms.Core.Gdi
             Canvas?.Dispose();
             if (clientRectangle.Width > 0 && clientRectangle.Height > 0)
             {
-            Image = new Bitmap(clientRectangle.Width, clientRectangle.Height);
-            Canvas = Graphics.FromImage(Image);
-        }
+                Image = new Bitmap(clientRectangle.Width, clientRectangle.Height);
+                Canvas = Graphics.FromImage(Image);
+            }
         }
 
         ///<inheritdoc/>
@@ -45,13 +45,13 @@ namespace ApeFree.ApeForms.Core.Gdi
         {
             try
             {
-            Canvas.SmoothingMode = SmoothingMode.AntiAlias;
-            Canvas.SmoothingMode = SmoothingMode.HighQuality;
-            Canvas.CompositingQuality = CompositingQuality.HighQuality;
-            Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                Canvas.SmoothingMode = SmoothingMode.AntiAlias;
+                Canvas.SmoothingMode = SmoothingMode.HighQuality;
+                Canvas.CompositingQuality = CompositingQuality.HighQuality;
+                Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            base.UpdateCanvas();
-        }
+                base.UpdateCanvas();
+            }
             catch (System.Exception) { }
         }
 
@@ -126,6 +126,16 @@ namespace ApeFree.ApeForms.Core.Gdi
             {
                 Canvas.FillPolygon(style.Brush, shape.Points.ToArray());
             }
+        }
+
+        ///<inheritdoc/>
+        protected override void DrawTextHandler(GdiStyle style, TextShape shape)
+        {
+            var brush = style.Brush ?? Brushes.Black;
+            var format = style.StringFormat ?? new StringFormat();
+            var font = style.Font ?? SystemFonts.DefaultFont;
+            // 绘制文字
+            Canvas.DrawString(shape.Text, font, brush, new RectangleF(shape.Left, shape.Top, shape.Width, shape.Height), format);
         }
     }
 }
