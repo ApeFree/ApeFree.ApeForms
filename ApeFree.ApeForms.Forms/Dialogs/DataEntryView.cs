@@ -307,7 +307,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var group = CreateGroupBox(field);
 
             var tbField = new TextBox();
-            tbField.Text = field.Data;
+            tbField.Text = field.Data ?? string.Empty;
             tbField.TextChanged += (s, e) => field.Data = tbField.Text;
             tbField.PasswordChar = field.PasswordChar;
             tbField.MaxLength = field.MaximumLength;
@@ -322,7 +322,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             var group = CreateGroupBox(field);
 
             var tbField = new TextBox();
-            tbField.Text = field.Data;
+            tbField.Text = field.Data ?? string.Empty;
             tbField.TextChanged += (s, e) => field.Data = tbField.Text;
             tbField.MaxLength = field.MaximumLength;
             tbField.Dock = DockStyle.Top;
