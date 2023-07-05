@@ -23,7 +23,7 @@ namespace System.Windows.Forms
         {
             try
             {
-                control?.Invoke(action);
+                control?.BeginInvoke(action);
             }
             catch (InvalidOperationException) { }
             catch (NullReferenceException) { }
