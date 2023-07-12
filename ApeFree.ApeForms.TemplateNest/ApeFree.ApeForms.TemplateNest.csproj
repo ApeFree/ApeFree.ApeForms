@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-windows;net452;net461</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Company>ApeFree</Company>
+		<Authors>Guijie Lee</Authors>
+		<Copyright>Copyright © 2022-2023 ApeFree, All Rights Reserved.</Copyright>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>ApeForms</Title>
+		<Product>ApeFree.ApeForms</Product>
+		<Description>ApeForms模板库，提供UI模板，开箱即用。</Description>
+		<RepositoryUrl></RepositoryUrl>
+		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
+		<Version>0.11.3</Version>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>ApeFree_64px.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\ApeFree_64px.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj" />
+	  <ProjectReference Include="..\ApeFree.ApeForms.Forms\ApeFree.ApeForms.Forms.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Update="TemplateForm.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="TemplateForm.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>
