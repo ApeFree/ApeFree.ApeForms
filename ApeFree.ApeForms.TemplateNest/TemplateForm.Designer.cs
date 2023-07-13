@@ -31,7 +31,6 @@ namespace ApeFree.ApeForms.Demo
         private void InitializeComponent()
         {
             Core.Utils.StateColorSet stateColorSet1 = new Core.Utils.StateColorSet();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TemplateForm));
             panelHead = new System.Windows.Forms.Panel();
             clbTopBar = new ControlListBox();
             picLogo = new System.Windows.Forms.PictureBox();
@@ -49,7 +48,7 @@ namespace ApeFree.ApeForms.Demo
             panelHead.Controls.Add(picLogo);
             panelHead.Dock = System.Windows.Forms.DockStyle.Top;
             panelHead.Location = new System.Drawing.Point(0, 0);
-            panelHead.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            panelHead.Margin = new System.Windows.Forms.Padding(4);
             panelHead.Name = "panelHead";
             panelHead.Size = new System.Drawing.Size(915, 71);
             panelHead.TabIndex = 1;
@@ -70,7 +69,7 @@ namespace ApeFree.ApeForms.Demo
             // 
             picLogo.Dock = System.Windows.Forms.DockStyle.Left;
             picLogo.Location = new System.Drawing.Point(0, 0);
-            picLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            picLogo.Margin = new System.Windows.Forms.Padding(4);
             picLogo.Name = "picLogo";
             picLogo.Size = new System.Drawing.Size(175, 71);
             picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -136,7 +135,7 @@ namespace ApeFree.ApeForms.Demo
             Controls.Add(clbBottomBar);
             Controls.Add(clbSideBar);
             Controls.Add(panelHead);
-            Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            Margin = new System.Windows.Forms.Padding(4);
             Name = "TemplateForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "ApeForms Demo";
@@ -146,13 +145,12 @@ namespace ApeFree.ApeForms.Demo
         }
 
         #endregion
-
-        private Core.Controls.SlideTabControl slideTabControl;
         private System.Windows.Forms.Panel panelHead;
         private ControlListBox clbSideBar;
         private System.Windows.Forms.PictureBox picLogo;
         private ControlListBox clbTopBar;
         private ControlListBox clbBottomBar;
+        protected SlideTabControl slideTabControl;
     }
 }
 

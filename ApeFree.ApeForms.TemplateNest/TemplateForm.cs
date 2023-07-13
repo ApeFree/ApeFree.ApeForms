@@ -81,6 +81,13 @@ namespace ApeFree.ApeForms.Demo
                     // 添加二级菜单按钮
                     var btn = shutter.AddChildButton(item.Name, (s, args) =>
                     {
+                        // 如果页面是窗体，则改为控件
+                        if (item.Control is Form form)
+                        {
+                            form.TopLevel = false;
+                            form.FormBorderStyle = FormBorderStyle.None;
+                        }
+
                         // 设置单击事件
                         slideTabControl.AddPage(item.Name, item.Control, (data.Icon ?? this.Icon).ToBitmap());
                     });
