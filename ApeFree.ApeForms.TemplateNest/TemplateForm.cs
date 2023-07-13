@@ -1,6 +1,7 @@
 ﻿using ApeFree.ApeForms.Core.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,45 +12,115 @@ namespace ApeFree.ApeForms.Demo
     /// </summary>
     public partial class TemplateForm : Form
     {
-        private List<NavBarGroup> sideNavData;
+        private List<NavBarGroup> sideBarData;
         private List<TopBarItem> topBarData;
+        private Color mainMenuBackColor = Color.FromArgb(30, 20, 50);
+        private Color mainMenuForeColor = Color.FromArgb(245, 245, 245);
+        private Color subMenuBackColor = Color.FromArgb(70, 55, 100);
+        private Color subMenuForeColor = Color.FromArgb(245, 245, 245);
+        private Color topBarItemBackColor = Color.FromArgb(40, 25, 65);
+        private Color topBarItemForeColor = Color.White;
+        private Color subMenuSidelineColor = Color.PaleVioletRed;
 
         /// <summary>
         /// 侧边导航栏数据
         /// </summary>
-        public List<NavBarGroup> SideNavData { get => sideNavData; set { sideNavData = value; LoadSideBar(clbSideBar); } }
+        [Browsable(false)]
+        public List<NavBarGroup> SideBarData { get => sideBarData; set { sideBarData = value; LoadSideBar(clbSideBar); } }
 
         /// <summary>
         /// 顶部导航栏数据
         /// </summary>
+        [Browsable(false)]
         public List<TopBarItem> TopBarData { get => topBarData; set { topBarData = value; LoadTopBar(clbTopBar); } }
+
+        /// <summary>
+        /// 滑动选项卡
+        /// </summary>
+        protected SlideTabControl SlideTabBox => slideTabControl;
 
         /// <summary>
         /// Logo图像
         /// </summary>
+        [Description("Logo图像")]
         public Image LogoImage { get => picLogo.Image; set => picLogo.Image = value; }
 
         /// <summary>
         /// “关闭所有选项卡”选项的文本
         /// </summary>
+        [Description("“关闭所有选项卡”选项的文本")]
         public string CloseAllPagesOptionText { get => slideTabControl.CloseAllPagesOptionText; set => slideTabControl.CloseAllPagesOptionText = value; }
 
         /// <summary>
         /// “关闭选项卡”选项的文本
         /// </summary>
+        [Description("“关闭选项卡”选项的文本")]
         public string ClosePageOptionText { get => slideTabControl.ClosePageOptionText; set => slideTabControl.ClosePageOptionText = value; }
+
+        [Description("顶部导航栏背景色")]
+        public Color TopBarBackColor { get => panelHead.BackColor; set => panelHead.BackColor = value; }
+
+        [Description("侧边导航栏背景色")]
+        public Color SideBarBackColor { get => clbSideBar.BackColor; set => clbSideBar.BackColor = value; }
+
+        [Description("底部导航栏背景色")]
+        public Color BottomBarBackColor { get => clbBottomBar.BackColor; set => clbBottomBar.BackColor = value; }
+
+        [Description("一级菜单背景色")]
+        public Color MainMenuBackColor { get => mainMenuBackColor; set { mainMenuBackColor = value; RefreahNavColor(); } }
+
+        [Description("一级菜单前景色")]
+        public Color MainMenuForeColor { get => mainMenuForeColor; set { mainMenuForeColor = value; RefreahNavColor(); } }
+
+        [Description("二级菜单背景色")]
+        public Color SubMenuBackColor { get => subMenuBackColor; set { subMenuBackColor = value; RefreahNavColor(); } }
+
+        [Description("二级菜前景色")]
+        public Color SubMenuForeColor { get => subMenuForeColor; set { subMenuForeColor = value; RefreahNavColor(); } }
+
+        [Description("二级菜选中时的边线颜色")]
+        public Color SubMenuSidelineColor { get => subMenuSidelineColor; set { subMenuSidelineColor = value; RefreahNavColor(); } }
+
+        [Description("顶部导航栏选项背景色")]
+        public Color TopBarItemBackColor { get => topBarItemBackColor; set { topBarItemBackColor = value; RefreahNavColor(); } }
+
+        [Description("顶部导航栏选项前景色")]
+        public Color TopBarItemForeColor { get => topBarItemForeColor; set { topBarItemForeColor = value; RefreahNavColor(); } }
+
 
         public TemplateForm()
         {
             InitializeComponent();
 
-            Text = $"{ProductName} - V{ProductVersion}";
-
-            // 修改关闭选项名称
-            CloseAllPagesOptionText = "全部关闭";
-            ClosePageOptionText = "关闭";
-
             LoadBottomBar(clbBottomBar);
+        }
+
+        /// <summary>
+        /// 刷新导航栏选项的颜色
+        /// </summary>
+        private void RefreahNavColor()
+        {
+            // 左侧导航栏
+            foreach (SimpleButtonShutter item in clbSideBar.Items)
+            {
+                item.MainControl.BackColor = MainMenuBackColor;
+                item.MainControl.ForeColor = MainMenuForeColor;
+
+                foreach (TabButton btn in item.HiddenControl.Controls)
+                {
+                    btn.BackColor = SubMenuBackColor;
+                    btn.ForeColor = SubMenuForeColor;
+                    btn.SidelineColor = SubMenuSidelineColor;
+                }
+            }
+
+            // 顶部导航栏
+            foreach (Control btn in clbTopBar.Items)
+            {
+                btn.BackColor = TopBarItemBackColor;
+                btn.ForeColor = TopBarItemForeColor;
+            }
+
         }
 
         /// <summary>
@@ -64,15 +135,15 @@ namespace ApeFree.ApeForms.Demo
             }
 
             // 遍历导航栏一级菜单数据
-            SideNavData.Reverse();
-            foreach (NavBarGroup data in SideNavData)
+            SideBarData.Reverse();
+            foreach (NavBarGroup data in SideBarData)
             {
                 // 创建下拉按钮组
                 SimpleButtonShutter shutter = new SimpleButtonShutter();
                 shutter.ButtonGroupId = byte.MaxValue;
                 shutter.MainControl.Text = data.Name;
-                shutter.MainControl.BackColor = Color.FromArgb(30, 20, 50);
-                shutter.MainControl.ForeColor = Color.FromArgb(245, 245, 245);
+                shutter.MainControl.BackColor = MainMenuBackColor;
+                shutter.MainControl.ForeColor = MainMenuForeColor;
 
                 // 遍历导航栏二级菜单数据
                 data.Reverse();
@@ -86,18 +157,19 @@ namespace ApeFree.ApeForms.Demo
                         {
                             form.TopLevel = false;
                             form.FormBorderStyle = FormBorderStyle.None;
+                            form.Show();
                         }
 
                         // 设置单击事件
-                        slideTabControl.AddPage(item.Name, item.Control, (data.Icon ?? this.Icon).ToBitmap());
+                        slideTabControl.AddPage(item.Name, item.Control, (data.Icon ?? Icon).ToBitmap());
                     });
 
                     // 设置单个按钮的前景色和背景色
-                    btn.BackColor = Color.FromArgb(70, 55, 100);
-                    btn.ForeColor = Color.FromArgb(245, 245, 245);
+                    btn.BackColor = SubMenuBackColor;
+                    btn.ForeColor = SubMenuForeColor;
 
                     // 设置单个按钮选中时的边线颜色、边线宽度和背景色
-                    btn.SidelineColor = Color.PaleVioletRed;
+                    btn.SidelineColor = SubMenuSidelineColor;
                     btn.SidelineWidth = 8;
                     btn.SelectedBackColor = btn.BackColor.Luminance(1.2f); // 选中状态下按钮增亮20%   
                 }
@@ -119,7 +191,8 @@ namespace ApeFree.ApeForms.Demo
                 btn.Text = item.Name;
                 btn.AutoSize = true;
                 btn.MinimumSize = new Size(80, 0);
-                btn.BackColor = Color.FromArgb(40, 25, 65);
+                btn.BackColor = topBarItemBackColor;
+                btn.ForeColor = topBarItemForeColor;
                 btn.Click += item.Click;
                 btn.Parent = topBar;
             }
@@ -180,10 +253,7 @@ namespace ApeFree.ApeForms.Demo
             }
         }
 
-        private NavItem()
-        {
-
-        }
+        private NavItem() { }
 
         public NavItem(string name, Control control)
         {
