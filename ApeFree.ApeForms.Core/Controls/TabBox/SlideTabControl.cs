@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ApeFree.ApeForms.Core.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing.Drawing2D;
 
 namespace ApeFree.ApeForms.Core.Controls
 {
@@ -73,7 +74,8 @@ namespace ApeFree.ApeForms.Core.Controls
             };
 
             // 创建新标签
-            ToolStripItem item = tsTitle.Items.Add(title, icon);
+            var item = new TabStripButton(title, icon, null);
+            tsTitle.Items.Add(item);
             Pages.Add(item, content);
             slideBox.AddPage(content);
 
@@ -280,6 +282,7 @@ namespace ApeFree.ApeForms.Core.Controls
 
             slideBox.RemovePage(Pages[e.Item]);
             Pages.Remove(e.Item);
+            Jump(CurrentIndex);
         }
 
         private void TsTitle_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -355,6 +358,73 @@ namespace ApeFree.ApeForms.Core.Controls
         private void tsmiNextPage_Click(object sender, EventArgs e)
         {
             NextPage();
+        }
+    }
+
+    internal class TabStripButton : ToolStripButton
+    {
+        private bool inside;
+        private Rectangle rect;
+
+        public TabStripButton(string name, Image image, EventHandler onClick) : base(name, image, onClick)
+        {
+            AutoSize = false;
+            TextAlign = ContentAlignment.MiddleLeft;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            inside = rect.Contains(e.Location);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            inside = false;
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            base.OnClick(e);
+            if (inside)
+            {
+                Dispose();
+            }
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            // 计算标签的宽度
+            Width = TextRenderer.MeasureText(Text, this.Font).Width + Height;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            var x = Height / 4;
+            rect = new Rectangle(Width - 3 * x, x, x * 2, x * 2);
+
+            using (var brush = new SolidBrush(inside ? BackColor.Luminance(0.6f) : BackColor))
+            {
+                e.Graphics.FillRectangle(brush, rect);
+            }
+
+            var border = 2;
+            using (var pen = new Pen(ForeColor))
+            {
+                var sp = new Point(Width - 3 * x, x);
+                e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + border), new Point(sp.X + 2 * x - border - 1, sp.Y + 2 * x - border - 1));
+                e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + 2 * x - border - 1), new Point(sp.X + 2 * x - border - 1, sp.Y + border));
+            }
         }
     }
 }
