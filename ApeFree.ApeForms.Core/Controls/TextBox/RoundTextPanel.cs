@@ -43,17 +43,33 @@ namespace ApeFree.ApeForms.Core.Controls
         [Description("边框颜色")]
         public string Hint { get; set; }
 
-        /// <summary>
-        /// 文本内容 
-        /// </summary>
-        [Description("文本内容")]
-        public new string Text { get; set; }
+        public Color HintColor { get; set; } = Color.Gray;
+
+        /// <inheritdoc/>
+        [Browsable(true)]
+        public override string Text { get => base.Text; set => base.Text = value; }
 
         /// <summary>
         /// 背景色
         /// </summary>
         [Description("背景色")]
         public new Color BackColor { get => textBox.BackColor; set => textBox.BackColor = value; }
+        public bool IsHintMode
+        {
+            get => isHintMode; set
+            {
+                if (isHintMode = value)
+                {
+                    textBox.Text = Hint;
+                    textBox.ForeColor = HintColor;
+                }
+                else
+                {
+                    textBox.Text = Text;
+                    textBox.ForeColor = ForeColor;
+                }
+            }
+        }
 
         private bool isHintMode = false;
 
@@ -65,47 +81,56 @@ namespace ApeFree.ApeForms.Core.Controls
             textBox.GotFocus += TextBox_GotFocus;
             textBox.LostFocus += TextBox_LostFocus;
 
-            this.Load += RoundTextPanel_Load;
+            Load += RoundTextPanel_Load;
         }
 
         private void RoundTextPanel_Load(object sender, EventArgs e)
         {
-            TextBox_LostFocus(sender,e);
+            TextBox_LostFocus(sender, e);
         }
 
         private void TextBox_LostFocus(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(Text))
             {
-                isHintMode = true;
-                textBox.ForeColor = Color.Gray;
+                IsHintMode = true;
                 textBox.Text = Hint;
-                Invalidate();
+                textBox.ForeColor = HintColor;
             }
             else
             {
-                isHintMode = false;
+                IsHintMode = false;
             }
         }
 
         private void TextBox_GotFocus(object sender, EventArgs e)
         {
-            if (isHintMode)
-            {
-                textBox.Clear();
-            }
+            IsHintMode = false;
+            textBox.Text = Text;
             textBox.ForeColor = ForeColor;
-            Invalidate();
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            Text = textBox.Text;
+            if (!isHintMode)
+            {
+                Text = textBox.Text;
+            }
         }
 
         private void TextBox_SizeChanged(object sender, EventArgs e)
         {
             MinimumSize = new Size((int)(CornerRadius * 1.5), textBox.Height + 6);
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            if (!textBox.Focused && IsHintMode)
+            {
+                IsHintMode = false;
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
