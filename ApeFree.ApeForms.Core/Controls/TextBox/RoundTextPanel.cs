@@ -17,13 +17,24 @@ namespace ApeFree.ApeForms.Core.Controls
     /// </summary>
     public partial class RoundTextPanel : ColorlessPanel
     {
+        private System.Windows.Forms.TextBox textBox;
         private int cornerRadius = 20;
 
         /// <summary>
         /// 圆角半径
         /// </summary>
         [Description("圆角半径")]
-        public int CornerRadius { get => cornerRadius; set => cornerRadius = value > 0 ? value : cornerRadius; }
+        public int CornerRadius
+        {
+            get => cornerRadius;
+            set
+            {
+                if (value > 0)
+                {
+                    cornerRadius = value;
+                }
+            }
+        }
 
         /// <summary>
         /// 边框宽度
@@ -38,25 +49,39 @@ namespace ApeFree.ApeForms.Core.Controls
         public Color BorderColor { get; set; } = SystemColors.Highlight;
 
         /// <summary>
-        /// 边框颜色
+        /// 提示文本
         /// </summary>
-        [Description("边框颜色")]
+        [Description("提示文本")]
         public string Hint { get; set; }
 
+        /// <summary>
+        /// 提示文本的颜色
+        /// </summary>
+        [Description("提示文本的颜色")]
         public Color HintColor { get; set; } = Color.Gray;
 
         /// <inheritdoc/>
         [Browsable(true)]
-        public override string Text { get => base.Text; set => base.Text = value; }
+        public override string Text
+        {
+            get => base.Text; 
+            set
+            {
+                base.Text = value;
+                IsHintMode = string.IsNullOrEmpty(value);
+            }
+        }
 
         /// <summary>
         /// 背景色
         /// </summary>
         [Description("背景色")]
         public new Color BackColor { get => textBox.BackColor; set => textBox.BackColor = value; }
-        public bool IsHintMode
+
+        private bool IsHintMode
         {
-            get => isHintMode; set
+            get => isHintMode;
+            set
             {
                 if (isHintMode = value)
                 {
@@ -75,7 +100,9 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public RoundTextPanel()
         {
-            InitializeComponent();
+            textBox = new System.Windows.Forms.TextBox();
+            textBox.BorderStyle = BorderStyle.None;
+            textBox.Parent = this;
             textBox.TextChanged += TextBox_TextChanged;
             textBox.SizeChanged += TextBox_SizeChanged;
             textBox.GotFocus += TextBox_GotFocus;
@@ -91,28 +118,18 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private void TextBox_LostFocus(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Text))
-            {
-                IsHintMode = true;
-                textBox.Text = Hint;
-                textBox.ForeColor = HintColor;
-            }
-            else
-            {
-                IsHintMode = false;
-            }
+            IsHintMode = string.IsNullOrEmpty(Text);
         }
 
         private void TextBox_GotFocus(object sender, EventArgs e)
         {
             IsHintMode = false;
             textBox.Text = Text;
-            textBox.ForeColor = ForeColor;
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            if (!isHintMode)
+            if (!isHintMode && Text!= textBox.Text)
             {
                 Text = textBox.Text;
             }
@@ -125,12 +142,15 @@ namespace ApeFree.ApeForms.Core.Controls
 
         protected override void OnTextChanged(EventArgs e)
         {
-            base.OnTextChanged(e);
-
             if (!textBox.Focused && IsHintMode)
             {
                 IsHintMode = false;
             }
+            else if (textBox.Focused)
+            {
+                IsHintMode = false;
+            }
+            base.OnTextChanged(e);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -170,7 +190,7 @@ namespace ApeFree.ApeForms.Core.Controls
 
         protected override void OnLoad(EventArgs e)
         {
-            TextBoxCentering();
+            // TextBoxCentering();
             base.OnLoad(e);
         }
 
@@ -183,8 +203,15 @@ namespace ApeFree.ApeForms.Core.Controls
 
         public void TextBoxCentering()
         {
-            textBox.Width = Width - CornerRadius - Padding.Left - Padding.Right;
-            textBox.Height = Height - CornerRadius - Padding.Top - Padding.Bottom;
+            var minSide = Math.Min(Width, Height);
+            var maxCornerRadius = minSide / 2;
+            var cornerRadius = CornerRadius > maxCornerRadius ? maxCornerRadius : CornerRadius;
+
+
+            var height = Height - cornerRadius - BorderWidth * 2 - Padding.Top - Padding.Bottom - 2;
+            var width = Width - cornerRadius - BorderWidth * 2 - Padding.Left - Padding.Right - 2;
+            textBox.Size = new Size(width, height);
+            textBox.PerformLayout();
             textBox.Location = new Point((Width - textBox.Width) / 2, (Height - textBox.Height) / 2);
         }
 
