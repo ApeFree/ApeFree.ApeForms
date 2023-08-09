@@ -78,6 +78,7 @@ namespace ApeFree.ApeForms.Core.Controls
             tsTitle.Items.Add(item);
             Pages.Add(item, content);
             slideBox.AddPage(content);
+            item.CloseButtonClickHandler = (s, e) => RemovePage(title);
 
             if (tsTitle.Items.Count == 1)
             {
@@ -365,6 +366,7 @@ namespace ApeFree.ApeForms.Core.Controls
     {
         private bool inside;
         private Rectangle rect;
+        public EventHandler CloseButtonClickHandler;
 
         public TabStripButton(string name, Image image, EventHandler onClick) : base(name, image, onClick)
         {
@@ -389,7 +391,7 @@ namespace ApeFree.ApeForms.Core.Controls
             base.OnClick(e);
             if (inside)
             {
-                Dispose();
+                CloseButtonClickHandler?.Invoke(this, e);
             }
         }
 
