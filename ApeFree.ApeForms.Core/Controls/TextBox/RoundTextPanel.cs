@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace ApeFree.ApeForms.Core.Controls
     /// <summary>
     /// 圆角输入框面板
     /// </summary>
+    [DefaultEvent("TextChanged")]
+    [DefaultProperty("Text")]
     public partial class RoundTextPanel : ColorlessPanel
     {
         private System.Windows.Forms.TextBox textBox;
@@ -62,6 +65,8 @@ namespace ApeFree.ApeForms.Core.Controls
 
         /// <inheritdoc/>
         [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Localizable(true)]
         public override string Text
         {
             get => base.Text; 
@@ -107,6 +112,8 @@ namespace ApeFree.ApeForms.Core.Controls
             textBox.SizeChanged += TextBox_SizeChanged;
             textBox.GotFocus += TextBox_GotFocus;
             textBox.LostFocus += TextBox_LostFocus;
+
+            TextBoxCentering();
 
             Load += RoundTextPanel_Load;
         }
