@@ -13,7 +13,7 @@
 		<Description>ApeForms模板库，提供UI模板，开箱即用。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.11.3.4</Version>
+		<Version>0.11.5.1-beta0820</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
@@ -31,12 +31,21 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="TemplateForm.cs">
 	    <SubType>Form</SubType>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="TemplateForm.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
