@@ -29,30 +29,32 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            this.SuspendLayout();
+            pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            SuspendLayout();
             // 
             // pictureBox
             // 
-            this.pictureBox.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(200, 200);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox.TabIndex = 0;
-            this.pictureBox.TabStop = false;
+            pictureBox.Location = new System.Drawing.Point(0, 0);
+            pictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new System.Drawing.Size(320, 240);
+            pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pictureBox.TabIndex = 0;
+            pictureBox.TabStop = false;
             // 
             // Magnet
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox);
-            this.Name = "Magnet";
-            this.Size = new System.Drawing.Size(200, 200);
-            this.Controls.SetChildIndex(this.pictureBox, 0);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(pictureBox);
+            Margin = new System.Windows.Forms.Padding(7, 10, 7, 10);
+            Name = "Magnet";
+            Padding = new System.Windows.Forms.Padding(14, 20, 14, 20);
+            Size = new System.Drawing.Size(320, 240);
+            Controls.SetChildIndex(pictureBox, 0);
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
