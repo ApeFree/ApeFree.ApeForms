@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Design;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ApeFree.ApeForms.Core.Controls
 {
@@ -22,6 +15,10 @@ namespace ApeFree.ApeForms.Core.Controls
     {
         private System.Windows.Forms.TextBox textBox;
         private int cornerRadius = 20;
+
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public new event EventHandler TextChanged;
 
         /// <summary>
         /// 圆角半径
@@ -69,7 +66,7 @@ namespace ApeFree.ApeForms.Core.Controls
         [Localizable(true)]
         public override string Text
         {
-            get => base.Text; 
+            get => base.Text;
             set
             {
                 base.Text = value;
@@ -116,6 +113,13 @@ namespace ApeFree.ApeForms.Core.Controls
             TextBoxCentering();
 
             Load += RoundTextPanel_Load;
+
+            (this as Control).TextChanged += RoundTextPanel_TextChanged;
+        }
+
+        private void RoundTextPanel_TextChanged(object sender, EventArgs e)
+        {
+            this.TextChanged?.Invoke(sender, e);
         }
 
         private void RoundTextPanel_Load(object sender, EventArgs e)
@@ -136,7 +140,7 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            if (!isHintMode && Text!= textBox.Text)
+            if (!isHintMode && Text != textBox.Text)
             {
                 Text = textBox.Text;
             }
@@ -208,7 +212,7 @@ namespace ApeFree.ApeForms.Core.Controls
             Invalidate();
         }
 
-        public void TextBoxCentering()
+        private void TextBoxCentering()
         {
             var minSide = Math.Min(Width, Height);
             var maxCornerRadius = minSide / 2;
