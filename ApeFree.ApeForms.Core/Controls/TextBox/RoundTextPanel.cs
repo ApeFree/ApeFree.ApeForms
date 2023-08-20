@@ -70,7 +70,7 @@ namespace ApeFree.ApeForms.Core.Controls
             set
             {
                 base.Text = value;
-                IsHintMode = string.IsNullOrEmpty(value);
+                IsHintMode = string.IsNullOrEmpty(value) && !textBox.Focused;
             }
         }
 
