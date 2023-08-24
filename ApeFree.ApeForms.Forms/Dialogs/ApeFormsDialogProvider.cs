@@ -167,13 +167,9 @@ namespace ApeFree.ApeDialogs
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                var value = view.SelectedIndex >= 0 ? collection.ElementAt(view.SelectedIndex) : default;
+                var value = view.CheckedItems.Count >= 0 ? collection.ElementAt(view.CheckedIndices[0]) : default;
                 dialog.Result.UpdateResultData(value);
                 var result = dialog.PerformPrecheck();
-                //if (result.IsSuccess)
-                //{
-                //    e.Dialog.Dismiss(false);
-                //}
             };
 
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
@@ -216,10 +212,6 @@ namespace ApeFree.ApeDialogs
                 var items = view.CheckedItems.Cast<object>().Select(str => view.Items.IndexOf(str)).Select(i => collection.ElementAt(i));
                 dialog.Result.UpdateResultData(items);
                 var result = dialog.PerformPrecheck();
-                //if (result.IsSuccess)
-                //{
-                //    e.Dialog.Dismiss(false);
-                //}
             };
             settings.SelectAllOption.OptionSelectedCallback = (s, e) =>
             {
