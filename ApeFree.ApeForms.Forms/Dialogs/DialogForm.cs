@@ -12,6 +12,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
     {
         public string Title { get => Text; set => Text = value; }
         public string Content { get => labContent.Text; set => labContent.Text = value; }
+        public Font ContentFont { get; set; }
 
         public DialogForm()
         {

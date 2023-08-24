@@ -32,6 +32,7 @@ namespace ApeFree.ApeDialogs
             view.Format = DateTimePickerFormat.Custom;
             view.CustomFormat = settings.DateTimeFormat;
             view.Value = settings.DefaultDateTime;
+            view.Font = settings.Font;
 
             var dialog = new ApeFormsDialog<DateTime>(settings);
             dialog.ContentView = view;
@@ -65,6 +66,7 @@ namespace ApeFree.ApeDialogs
             view.Multiline = settings.IsMultiline;
             view.Text = settings.DefaultText;
             view.MaxLength = settings.MaximumLength;
+            view.Font = settings.Font;
 
             var dialog = new ApeFormsDialog<string>(settings);
             dialog.ContentView = view;
@@ -150,6 +152,7 @@ namespace ApeFree.ApeDialogs
         public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
             var view = new CheckedListBox();
+            view.Font = settings.Font;
             view.SelectedIndexChanged += (s, e) =>
             {
                 for (int i = 0; i < view.Items.Count; i++)
@@ -189,6 +192,7 @@ namespace ApeFree.ApeDialogs
         public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
         {
             var view = new CheckedListBox();
+            view.Font = settings.Font;
 
             // 关联Selected与Checked（使操作变简单）
             view.SelectedIndexChanged += (s, e) =>
@@ -238,6 +242,7 @@ namespace ApeFree.ApeDialogs
         {
             var view = new DataEntryView();
             view.Fields = sheet.Fields.ToArray();
+            view.Font = settings.Font;
 
             var dialog = new ApeFormsDialog<DataEntrySheet>(settings);
             dialog.ContentView = view;

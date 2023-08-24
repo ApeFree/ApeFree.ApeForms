@@ -23,6 +23,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             Content = settings.Content;
             InnerDialog.ControlBox = settings.Cancelable;
             InnerDialog.Size = settings.DialogSize ?? DefaultDialogSize;
+            InnerDialog.ContentFont = settings.Font;
 
             foreach (var item in settings.GetOptions())
             {
