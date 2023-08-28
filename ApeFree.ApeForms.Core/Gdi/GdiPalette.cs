@@ -119,23 +119,39 @@ namespace ApeFree.ApeForms.Core.Gdi
         {
             if (style.Pen != null)
             {
-                Canvas.DrawPolygon(style.Pen, shape.Points.ToArray());
+                Canvas.DrawPolygon(style.Pen, shape.Points);
             }
 
             if (style.Brush != null)
             {
-                Canvas.FillPolygon(style.Brush, shape.Points.ToArray());
+                Canvas.FillPolygon(style.Brush, shape.Points);
             }
         }
 
         ///<inheritdoc/>
         protected override void DrawTextHandler(GdiStyle style, TextShape shape)
         {
+            if (string.IsNullOrEmpty(shape.Text))
+            {
+                return;
+            }
+
             var brush = style.Brush ?? Brushes.Black;
             var format = style.StringFormat ?? new StringFormat();
             var font = style.Font ?? SystemFonts.DefaultFont;
+
+            var width = shape.Width;
+            var height = shape.Height;
+
+            if (shape.Width <= 0 || shape.Height <= 0)
+            {
+                var size = Canvas.MeasureString(shape.Text, font);
+                width = size.Width;
+                height = size.Height;
+            }
+
             // 绘制文字
-            Canvas.DrawString(shape.Text, font, brush, new RectangleF(shape.Left, shape.Top, shape.Width, shape.Height), format);
+            Canvas.DrawString(shape.Text, font, brush, new RectangleF(shape.Left, shape.Top, width, height), format);
         }
     }
 }
