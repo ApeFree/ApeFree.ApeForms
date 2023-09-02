@@ -73,6 +73,10 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             // 当前工作区域
             var rect = Screen.GetWorkingArea(this);
+            if (rect == null)
+            {
+                return;
+            }
 
             // 当前工作区的面积
             float area = rect.Width * rect.Height;
