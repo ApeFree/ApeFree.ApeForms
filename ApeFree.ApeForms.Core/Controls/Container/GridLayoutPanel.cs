@@ -22,34 +22,26 @@ namespace ApeFree.ApeForms.Core.Controls.Container
             AutoScroll = true;
         }
 
-        /// <summary>
-        /// 显示行数
-        /// </summary>
         public int DisplayRow
         {
-            get => displayRow;
+            get { return displayRow; }
             set
             {
                 if (value > 0 && displayRow != value)
                 {
                     displayRow = value;
-                    Rearrange();
                 }
             }
         }
 
-        /// <summary>
-        /// 显示列数
-        /// </summary>
         public int DisplayColumn
         {
-            get => displayColumn;
+            get { return displayColumn; }
             set
             {
                 if (value > 0 && displayColumn != value)
                 {
                     displayColumn = value;
-                    Rearrange();
                 }
             }
         }
@@ -58,32 +50,38 @@ namespace ApeFree.ApeForms.Core.Controls.Container
         /// </summary>
         public void Rearrange()
         {
-            var itemCount = Controls.Count;
-            if (itemCount == 0)
+            var displayItems = Controls.Cast<Control>().Where(c => c.Visible).ToArray();
+            var displayCount = displayItems.Count();
+            if (displayCount == 0)
             {
                 return;
             }
 
-            var itemHeight = this.ClientRectangle.Height / DisplayRow;
-            var itemWidth = this.ClientRectangle.Width / DisplayColumn;
+            var itemHeight = ClientRectangle.Height / (float)DisplayRow;
+            var itemWidth = ClientRectangle.Width / (float)DisplayColumn;
 
+            // 滚动条置顶
             AutoScrollPosition = new Point(0, 0);
 
             SuspendLayout();
 
-            for (int i = 0; i < itemCount; i++)
+            // 重新计算每一个子控件的坐标
+            for (int i = 0; i < displayCount; i++)
             {
                 var row = i / DisplayColumn;
                 var col = i % DisplayColumn;
 
-                var item = Controls[i];
+                var item = displayItems[i];
                 item.SuspendLayout();
-                item.Size = new Size(itemWidth, itemHeight);
-                item.Location = new Point(col * itemWidth, row * itemHeight);
-                item.ResumeLayout(false);
+                item.Size = new Size((int)itemWidth, (int)itemHeight);
+                item.Location = new Point((int)(col * itemWidth), (int)(row * itemHeight));
+                item.ResumeLayout(true);
             }
 
-            ResumeLayout(false);
+            ResumeLayout(true);
+
+            var size = new Size((int)(displayItems.Select(i => i.Left).Max() + itemWidth), (int)(displayItems.Select(i => i.Top).Max() + itemHeight));
+            AutoScrollMinSize = size;
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -96,6 +94,15 @@ namespace ApeFree.ApeForms.Core.Controls.Container
         {
             base.OnControlAdded(e);
             e.Control.Dock = DockStyle.None;
+            if (e.Control.Visible)
+            {
+                Rearrange();
+            }
+        }
+
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            base.OnControlRemoved(e);
             Rearrange();
         }
     }
