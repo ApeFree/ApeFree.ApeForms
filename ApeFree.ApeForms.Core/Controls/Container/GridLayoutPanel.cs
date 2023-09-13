@@ -18,10 +18,15 @@ namespace ApeFree.ApeForms.Core.Controls.Container
 
         public GridLayoutPanel()
         {
+            HorizontalScroll.Maximum = 0;
             AutoSize = false;
             AutoScroll = true;
+            VerticalScroll.Visible = true;
         }
 
+        /// <summary>
+        /// 显示行数
+        /// </summary>
         public int DisplayRow
         {
             get { return displayRow; }
@@ -34,6 +39,9 @@ namespace ApeFree.ApeForms.Core.Controls.Container
             }
         }
 
+        /// <summary>
+        /// 显示列数
+        /// </summary>
         public int DisplayColumn
         {
             get { return displayColumn; }
@@ -60,8 +68,8 @@ namespace ApeFree.ApeForms.Core.Controls.Container
             var itemHeight = ClientRectangle.Height / (float)DisplayRow;
             var itemWidth = ClientRectangle.Width / (float)DisplayColumn;
 
-            // 滚动条置顶
-            AutoScrollPosition = new Point(0, 0);
+            // 计算由滚动条导致的Y轴偏移距离
+            var topOffset = Math.Abs(AutoScrollPosition.Y);
 
             SuspendLayout();
 
@@ -74,7 +82,7 @@ namespace ApeFree.ApeForms.Core.Controls.Container
                 var item = displayItems[i];
                 item.SuspendLayout();
                 item.Size = new Size((int)itemWidth, (int)itemHeight);
-                item.Location = new Point((int)(col * itemWidth), (int)(row * itemHeight));
+                item.Location = new Point((int)(col * itemWidth), (int)(row * itemHeight - topOffset));
                 item.ResumeLayout(true);
             }
 
