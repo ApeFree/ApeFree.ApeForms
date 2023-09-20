@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApeFree.ApeForms.Core.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Dialogs
 {
-    public partial class DialogForm : Form
+    public partial class DialogForm : FramelessForm
     {
         public string Title { get => Text; set => Text = value; }
         public string Content { get => labContent.Text; set => labContent.Text = value; }

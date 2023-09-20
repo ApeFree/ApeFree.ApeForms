@@ -38,31 +38,31 @@ partial class DialogForm
         flpOptions.AutoSize = true;
         flpOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
         flpOptions.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-        flpOptions.Location = new System.Drawing.Point(12, 214);
+        flpOptions.Location = new System.Drawing.Point(12, 206);
         flpOptions.Margin = new System.Windows.Forms.Padding(4);
         flpOptions.Name = "flpOptions";
-        flpOptions.Size = new System.Drawing.Size(482, 0);
+        flpOptions.Size = new System.Drawing.Size(467, 0);
         flpOptions.TabIndex = 0;
         // 
         // labContent
         // 
         labContent.AutoEllipsis = true;
         labContent.Dock = System.Windows.Forms.DockStyle.Top;
-        labContent.Location = new System.Drawing.Point(12, 14);
+        labContent.Location = new System.Drawing.Point(12, 32);
         labContent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
         labContent.Name = "labContent";
-        labContent.Size = new System.Drawing.Size(482, 17);
+        labContent.Size = new System.Drawing.Size(467, 17);
         labContent.TabIndex = 2;
         labContent.Text = "Content";
         // 
         // panelView
         // 
         panelView.Dock = System.Windows.Forms.DockStyle.Fill;
-        panelView.Location = new System.Drawing.Point(12, 31);
+        panelView.Location = new System.Drawing.Point(12, 49);
         panelView.Margin = new System.Windows.Forms.Padding(4);
         panelView.Name = "panelView";
         panelView.Padding = new System.Windows.Forms.Padding(0, 14, 0, 0);
-        panelView.Size = new System.Drawing.Size(482, 183);
+        panelView.Size = new System.Drawing.Size(467, 157);
         panelView.TabIndex = 3;
         // 
         // DialogForm
@@ -70,16 +70,15 @@ partial class DialogForm
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         BackColor = System.Drawing.Color.FromArgb(255, 254, 253);
-        ClientSize = new System.Drawing.Size(506, 228);
+        ClientSize = new System.Drawing.Size(491, 220);
         Controls.Add(panelView);
         Controls.Add(labContent);
         Controls.Add(flpOptions);
-        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
         Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
         MaximizeBox = false;
         MinimizeBox = false;
         Name = "DialogForm";
-        Padding = new System.Windows.Forms.Padding(12, 14, 12, 14);
+        Padding = new System.Windows.Forms.Padding(12, 32, 12, 14);
         ShowIcon = false;
         ShowInTaskbar = false;
         StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
