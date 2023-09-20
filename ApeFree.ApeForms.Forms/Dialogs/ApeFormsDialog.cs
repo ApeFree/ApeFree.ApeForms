@@ -24,6 +24,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InnerDialog.ControlBox = settings.Cancelable;
             InnerDialog.Size = settings.DialogSize ?? DefaultDialogSize;
             InnerDialog.ContentFont = settings.Font;
+            InnerDialog.ReminderColor = settings.ReminderColor;
 
             foreach (var item in settings.GetOptions())
             {
