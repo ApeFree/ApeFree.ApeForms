@@ -20,12 +20,7 @@ namespace ApeFree.ApeDialogs
     {
         private ErrorProvider errorProvider = new ErrorProvider() { BlinkStyle = ErrorBlinkStyle.BlinkIfDifferentError, BlinkRate = 100 };
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
         {
             var view = new DateTimePicker();
@@ -54,12 +49,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
         {
             var view = new TextBox();
@@ -99,12 +89,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
@@ -112,12 +97,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
         {
             ApeFormsDialog<string> dialog = (ApeFormsDialog<string>)CreateInputDialog(settings, context);
@@ -125,12 +105,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<bool>(settings);
@@ -140,15 +115,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <typeparam name="T"><inheritdoc/></typeparam>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="collection"><inheritdoc/></param>
-        /// <param name="defaultSelectedItem"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
         {
             var view = new CheckedListBox();
@@ -180,15 +147,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <typeparam name="T"><inheritdoc/></typeparam>
-        /// <param name="settings"><inheritdoc/></param>
-        /// <param name="collection"><inheritdoc/></param>
-        /// <param name="defaultSelectedItems"><inheritdoc/></param>
-        /// <param name="context"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
         {
             var view = new CheckedListBox();
@@ -237,7 +196,7 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
-
+        /// <inheritdoc/>
         public override IDialog<DataEntrySheet> CreateDataEntrySheetDialog(DataEntrySheet sheet, DataEntrySheetDialogSettings settings, Control context = null)
         {
             var view = new DataEntryView();
