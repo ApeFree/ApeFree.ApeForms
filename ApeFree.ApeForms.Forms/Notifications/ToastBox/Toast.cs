@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,33 @@ using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Notifications
 {
-    public class Toast
+    public static class Toast
     {
         private static ConcurrentQueue<ToastMsg> QueueMsg { get; } = new ConcurrentQueue<ToastMsg>();
         private static bool IsBusy { get; set; } = false;
         private static Control ContextControl { get; set; }
         private static ToastForm CurrentToastForm { get; set; }
+
+        /// <summary>
+        /// Toast默认字体
+        /// </summary>
+        public static Font Font { get; set; }
+
+        /// <summary>
+        /// 字体颜色
+        /// </summary>
+        public static Color ForeColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// 背景颜色
+        /// </summary>
+        public static Color BackColor { get; private set; } = Color.Gray;
+
+        /// <summary>
+        /// 显示位置
+        /// </summary>
+        public static ToastLocation Location { get; set; } = ToastLocation.Auto;
+
         public static void Clear()
         {
             try
