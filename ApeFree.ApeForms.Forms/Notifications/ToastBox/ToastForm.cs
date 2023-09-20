@@ -22,7 +22,10 @@ namespace ApeFree.ApeForms.Forms.Notifications
             InitializeComponent();
 
             Text = content;
-            this.Context = context;
+            Context = context;
+            Font = Toast.Font;
+            BackColor = Toast.BackColor;
+            ForeColor = Toast.ForeColor;
 
             var g = this.CreateGraphics();
             var strSize = g.MeasureString(content, Font);
@@ -60,7 +63,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
             int left, top;
 
             var contextForm = Context?.FindForm();
-            if (contextForm !=null)
+            if (contextForm != null)
             {
                 left = (contextForm.Width - Width) / 2 + contextForm.Left;
                 top = contextForm.Height / 4 * 3 + contextForm.Top;
@@ -73,46 +76,44 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
             // 当前工作区域
             var rect = Screen.GetWorkingArea(this);
-            if (rect == null)
-            {
-                return;
-            }
 
             // 当前工作区的面积
             float area = rect.Width * rect.Height;
 
-            while (stack.Any())
+            if (Toast.Location == ToastLocation.Auto || Toast.Location == ToastLocation.ActiveForm)
             {
-                // 判断是否有活动窗体
-                var form = stack.Pop();
-
-                // 如果是Toast窗体则不会被当做是Toast的背景窗体
-                if (form is ToastForm)
+                while (stack.Any())
                 {
-                    continue;
-                }
+                    // 判断是否有活动窗体
+                    var form = stack.Pop();
 
-                // 如果是Notificatio窗体则不会被当做是Toast的背景窗体
-                if (form is NotificationBox)
-                {
-                    continue;
-                }
+                    // 如果是Toast窗体则不会被当做是Toast的背景窗体
+                    if (form is ToastForm)
+                    {
+                        continue;
+                    }
 
-                // 如果窗体的面积是否达到阈值则不会被当做是Toast的背景窗体
-                if ((form.Height * form.Width / area) < 0.15)
-                {
-                    continue;
-                }
+                    // 如果是Notificatio窗体则不会被当做是Toast的背景窗体
+                    if (form is NotificationBox)
+                    {
+                        continue;
+                    }
 
-                // Toast定位到父窗体的相对位置
-                left = (form.Width - Width) / 2 + form.Left;
-                top = form.Height / 4 * 3 + form.Top;
-                Location = new Point(left, top);
-                return;
+                    // 如果窗体的面积是否达到阈值则不会被当做是Toast的背景窗体
+                    if ((form.Height * form.Width / area) < 0.15)
+                    {
+                        continue;
+                    }
+
+                    // Toast定位到父窗体的相对位置
+                    left = (form.Width - Width) / 2 + form.Left;
+                    top = form.Height / 4 * 3 + form.Top;
+                    Location = new Point(left, top);
+                    return;
+                }
             }
 
             // Toast定位到工作区的相对位置
-            // var rect = Screen.GetWorkingArea(this);
             left = (rect.Width - Width) / 2;
             top = rect.Height / 4 * 3;
             Location = new Point(left, top);
