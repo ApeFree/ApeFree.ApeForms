@@ -137,7 +137,7 @@ namespace ApeFree.ApeDialogs
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
-                var value = view.CheckedItems.Count >= 0 ? collection.ElementAt(view.CheckedIndices[0]) : default;
+                var value = view.CheckedItems.Count > 0 ? collection.ElementAt(view.CheckedIndices[0]) : default;
                 dialog.Result.UpdateResultData(value);
                 var result = dialog.PerformPrecheck();
             };
