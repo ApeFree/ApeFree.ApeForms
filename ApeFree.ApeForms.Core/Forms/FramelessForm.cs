@@ -34,6 +34,7 @@ namespace ApeFree.ApeForms.Core.Forms
         /// </summary>
         private Point? _MouseMoveOffsetPoint;
         private Color reminderColor = ButtonBackColor;
+        private readonly Layer<GdiStyle, RectangleShape> borderLayer;
         private readonly Layer<GdiStyle, TextShape> textLayer;
         private readonly Layer<GdiStyle, LineShape> lineLayer;
         private readonly Layer<GdiStyle, RectangleShape> closeButtonLayer;
@@ -71,7 +72,7 @@ namespace ApeFree.ApeForms.Core.Forms
         {
             InitializeComponent();
 
-            Palette.DrawRectangle(new GdiStyle() { Pen = new Pen(Color.DarkGray) }, new RectangleShape(new PointF(), Width - 1, Height - 1));
+            borderLayer = Palette.DrawRectangle(new GdiStyle() { Pen = new Pen(Color.DarkGray) }, new RectangleShape(new PointF(), Width - 1, Height - 1));
             textLayer = Palette.DrawText(new GdiStyle() { Font = new Font(Font.FontFamily, 15, FontStyle.Bold) }, new TextShape(new PointF(10, 10), 9999, 9999, Text));
             lineLayer = Palette.DrawLine(new GdiStyle() { Pen = new Pen(ButtonBackColor, 5) }, new LineShape(new Point(), 9999, 0));
             closeButtonLayer = Palette.DrawRectangle(new GdiStyle() { Brush = new SolidBrush(ButtonBackColor) }, new RectangleShape(0, 0, ButtonSize, ButtonSize));
@@ -127,27 +128,39 @@ namespace ApeFree.ApeForms.Core.Forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            RepositionButtons();
+        }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            if (Visible)
+            {
+                RepositionButtons();
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            closeButtonLayer.Visible = ControlBox;
+            base.OnPaint(e);
+        }
+
+        private void RepositionButtons()
+        {
             for (int i = 0; i < Buttons.Length; i++)
             {
                 ButtonShapes[i].Left = Width - (i + 1) * ButtonSize;
             }
+
+            borderLayer.Shape.Width = Width - 1;
+            borderLayer.Shape.Height = Height - 1;
 
             var padding = 8;
             closeCrossLine1.Shape.StartPoint = closeButtonLayer.Shape.Points[0].Add(padding, padding);
             closeCrossLine1.Shape.EndPoint = closeButtonLayer.Shape.Points[3].Add(-padding, -padding);
             closeCrossLine2.Shape.StartPoint = closeButtonLayer.Shape.Points[1].Add(-padding, padding);
             closeCrossLine2.Shape.EndPoint = closeButtonLayer.Shape.Points[2].Add(padding, -padding);
-        }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -179,97 +192,5 @@ namespace ApeFree.ApeForms.Core.Forms
             if (textLayer != null)
                 textLayer.Shape.Text = Text;
         }
-
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
-        private void Form1_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
     }
-
-    //public class GdiButtonShape : ComplexShape
-    //{
-    //    /// <summary>
-    //    /// 图形样式
-    //    /// </summary>
-    //    public SimpleShape Shape { get; set; }
-
-    //    public Color ForeColor { get; set; }
-
-    //    public Color BackColor { get; set; }
-
-    //    public GdiButtonShape(PointF location, float width, float height) 
-    //    {
-
-    //    }
-
-    //    public GdiButtonShape(float left, float top, float width, float height) 
-    //    {
-    //    }
-
-    //    protected virtual void DrawShape(Graphics g)
-    //    {
-    //        // 计算图形的颜色
-    //        var shapeColor = ForeColor;
-
-    //        // 计算图形的尺寸和位置
-    //        var size = (int)(Math.Min(Width, Height) * GraphicScale);
-    //        var location = new Point((Width - size) / 2, (Height - size) / 2);
-
-    //        switch (Shape)
-    //        {
-    //            case SimpleShape.Close:
-    //                {
-    //                    var penWidth = size / 20;
-    //                    Pen pen = new Pen(shapeColor, penWidth);
-    //                    g.DrawLine(pen, location, new Point(location.X + size, location.Y + size));
-    //                    g.DrawLine(pen, new Point(location.X, location.Y + size), new Point(location.X + size, location.Y));
-    //                }
-    //                break;
-    //            case SimpleShape.Maximize:
-    //                {
-    //                    var penWidth = size / 20;
-    //                    Pen pen = new Pen(shapeColor, penWidth);
-    //                    g.DrawRectangle(pen, location.X, location.Y, size, size);
-    //                }
-    //                break;
-    //            case SimpleShape.Minimize:
-    //                {
-    //                    location = new Point((Width - size) / 2, Height / 2);
-    //                    var penWidth = size / 20;
-    //                    Pen pen = new Pen(shapeColor, penWidth);
-    //                    g.DrawLine(pen, location, new Point(location.X + size, location.Y));
-    //                }
-    //                break;
-    //        }
-    //    }
-
-    //    public enum SimpleShape
-    //    {
-    //        Close,
-    //        Maximize,
-    //        Minimize,
-    //    }
-    //}
 }
