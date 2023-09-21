@@ -29,7 +29,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public static Color BackColor { get; private set; } = Color.Gray;
+        public static Color BackColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// 显示位置

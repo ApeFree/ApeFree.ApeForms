@@ -133,16 +133,12 @@ namespace ApeFree.ApeForms.Forms.Notifications
             var strSize = e.Graphics.MeasureString(Text, Font);
             this.Size = new Size((int)(strSize.Width + 20), (int)(strSize.Height + 20));
             var strLocation = new Point(10, 10);
-            e.Graphics.DrawString(Text, Font, Brushes.White, strLocation);
+            var brush = new SolidBrush(ForeColor);
+            e.Graphics.DrawString(Text, Font, brush, strLocation);
             Reposition();
-        }
 
-        //public new void Show()
-        //{
-        //    this.TopMost = true;
-        //    this.ShowWindow(ShowWindowMode.ShowNoactivate);
-        //    this.SetWindowToTopWithoutFocus();
-        //}
+            brush.Dispose();
+        }
 
         protected override void OnShown(EventArgs e)
         {
