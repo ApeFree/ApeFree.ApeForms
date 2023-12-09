@@ -63,25 +63,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             btn.AutoSize = true;
             btn.ClickCallback = e => option.OptionSelectedCallback?.Invoke(btn, new OptionSelectedEventArgs(this, option));
 
-            //switch (option.OptionTag)
-            //{
-            //    case DialogOptionTag.Neutral:
-            //        btn.BackColor = SystemColors.Highlight;
-            //        break;
-            //    case DialogOptionTag.Positive:
-            //        btn.BackColor = Color.ForestGreen;
-            //        break;
-            //    case DialogOptionTag.Negative:
-            //        btn.BackColor = Color.IndianRed;
-            //        break;
-            //    case DialogOptionTag.Functional:
-            //        btn.BackColor = SystemColors.Highlight;
-            //        break;
-            //    case DialogOptionTag.Special:
-            //        btn.BackColor = Color.MediumPurple;
-            //        break;
-            //}
-
             if (Settings.OptionTagColors?.TryGetValue(option.OptionTag, out Color color) != null)
             {
                 btn.BackColor = color;
