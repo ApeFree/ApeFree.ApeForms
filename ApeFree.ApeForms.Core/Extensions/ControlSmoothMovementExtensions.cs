@@ -21,14 +21,20 @@ namespace System.Windows.Forms
         /// <param name="finishCallback"></param>
         public static void SizeGradualChange<T>(this T control, Size targetSize, byte rate = 5, Action<T> finishCallback = null) where T : Control
         {
-            SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
+            lock (control)
             {
-                control.Width = Gradual(control.Width, targetSize.Width, rate);
-                control.Height = Gradual(control.Height, targetSize.Height, rate);
-            }, () =>
-            {
-                return (control.Width == targetSize.Width) && (control.Height == targetSize.Height);
-            }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
+                SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.SizeGradualChange, () =>
+                {
+                    var width = Gradual(control.Width, targetSize.Width, rate);
+                    var height = Gradual(control.Height, targetSize.Height, rate);
+                    control.Size = new Size(width, height);
+                },
+                () =>
+                {
+                    return control.Size == targetSize;
+                },
+                finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
+            }
         }
 
         /// <summary>
@@ -52,8 +58,9 @@ namespace System.Windows.Forms
                     },
                     () =>
                     {
-                        return (control.Left == targetPoint.X) && (control.Top == targetPoint.Y);
-                    }, finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
+                        return control.Location == targetPoint;
+                    },
+                    finishCallback == null ? null : (sender => finishCallback.Invoke((T)sender))));
             }
         }
 
@@ -66,11 +73,11 @@ namespace System.Windows.Forms
         /// <param name="offset"></param>
         /// <param name="rate"></param>
         /// <param name="finishCallback"></param>
-        public static void VerticalScrollGradualChange<T>(this T control, Control childControl,int offset = 0, byte rate = 5, Action<T> finishCallback = null) where T : ScrollableControl
+        public static void VerticalScrollGradualChange<T>(this T control, Control childControl, int offset = 0, byte rate = 5, Action<T> finishCallback = null) where T : ScrollableControl
         {
             lock (control)
             {
-                
+
                 SharedTimedTaskManager.Manager.AddTask(new TimedTaskItem(control, TimedTaskTag.VerticalScrollGradualChange,
                     () =>
                     {
