@@ -17,14 +17,16 @@ namespace System.Windows.Forms
         /// <param name="stepSize">步长</param>
         /// <param name="targetOpacityValue">目标值</param>
         /// <param name="finishCallback">完成回调</param>
+        /// <param name="useReflectionShowMethod">是否使用反射来调用Show方法</param>
         /// <returns></returns>
-        public static void GraduallyShow<T>(this T form, double stepSize = 0.1, double targetOpacityValue = 1, Action<T> finishCallback = null) where T : Form
+        public static void GraduallyShow<T>(this T form, double stepSize = 0.1, double targetOpacityValue = 1, Action<T> finishCallback = null, bool useReflectionShowMethod = true) where T : Form
         {
             form.Opacity = 0;
 
-            // Show方法可能存在重写
+            // Show方法可能存在重写，使用反射来调用Show方法可以调用到真实类型的Show方法
             var mi = form.GetType().GetMethods().FirstOrDefault(m => m.Name == "Show" && !m.GetParameters().Any());
-            if (mi != null)
+
+            if (useReflectionShowMethod && mi != null)
             {
                 mi.Invoke(form, null);
             }
@@ -33,7 +35,7 @@ namespace System.Windows.Forms
                 form.Show();
             }
 
-            form.OpacityGradualChange(targetOpacityValue, (byte)(255 * stepSize), finishCallback);
+            form.OpacityGradualChange(targetOpacityValue, (byte)(1f / stepSize), finishCallback);
         }
 
         /// <summary>
