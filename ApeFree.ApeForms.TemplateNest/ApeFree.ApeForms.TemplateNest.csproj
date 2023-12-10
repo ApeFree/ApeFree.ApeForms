@@ -13,7 +13,7 @@
 		<Description>ApeForms模板库，提供UI模板，开箱即用。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.11.6.0-beta0902</Version>
+		<Version>0.11.8.0-beta1211</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
