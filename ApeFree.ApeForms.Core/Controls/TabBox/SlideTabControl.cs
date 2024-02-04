@@ -32,22 +32,40 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         public event EventHandler<PageRemovedEventArgs> PageRemoved;
 
-
+        /// <summary>
+        /// 所有页面对象
+        /// </summary>
         public Dictionary<ToolStripItem, Control> Pages = new Dictionary<ToolStripItem, Control>();
 
+        /// <summary>
+        /// 页面标题栏停靠的位置
+        /// </summary>
         [Browsable(true)]
         [Description("页面标题栏停靠的位置")]
         public DockStyle TitleDock { get => tsTitle.Dock; set => tsTitle.Dock = value; }
 
+        /// <summary>
+        /// 页面标题栏项目的对齐方式
+        /// </summary>
         [Browsable(true)]
         [Description("页面标题栏项目的对齐方式")]
         public ToolStripLayoutStyle TitleLayoutStyle { get => tsTitle.LayoutStyle; set => tsTitle.LayoutStyle = value; }
 
+        /// <summary>
+        /// 翻页时移动的速率
+        /// </summary>
         [Browsable(true)]
         [Description("翻页时移动的速率，当Rate = 1时，无翻页动画效果，Rate值越大翻页越慢")]
         public int Rate { get => slideBox.Rate; set => slideBox.Rate = value; }
 
+        /// <summary>
+        /// 关闭页面选项的文本
+        /// </summary>
         public string ClosePageOptionText { get => tsmiClose.Text; set => tsmiClose.Text = value; }
+
+        /// <summary>
+        /// 关闭所有页面选项的文本
+        /// </summary>
         public string CloseAllPagesOptionText { get => tsmiCloseAll.Text; set => tsmiCloseAll.Text = value; }
 
         public int CurrentIndex { get; private set; }
