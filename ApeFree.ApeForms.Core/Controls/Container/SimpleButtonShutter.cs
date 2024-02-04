@@ -74,5 +74,20 @@ namespace ApeFree.ApeForms.Core.Controls
             HiddenControl.Controls.Add(btn);
             return btn;
         }
+
+        public SimpleButtonShutter AddChildShutter(string text)
+        {
+            var shutter = new SimpleButtonShutter();
+            shutter.Text = text;
+            AddChildShutter(shutter);
+            return shutter;
+        }
+
+        public void AddChildShutter(SimpleButtonShutter shutter)
+        {
+            shutter.ButtonGroupId = ButtonGroupId;
+            shutter.Dock = DockStyle.Top;
+            HiddenControl.Controls.Add(shutter);
+        }
     }
 }
