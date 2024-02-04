@@ -1,6 +1,6 @@
 ﻿using ApeFree.ApeForms.Core.Controls;
 
-namespace ApeFree.ApeForms.Demo
+namespace ApeFree.ApeForms.TemplateNest
 {
     partial class TemplateForm
     {
@@ -37,8 +37,13 @@ namespace ApeFree.ApeForms.Demo
             slideTabControl = new SlideTabControl();
             clbSideBar = new ControlListBox();
             clbBottomBar = new ControlListBox();
+            splitContainer = new System.Windows.Forms.SplitContainer();
             panelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
             SuspendLayout();
             // 
             // panelHead
@@ -50,7 +55,7 @@ namespace ApeFree.ApeForms.Demo
             panelHead.Location = new System.Drawing.Point(0, 0);
             panelHead.Margin = new System.Windows.Forms.Padding(4);
             panelHead.Name = "panelHead";
-            panelHead.Size = new System.Drawing.Size(915, 71);
+            panelHead.Size = new System.Drawing.Size(912, 71);
             panelHead.TabIndex = 1;
             // 
             // clbTopBar
@@ -62,7 +67,7 @@ namespace ApeFree.ApeForms.Demo
             clbTopBar.Location = new System.Drawing.Point(175, 0);
             clbTopBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbTopBar.Name = "clbTopBar";
-            clbTopBar.Size = new System.Drawing.Size(740, 71);
+            clbTopBar.Size = new System.Drawing.Size(737, 71);
             clbTopBar.TabIndex = 1;
             // 
             // picLogo
@@ -81,11 +86,11 @@ namespace ApeFree.ApeForms.Demo
             slideTabControl.CloseAllPagesOptionText = "Close all";
             slideTabControl.ClosePageOptionText = "Close";
             slideTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            slideTabControl.Location = new System.Drawing.Point(175, 71);
+            slideTabControl.Location = new System.Drawing.Point(0, 0);
             slideTabControl.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             slideTabControl.Name = "slideTabControl";
             slideTabControl.Rate = 2;
-            slideTabControl.Size = new System.Drawing.Size(740, 653);
+            slideTabControl.Size = new System.Drawing.Size(696, 653);
             stateColorSet1.GotFocusBackColor = System.Drawing.Color.FromArgb(0, 122, 204);
             stateColorSet1.GotFocusForeColor = System.Drawing.Color.White;
             stateColorSet1.LostFocusBackColor = System.Drawing.Color.FromArgb(251, 251, 251);
@@ -106,11 +111,11 @@ namespace ApeFree.ApeForms.Demo
             clbSideBar.AutoScroll = true;
             clbSideBar.BackColor = System.Drawing.Color.FromArgb(40, 40, 60);
             clbSideBar.Direction = System.Windows.Forms.FlowDirection.TopDown;
-            clbSideBar.Dock = System.Windows.Forms.DockStyle.Left;
-            clbSideBar.Location = new System.Drawing.Point(0, 71);
+            clbSideBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            clbSideBar.Location = new System.Drawing.Point(0, 0);
             clbSideBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbSideBar.Name = "clbSideBar";
-            clbSideBar.Size = new System.Drawing.Size(175, 724);
+            clbSideBar.Size = new System.Drawing.Size(212, 653);
             clbSideBar.TabIndex = 3;
             // 
             // clbBottomBar
@@ -119,11 +124,30 @@ namespace ApeFree.ApeForms.Demo
             clbBottomBar.BackColor = System.Drawing.Color.WhiteSmoke;
             clbBottomBar.Direction = System.Windows.Forms.FlowDirection.BottomUp;
             clbBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            clbBottomBar.Location = new System.Drawing.Point(175, 724);
+            clbBottomBar.Location = new System.Drawing.Point(0, 724);
             clbBottomBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbBottomBar.Name = "clbBottomBar";
-            clbBottomBar.Size = new System.Drawing.Size(740, 71);
+            clbBottomBar.Size = new System.Drawing.Size(912, 71);
             clbBottomBar.TabIndex = 4;
+            // 
+            // splitContainer
+            // 
+            splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            splitContainer.Location = new System.Drawing.Point(0, 71);
+            splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            splitContainer.Panel1.Controls.Add(clbSideBar);
+            splitContainer.Panel1MinSize = 175;
+            // 
+            // splitContainer.Panel2
+            // 
+            splitContainer.Panel2.Controls.Add(slideTabControl);
+            splitContainer.Size = new System.Drawing.Size(912, 653);
+            splitContainer.SplitterDistance = 212;
+            splitContainer.TabIndex = 5;
             // 
             // TemplateForm
             // 
@@ -131,9 +155,8 @@ namespace ApeFree.ApeForms.Demo
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(915, 795);
-            Controls.Add(slideTabControl);
+            Controls.Add(splitContainer);
             Controls.Add(clbBottomBar);
-            Controls.Add(clbSideBar);
             Controls.Add(panelHead);
             Margin = new System.Windows.Forms.Padding(4);
             Name = "TemplateForm";
@@ -141,6 +164,10 @@ namespace ApeFree.ApeForms.Demo
             Text = "ApeForms Demo";
             panelHead.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -151,6 +178,7 @@ namespace ApeFree.ApeForms.Demo
         private ControlListBox clbTopBar;
         private ControlListBox clbBottomBar;
         protected SlideTabControl slideTabControl;
+        private System.Windows.Forms.SplitContainer splitContainer;
     }
 }
 

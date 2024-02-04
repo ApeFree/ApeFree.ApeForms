@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ApeFree.ApeForms.Demo
+namespace ApeFree.ApeForms.TemplateNest
 {
     /// <summary>
     /// 模板窗体
@@ -138,16 +138,28 @@ namespace ApeFree.ApeForms.Demo
             SideBarData.Reverse();
             foreach (NavBarGroup data in SideBarData)
             {
-                // 创建下拉按钮组
-                SimpleButtonShutter shutter = new SimpleButtonShutter();
-                shutter.ButtonGroupId = byte.MaxValue;
-                shutter.MainControl.Text = data.Name;
-                shutter.MainControl.BackColor = MainMenuBackColor;
-                shutter.MainControl.ForeColor = MainMenuForeColor;
+                var shutter = AddChildShutter(data);
+                sideBar.AddItem(shutter);
+            }
+        }
 
-                // 遍历导航栏二级菜单数据
-                data.Reverse();
-                foreach (var item in data)
+        private SimpleButtonShutter AddChildShutter(NavBarGroup data)
+        {
+            // 创建下拉按钮组
+            SimpleButtonShutter shutter = new SimpleButtonShutter();
+            shutter.ButtonGroupId = byte.MaxValue;
+            shutter.MainControl.Text = data.Name;
+            shutter.MainControl.BackColor = MainMenuBackColor;
+            shutter.MainControl.ForeColor = MainMenuForeColor;
+            shutter.MainControl.Icon = data.Icon;
+            shutter.MainControl.IconScaling = 0.5f;
+
+
+            // 遍历导航栏二级菜单数据
+            data.Reverse();
+            foreach (var barItem in data)
+            {
+                if (barItem is NavItem item)
                 {
                     // 添加二级菜单按钮
                     var btn = shutter.AddChildButton(item.Name, (s, args) =>
@@ -161,7 +173,7 @@ namespace ApeFree.ApeForms.Demo
                         }
 
                         // 设置单击事件
-                        slideTabControl.AddPage(item.Name, item.Control, (data.Icon ?? Icon).ToBitmap());
+                        slideTabControl.AddPage(item.Name, item.Control, item.Icon ?? Icon.ToBitmap());
                     });
 
                     // 设置单个按钮的前景色和背景色
@@ -172,9 +184,24 @@ namespace ApeFree.ApeForms.Demo
                     btn.SidelineColor = SubMenuSidelineColor;
                     btn.SidelineWidth = 8;
                     btn.SelectedBackColor = btn.BackColor.Luminance(1.2f); // 选中状态下按钮增亮20%   
+
+                    // 设置按钮的图标
+                    btn.Icon = item.Icon;
+                    btn.IconScaling = 0.5f;
                 }
-                sideBar.AddItem(shutter);
+                else if (barItem is NavBarGroup barGroup)
+                {
+                    var group = AddChildShutter(barGroup);
+                    shutter.AddChildShutter(group);
+                    group.ButtonGroupId = byte.MaxValue;
+                    group.MainControl.BackColor = SubMenuBackColor.Luminance(0.9f);
+                    group.MainControl.ForeColor = SubMenuForeColor;
+                    group.MainControl.Icon = data.Icon;
+                    group.MainControl.IconScaling = 0.5f;
+                }
             }
+
+            return shutter;
         }
 
         protected virtual void LoadTopBar(ControlListBox topBar)
@@ -208,18 +235,34 @@ namespace ApeFree.ApeForms.Demo
         }
     }
 
+    public interface INavBarItem
+    {
+        /// <summary>
+        /// 显示名称
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// 图标
+        /// </summary>
+        Bitmap Icon { get; set; }
+    }
+
     /// <summary>
     /// 导航栏数据
     /// </summary>
     [Serializable]
-    public class NavBarGroup : List<NavItem>
+    public class NavBarGroup : List<INavBarItem>, INavBarItem
     {
+        /// <inheritdoc/>
         public string Name { get; set; }
-        public Icon Icon { get; set; }
+
+        /// <inheritdoc/>
+        public Bitmap Icon { get; set; }
 
         private NavBarGroup() { }
 
-        public NavBarGroup(string name, Icon icon = null)
+        public NavBarGroup(string name, Bitmap icon = null)
         {
             Name = name;
             Icon = icon;
@@ -230,12 +273,24 @@ namespace ApeFree.ApeForms.Demo
     /// 导航栏
     /// </summary>
     [Serializable]
-    public class NavItem
+    public class NavItem : INavBarItem
     {
         private Control control;
 
+        /// <inheritdoc/>
         public string Name { get; set; }
+
+        /// <inheritdoc/>
+        public Bitmap Icon { get; set; }
+
+        /// <summary>
+        /// 关联控件类型
+        /// </summary>
         public Type ControlType { get; }
+
+        /// <summary>
+        /// 关联控件
+        /// </summary>
         public Control Control
         {
             get
@@ -255,14 +310,15 @@ namespace ApeFree.ApeForms.Demo
 
         private NavItem() { }
 
-        public NavItem(string name, Control control)
+        public NavItem(string name, Control control, Bitmap icon = null)
         {
             Name = name;
             this.control = control;
             ControlType = control.GetType();
+            Icon = icon;
         }
 
-        public NavItem(string name, Type controlType)
+        public NavItem(string name, Type controlType, Bitmap icon = null)
         {
             if (!controlType.IsSubclassOf(typeof(Control)))
             {
@@ -271,6 +327,7 @@ namespace ApeFree.ApeForms.Demo
 
             Name = name;
             ControlType = controlType;
+            Icon = icon;
         }
     }
 
