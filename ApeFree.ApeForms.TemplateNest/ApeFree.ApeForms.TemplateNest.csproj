@@ -6,23 +6,23 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
-		<Copyright>Copyright © 2022-2023 ApeFree, All Rights Reserved.</Copyright>
+		<Copyright>Copyright © 2022-2024 ApeFree, All Rights Reserved.</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>ApeForms模板库，提供UI模板，开箱即用。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.11.8.0-beta1211</Version>
+		<Version>0.11.10.0-beta0205</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\ApeFree_64px.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
+	  <None Include="..\ApeFree_64px.png" Link="ApeFree_64px.png">
+	    <PackagePath>\</PackagePath>
+	    <Pack>True</Pack>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
