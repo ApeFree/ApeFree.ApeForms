@@ -6,14 +6,14 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
-		<Copyright>Copyright © 2022-2023 ApeFree, All Rights Reserved.</Copyright>
+		<Copyright>Copyright © 2022-2024 ApeFree, All Rights Reserved.</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体核心库，包含功能丰富的控件（Metro风格），为常用控件提供扩展功能，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.11.8.0-beta1211</Version>
+		<Version>0.11.10.0-beta0205</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
