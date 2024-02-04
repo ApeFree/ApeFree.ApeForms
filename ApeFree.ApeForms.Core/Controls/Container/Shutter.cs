@@ -45,19 +45,26 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 MainControl = e.Control;
                 Height = MainControl.Height;
+                MainControl.SizeChanged += InnerControl_SizeChanged;
             }
             else if (HiddenControl == null)
             {
                 HiddenControl = e.Control;
+                HiddenControl.SizeChanged += InnerControl_SizeChanged;
             }
             else
             {
                 throw new InvalidOperationException("The space available for the control is full.");
             }
 
-            AdjustSize();
-
             ResumeLayout();
+            AdjustSize();
+        }
+
+        private void InnerControl_SizeChanged(object sender, EventArgs e)
+        {
+            // 当内部控件的尺寸发生改变时，Shutter的尺寸也要跟着改变才能完整显示所有内容
+            AdjustSize();
         }
 
         private void AdjustSize()
@@ -65,12 +72,12 @@ namespace ApeFree.ApeForms.Core.Controls
             if (MainControl != null)
             {
                 MainControl.Dock = DockStyle.Top;
-                MainControl?.BringToFront();
+                MainControl?.SendToBack();
             }
 
             if (HiddenControl != null)
             {
-                HiddenControl.Dock = DockStyle.Bottom;
+                HiddenControl.Dock = DockStyle.Top;
             }
 
             if (MainControl == null || HiddenControl == null)
