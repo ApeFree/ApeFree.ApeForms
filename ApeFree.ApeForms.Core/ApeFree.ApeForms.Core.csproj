@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="STTech.CodePlus" Version="1.5.14" />
+		<PackageReference Include="STTech.CodePlus" Version="1.6.5.1" />
 	</ItemGroup>
 
 	<ItemGroup>
