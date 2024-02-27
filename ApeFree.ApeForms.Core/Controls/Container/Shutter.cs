@@ -26,7 +26,38 @@ namespace ApeFree.ApeForms.Core.Controls
 
         [Browsable(true)]
         [Description("展开状态")]
-        public bool OpenState { get => openState; set { openState = value; AdjustSize(); } }
+        public bool OpenState
+        {
+            get => openState;
+            set
+            {
+                if (openState != value)
+                {
+                    OnOpenStateChanged(EventArgs.Empty);
+                }
+                openState = value;
+                AdjustSize();
+            }
+        }
+
+        /// <summary>
+        /// 当展开状态发生变化时
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnOpenStateChanged(EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 当展开状态切换完成
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnOpenStateSwitchComplete(EventArgs e)
+        {
+
+        }
+
         private bool openState;
 
 
@@ -92,11 +123,11 @@ namespace ApeFree.ApeForms.Core.Controls
 
             if (OpenState)
             {
-                this.SizeGradualChange(new Size(Width, MainControl.Height + HiddenControl.Height));
+                this.SizeGradualChange(new Size(Width, MainControl.Height + HiddenControl.Height), 5, x => OnOpenStateSwitchComplete(EventArgs.Empty));
             }
             else
             {
-                this.SizeGradualChange(new Size(Width, MainControl.Height));
+                this.SizeGradualChange(new Size(Width, MainControl.Height), 5, x => OnOpenStateSwitchComplete(EventArgs.Empty));
             }
         }
 
