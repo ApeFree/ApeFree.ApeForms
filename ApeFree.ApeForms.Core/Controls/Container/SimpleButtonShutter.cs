@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +49,45 @@ namespace ApeFree.ApeForms.Core.Controls
             Controls.Add(new Panel() { AutoSize = true, Height = 0 });
 
             MainControl.Click += MainControl_Click;
+            MainControl.Paint += MainControl_Paint;
+        }
+
+        protected override void OnOpenStateSwitchComplete(EventArgs e)
+        {
+            base.OnOpenStateSwitchComplete(e);
+            MainControl.Refresh();
         }
 
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
             MainControl.Text = Text;
+        }
+
+        private void MainControl_Paint(object sender, PaintEventArgs e)
+        {
+            // 创建Graphics对象
+            Graphics g = e.Graphics;
+
+            // 创建Brush对象
+            Brush brush = new SolidBrush(MainControl.ForeColor);
+
+            var text = OpenState ? "▼" : "▶";
+
+            // 获取按钮控件的尺寸
+            SizeF textSize = g.MeasureString(text, MainControl.Font);
+            float x = (MainControl.Width - textSize.Width) * 0.95f;
+            float y = (MainControl.Height - textSize.Height) / 2;
+
+            // 使用StringFormat对象设置对齐方式为居中
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+
+            // 绘制文本
+            g.DrawString(text, MainControl.Font, brush, new RectangleF(x, y, textSize.Width, textSize.Height), sf);
+
+            brush.Dispose();
         }
 
         private void MainControl_Click(object sender, EventArgs e)
@@ -90,4 +124,5 @@ namespace ApeFree.ApeForms.Core.Controls
             HiddenControl.Controls.Add(shutter);
         }
     }
+
 }
