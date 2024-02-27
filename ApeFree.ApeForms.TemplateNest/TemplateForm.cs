@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.TemplateNest
@@ -14,13 +15,13 @@ namespace ApeFree.ApeForms.TemplateNest
     {
         private List<NavBarGroup> sideBarData;
         private List<TopBarItem> topBarData;
-        private Color mainMenuBackColor = Color.FromArgb(30, 20, 50);
-        private Color mainMenuForeColor = Color.FromArgb(245, 245, 245);
-        private Color subMenuBackColor = Color.FromArgb(70, 55, 100);
-        private Color subMenuForeColor = Color.FromArgb(245, 245, 245);
+        private Color menuBackColor = Color.FromArgb(30, 20, 50);
+        private Color menuForeColor = Color.FromArgb(245, 245, 245);
         private Color topBarItemBackColor = Color.FromArgb(40, 25, 65);
         private Color topBarItemForeColor = Color.White;
         private Color subMenuSidelineColor = Color.PaleVioletRed;
+        private Color[] customMenuBackColors;
+        private Color[] customMenuForeColors;
 
         /// <summary>
         /// 侧边导航栏数据
@@ -66,27 +67,46 @@ namespace ApeFree.ApeForms.TemplateNest
         [Description("底部导航栏背景色")]
         public Color BottomBarBackColor { get => clbBottomBar.BackColor; set => clbBottomBar.BackColor = value; }
 
-        [Description("一级菜单背景色")]
-        public Color MainMenuBackColor { get => mainMenuBackColor; set { mainMenuBackColor = value; RefreahNavColor(); } }
+        [Description("菜单背景色")]
+        public Color MenuBackColor { get => menuBackColor; set { menuBackColor = value; RefreahNavColor(); } }
 
-        [Description("一级菜单前景色")]
-        public Color MainMenuForeColor { get => mainMenuForeColor; set { mainMenuForeColor = value; RefreahNavColor(); } }
+        [Description("菜单前景色")]
+        public Color MenuForeColor { get => menuForeColor; set { menuForeColor = value; RefreahNavColor(); } }
 
-        [Description("二级菜单背景色")]
-        public Color SubMenuBackColor { get => subMenuBackColor; set { subMenuBackColor = value; RefreahNavColor(); } }
+        /// <summary>
+        /// 菜单背景色渐变的梯度率。<br/>
+        /// 菜单子级与父级之间背景色亮度的变化比例。<br/>
+        /// 例如：<br/>
+        /// 当该值为0.5时，菜单的每一级的背景色都比上一级的背景色亮50%。
+        /// 当该值为-0.1时，菜单的每一级的背景色都比上一级的背景色暗10%。
+        /// </summary>
+        [Description("菜单背景色渐变的梯度率")]
+        public float MenuBackColorGradientRate { get; set; } = 0.5f;
 
-        [Description("二级菜前景色")]
-        public Color SubMenuForeColor { get => subMenuForeColor; set { subMenuForeColor = value; RefreahNavColor(); } }
+        /// <summary>
+        /// 菜单前景色渐变的梯度率。<br/>
+        /// 菜单子级与父级之间前景色亮度的变化比例。<br/>
+        /// 例如：<br/>
+        /// 当该值为0.5时，菜单的每一级的前景色都比上一级的前景色亮50%。
+        /// 当该值为-0.1时，菜单的每一级的前景色都比上一级的前景色暗10%。
+        /// </summary>
+        [Description("菜单前景色渐变的梯度率")]
+        public float MenuForeColorGradientRate { get; set; } = -0.05f;
 
-        [Description("二级菜选中时的边线颜色")]
-        public Color SubMenuSidelineColor { get => subMenuSidelineColor; set { subMenuSidelineColor = value; RefreahNavColor(); } }
+        [Description("自定义菜单背景色列表")]
+        public Color[] CustomMenuBackColors { get => customMenuBackColors; set { customMenuBackColors = value; RefreahNavColor(); } }
+
+        [Description("自定义菜单前景色列表")]
+        public Color[] CustomMenuForeColors { get => customMenuForeColors; set { customMenuForeColors = value; RefreahNavColor(); } }
+
+        [Description("菜单项选中时的边线颜色")]
+        public Color MenuSidelineColor { get => subMenuSidelineColor; set { subMenuSidelineColor = value; RefreahNavColor(); } }
 
         [Description("顶部导航栏选项背景色")]
         public Color TopBarItemBackColor { get => topBarItemBackColor; set { topBarItemBackColor = value; RefreahNavColor(); } }
 
         [Description("顶部导航栏选项前景色")]
         public Color TopBarItemForeColor { get => topBarItemForeColor; set { topBarItemForeColor = value; RefreahNavColor(); } }
-
 
         public TemplateForm()
         {
@@ -100,19 +120,40 @@ namespace ApeFree.ApeForms.TemplateNest
         /// </summary>
         private void RefreahNavColor()
         {
-            // 左侧导航栏
-            foreach (SimpleButtonShutter item in clbSideBar.Items)
-            {
-                item.MainControl.BackColor = MainMenuBackColor;
-                item.MainControl.ForeColor = MainMenuForeColor;
+            //// 左侧导航栏
+            //foreach (SimpleButtonShutter item in clbSideBar.Items)
+            //{
+            //    item.MainControl.BackColor = MainMenuBackColor;
+            //    item.MainControl.ForeColor = MainMenuForeColor;
 
-                foreach (TabButton btn in item.HiddenControl.Controls)
+            //    foreach (TabButton btn in item.HiddenControl.Controls)
+            //    {
+            //        btn.BackColor = SubMenuBackColor;
+            //        btn.ForeColor = SubMenuForeColor;
+            //        btn.SidelineColor = MenuSidelineColor;
+            //    }
+            //}
+
+            Action<Control[], int> action = null;
+            action = (controls, level) =>
+            {
+                foreach (Control control in controls)
                 {
-                    btn.BackColor = SubMenuBackColor;
-                    btn.ForeColor = SubMenuForeColor;
-                    btn.SidelineColor = SubMenuSidelineColor;
+                    if (control is SimpleButtonShutter shutter)
+                    {
+                        shutter.MainControl.BackColor = GetBackColorByLevel(level);
+                        shutter.MainControl.ForeColor = GetForeColorByLevel(level);
+                        action(shutter.HiddenControl.Controls.ToArray(), level + 1);
+                    }
+                    else if (control is TabButton tabButton)
+                    {
+                        control.BackColor = GetBackColorByLevel(level);
+                        control.ForeColor = GetForeColorByLevel(level);
+                        tabButton.SelectedBackColor = tabButton.BackColor.Luminance(1.2f);
+                    }
                 }
-            }
+            };
+            action(clbSideBar.Items.ToArray(), 0);
 
             // 顶部导航栏
             foreach (Control btn in clbTopBar.Items)
@@ -143,65 +184,124 @@ namespace ApeFree.ApeForms.TemplateNest
             }
         }
 
-        private SimpleButtonShutter AddChildShutter(NavBarGroup data)
+        private SimpleButtonShutter AddChildShutter(NavBarGroup data, int level = 0)
         {
-            // 创建下拉按钮组
-            SimpleButtonShutter shutter = new SimpleButtonShutter();
-            shutter.ButtonGroupId = byte.MaxValue;
-            shutter.MainControl.Text = data.Name;
-            shutter.MainControl.BackColor = MainMenuBackColor;
-            shutter.MainControl.ForeColor = MainMenuForeColor;
-            shutter.MainControl.Icon = data.Icon;
-            shutter.MainControl.IconScaling = 0.5f;
-
-
-            // 遍历导航栏二级菜单数据
-            data.Reverse();
-            foreach (var barItem in data)
+            try
             {
-                if (barItem is NavItem item)
+                // 创建下拉按钮组
+                SimpleButtonShutter shutter = new SimpleButtonShutter();
+                shutter.ButtonGroupId = byte.MaxValue;
+                shutter.MainControl.Text = data.Name;
+                shutter.MainControl.BackColor = GetBackColorByLevel(level);
+                shutter.MainControl.ForeColor = GetForeColorByLevel(level);
+                shutter.MainControl.Icon = data.Icon;
+                shutter.MainControl.IconScaling = 0.5f;
+
+
+                // 遍历导航栏二级菜单数据
+                data.Reverse();
+                foreach (var barItem in data)
                 {
-                    // 添加二级菜单按钮
-                    var btn = shutter.AddChildButton(item.Name, (s, args) =>
+                    if (barItem is NavItem item)
                     {
-                        // 如果页面是窗体，则改为控件
-                        if (item.Control is Form form)
+                        // 添加二级菜单按钮
+                        var btn = shutter.AddChildButton(item.Name, (s, args) =>
                         {
-                            form.TopLevel = false;
-                            form.FormBorderStyle = FormBorderStyle.None;
-                            form.Show();
-                        }
+                            // 如果页面是窗体，则改为控件
+                            if (item.Control is Form form)
+                            {
+                                form.TopLevel = false;
+                                form.FormBorderStyle = FormBorderStyle.None;
+                                form.Show();
+                            }
 
-                        // 设置单击事件
-                        slideTabControl.AddPage(item.Name, item.Control, item.Icon ?? Icon.ToBitmap());
-                    });
+                            // 设置单击事件
+                            slideTabControl.AddPage(item.Name, item.Control, item.Icon ?? Icon.ToBitmap());
+                        });
 
-                    // 设置单个按钮的前景色和背景色
-                    btn.BackColor = SubMenuBackColor;
-                    btn.ForeColor = SubMenuForeColor;
+                        // 设置单个按钮的前景色和背景色
+                        btn.BackColor = GetBackColorByLevel(level + 1);
+                        btn.ForeColor = GetForeColorByLevel(level + 1);
 
-                    // 设置单个按钮选中时的边线颜色、边线宽度和背景色
-                    btn.SidelineColor = SubMenuSidelineColor;
-                    btn.SidelineWidth = 8;
-                    btn.SelectedBackColor = btn.BackColor.Luminance(1.2f); // 选中状态下按钮增亮20%   
+                        // 设置单个按钮选中时的边线颜色、边线宽度和背景色
+                        btn.SidelineColor = MenuSidelineColor;
+                        btn.SidelineWidth = 8;
+                        btn.SelectedBackColor = btn.BackColor.Luminance(1.2f); // 选中状态下按钮增亮20%   
 
-                    // 设置按钮的图标
-                    btn.Icon = item.Icon;
-                    btn.IconScaling = 0.5f;
+                        // 设置按钮的图标
+                        btn.Icon = item.Icon;
+                        btn.IconScaling = 0.5f;
+                    }
+                    else if (barItem is NavBarGroup barGroup)
+                    {
+                        var group = AddChildShutter(barGroup, level + 1);
+                        shutter.AddChildShutter(group);
+                    }
                 }
-                else if (barItem is NavBarGroup barGroup)
+                return shutter;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new IndexOutOfRangeException($"未配置{level + 1}级菜单的颜色", ex);
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 获取指定级数的菜单背景色
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private Color GetBackColorByLevel(int level)
+        {
+            var rate = MenuBackColorGradientRate;
+
+            if (CustomMenuBackColors != null && CustomMenuBackColors.Any())
+            {
+                if (CustomMenuBackColors.Length >= level + 1)
                 {
-                    var group = AddChildShutter(barGroup);
-                    shutter.AddChildShutter(group);
-                    group.ButtonGroupId = byte.MaxValue;
-                    group.MainControl.BackColor = SubMenuBackColor.Luminance(0.9f);
-                    group.MainControl.ForeColor = SubMenuForeColor;
-                    group.MainControl.Icon = data.Icon;
-                    group.MainControl.IconScaling = 0.5f;
+                    return CustomMenuBackColors[level];
+                }
+                else
+                {
+                    var diff = level - CustomMenuBackColors.Length;
+                    return CustomMenuBackColors.Last().Luminance((float)Math.Pow((1 + rate), diff));
                 }
             }
+            else
+            {
+                return MenuBackColor.Luminance((float)Math.Pow((1 + rate), level));
+            }
+        }
 
-            return shutter;
+        /// <summary>
+        /// 获取指定级数的菜单前景色
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private Color GetForeColorByLevel(int level)
+        {
+            var rate = MenuForeColorGradientRate;
+
+            if (CustomMenuForeColors != null && CustomMenuForeColors.Any())
+            {
+                if (CustomMenuForeColors.Length >= level + 1)
+                {
+                    return CustomMenuForeColors[level];
+                }
+                else
+                {
+                    var diff = level - CustomMenuForeColors.Length;
+                    return CustomMenuForeColors.Last().Luminance((float)Math.Pow((1 + rate), diff));
+                }
+            }
+            else
+            {
+                return MenuForeColor.Luminance((float)Math.Pow((1 + rate), level));
+            }
         }
 
         protected virtual void LoadTopBar(ControlListBox topBar)
