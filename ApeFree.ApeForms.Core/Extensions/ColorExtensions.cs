@@ -13,7 +13,7 @@
             byte[] values = new byte[] { color.R, color.G, color.B };
             for (int i = 0; i < values.Length; i++)
             {
-                var cv = values[i] * ratio;
+                var cv = (int)Math.Round(values[i] * ratio) + 1;
                 switch (cv)
                 {
                     case > 255:
