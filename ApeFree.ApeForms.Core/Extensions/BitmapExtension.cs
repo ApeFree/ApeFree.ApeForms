@@ -109,81 +109,21 @@ namespace System.Drawing
             }
         }
 
-
-        public static Bitmap CopyRegion(this Bitmap src, Rectangle rect)
-        {
-            // 计算每行像素的字节数
-            int bytesPerPixel = Image.GetPixelFormatSize(src.PixelFormat) / 8;
-
-            //var bytesPerPixel = src.PixelFormat switch
-            //{
-            //    Imaging.PixelFormat.Format16bppArgb1555 => 2,
-            //    Imaging.PixelFormat.Format16bppGrayScale => 2,
-            //    Imaging.PixelFormat.Format16bppRgb565 => 2,
-            //    Imaging.PixelFormat.Format16bppRgb555 => 2,
-
-            //    Imaging.PixelFormat.Format24bppRgb => 3,
-
-            //    Imaging.PixelFormat.Format32bppRgb => 4,
-            //    Imaging.PixelFormat.Format32bppArgb => 4,
-            //    Imaging.PixelFormat.Format32bppPArgb => 4,
-
-            //    Imaging.PixelFormat.Format48bppRgb => 6,
-
-            //    Imaging.PixelFormat.Format64bppArgb => 8,
-
-            //    _ => throw new NotSupportedException("不受支持的像素格式。"),
-            //};
-
-            var rowBytesCount = src.Width * bytesPerPixel;
-            rowBytesCount += (4 - rowBytesCount % 4) % 4;
-
-            var startRowIndex = rect.Left * bytesPerPixel;
-            var endRowIndex = (rect.Left + rect.Width) * bytesPerPixel;
-
-            if (startRowIndex < 0 || startRowIndex > rowBytesCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(rect), "坐标在图像之外。");
-            }
-
-            if (endRowIndex < 0 || endRowIndex > rowBytesCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(rect), "坐标在图像之外。");
-            }
-
-            // TODO: 还有高度
-
-            // 创建新图片
-            var dest = new Bitmap(rect.Width, rect.Height, src.PixelFormat);
-
-            BitmapData srcBitmapData = src.LockBits(rect, ImageLockMode.ReadOnly, src.PixelFormat);
-            BitmapData destBitmapData = dest.LockBits(new Rectangle(new Point(0), dest.Size), ImageLockMode.WriteOnly, src.PixelFormat);
-
-            // 计算拷贝数据的长度
-            int copyLength = rect.Width * rect.Height * bytesPerPixel;
-
-            // 使用Marshal.Copy方法进行数据拷贝
-            var arr = new byte[copyLength];
-            Marshal.Copy(srcBitmapData.Scan0, arr, 0, copyLength);
-            Marshal.Copy(arr, 0, destBitmapData.Scan0, copyLength);
-
-
-            // 释放锁定的区域
-            src.UnlockBits(srcBitmapData);
-            dest.UnlockBits(destBitmapData);
-
-            return dest;
-        }
-
-
-        public static Bitmap CopyRegion2(this Bitmap src, Rectangle rect, Bitmap dest = null)
+        /// <summary>
+        /// 拷贝部分区域的图像
+        /// </summary>
+        /// <param name="src">原始图像</param>
+        /// <param name="rect">选定区域</param>
+        /// <param name="dest">目标图像（若尺寸不符合或传入null则会创建新的Bitmap）</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static Bitmap CopyRegion(this Bitmap src, Rectangle rect, Bitmap dest = null)
         {
             // 计算每行像素的字节数
             int bytesPerPixel = Image.GetPixelFormatSize(src.PixelFormat) / 8;
 
             // 计算实际拷贝区域
             rect = Rectangle.Intersect(new Rectangle(0, 0, src.Width, src.Height), rect);
-
 
             // 判断
             var rowBytesCount = src.Width * bytesPerPixel;
@@ -291,7 +231,6 @@ namespace System.Drawing
             bitmap.UnlockBits(data);
         }
 
-
         /// <summary>
         /// 根据指定的对比度因子在原图像上调节亮度。
         /// </summary>
@@ -333,9 +272,6 @@ namespace System.Drawing
             // 解锁像素数据
             src.UnlockBits(data);
         }
-
-
-
 
         /// <summary>
         /// 调整图像的对比度，直接在当前的Bitmap上进行操作。
