@@ -153,6 +153,8 @@ namespace ApeFree.ApeForms.Core.Controls
             if (Icon != null)
             {
                 var side = (int)(Math.Min(Width, Height) * iconScaling);
+                Padding = new Padding(side+10, 0, 0, 0);
+
                 var size = new Size(side, side);
                 var xy = (Math.Min(Width, Height) - side) / 2;
                 var location = new Point(xy, xy);
