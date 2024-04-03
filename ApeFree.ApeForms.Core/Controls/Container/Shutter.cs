@@ -55,7 +55,21 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <param name="e"></param>
         protected virtual void OnOpenStateSwitchComplete(EventArgs e)
         {
+            if (openState)
+            {
+                if (Parent == null)
+                {
+                    return;
+                }
 
+                Parent.GetChildControls().ForEach(x =>
+                {
+                    if(x is Shutter s && x != this)
+                    {
+                        s.OpenState = false;
+                    }
+                });
+            }
         }
 
         private bool openState;
