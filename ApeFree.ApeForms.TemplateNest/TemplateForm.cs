@@ -41,6 +41,11 @@ namespace ApeFree.ApeForms.TemplateNest
         protected SlideTabControl SlideTabBox => slideTabControl;
 
         /// <summary>
+        /// 侧边导航栏的文字对齐方向
+        /// </summary>
+        public ContentAlignment SideBarTextAlign { get; set; } = ContentAlignment.MiddleLeft;
+
+        /// <summary>
         /// Logo图像
         /// </summary>
         [Description("Logo图像")]
@@ -190,6 +195,7 @@ namespace ApeFree.ApeForms.TemplateNest
             {
                 // 创建下拉按钮组
                 SimpleButtonShutter shutter = new SimpleButtonShutter();
+                shutter.ItemTextAlign = SideBarTextAlign;
                 shutter.ButtonGroupId = byte.MaxValue;
                 shutter.MainControl.Text = data.Name;
                 shutter.MainControl.BackColor = GetBackColorByLevel(level);
