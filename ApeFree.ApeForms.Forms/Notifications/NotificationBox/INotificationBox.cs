@@ -10,9 +10,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
 {
     public interface INotificationBox
     {
+        Control TitleView { get; }
         Control MainView { get; }
         Control SpareView { get; }
         Color ReminderColor { get; set; }
+        Color BackColor { get; set; }
 
         Control AddOption(NotificationOption option);
 
