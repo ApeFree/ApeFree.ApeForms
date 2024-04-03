@@ -30,6 +30,11 @@ namespace ApeFree.ApeForms.Forms.Notifications
         public Control SpareView { get; }
 
         /// <summary>
+        /// 标题控件
+        /// </summary>
+        public Control TitleView { get; }
+
+        /// <summary>
         /// 提醒色
         /// </summary>
         public Color ReminderColor
@@ -53,9 +58,7 @@ namespace ApeFree.ApeForms.Forms.Notifications
 
         internal NotificationBox(Control contentView, Control spareView = null) : this()
         {
-            //InitializeComponent();
-            //Size = Notification.DefaultFormsSize;
-
+            TitleView = labTitle;
             MainView = contentView;
             SpareView = spareView;
 
@@ -135,6 +138,12 @@ namespace ApeFree.ApeForms.Forms.Notifications
             pen.Dispose();
             penBorder.Dispose();
             e.Dispose();
+        }
+
+        protected override void OnBackColorChanged(EventArgs e)
+        {
+            base.OnBackColorChanged(e);
+            btnClose.BackColor = this.BackColor;
         }
 
         private void PanelSpareControl_SizeChanged(object sender, EventArgs e)
