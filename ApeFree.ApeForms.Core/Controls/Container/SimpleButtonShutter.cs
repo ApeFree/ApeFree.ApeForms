@@ -27,6 +27,13 @@ namespace ApeFree.ApeForms.Core.Controls
         public override string Text { get => base.Text; set => base.Text = value; }
 
         /// <summary>
+        /// 选项的文字对齐方向
+        /// </summary>
+        [Browsable(true)]
+        [Description("选项的文字对齐方向")]
+        public ContentAlignment ItemTextAlign { get => MainControl.TextAlign; set => MainControl.TextAlign = value; }
+
+        /// <summary>
         /// 按钮分组编号
         /// </summary>
         public byte ButtonGroupId
@@ -99,6 +106,7 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             var btn = new TabButton();
             btn.Text = text;
+            btn.TextAlign = ItemTextAlign;
             btn.GroupId = ButtonGroupId;
             if (clickHandler != null)
             {
@@ -113,6 +121,7 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             var shutter = new SimpleButtonShutter();
             shutter.Text = text;
+            shutter.ItemTextAlign = ItemTextAlign;
             AddChildShutter(shutter);
             return shutter;
         }
