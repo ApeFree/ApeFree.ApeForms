@@ -80,6 +80,19 @@ namespace ApeFree.ApeForms.Core.Controls
         [Description("背景色")]
         public new Color BackColor { get => textBox.BackColor; set => textBox.BackColor = value; }
 
+        /// <summary>
+        /// 只读性
+        /// </summary>
+        [Description("获取或设置一个值，该值指示文本框中的文本是否为只读。")]
+        public bool ReadOnly { get => textBox.ReadOnly; set => textBox.ReadOnly = value; }
+
+        /// <summary>
+        /// 对齐方式
+        /// </summary>
+        [Description("获取或设置 TextBox 控件中文本的对齐方式。")]
+        public HorizontalAlignment TextAlign { get => textBox.TextAlign; set => textBox.TextAlign = value; }
+
+
         private bool IsHintMode
         {
             get => isHintMode;
