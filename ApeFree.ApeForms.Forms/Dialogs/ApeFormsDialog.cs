@@ -32,29 +32,20 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             }
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         protected override void DismissHandler()
         {
             InnerDialog.Close();
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         protected override void ShowHandler()
         {
             InnerDialog.SetContentView(ContentView);
             InnerDialog.ShowDialog();
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="option"><inheritdoc/></param>
-        /// <param name="onClick"><inheritdoc/></param>
-        /// <returns></returns>
         public override OptionButton AddOption(DialogOption option, Action<IDialog, OptionButton> onClick = null)
         {
             var btn = new OptionButton();
@@ -73,17 +64,13 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return btn;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         public override void ClearOptions()
         {
             InnerDialog.ClearButtons();
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         protected override void PrecheckFailsCallback(FormatCheckResult result)
         {
             // 抖动窗口

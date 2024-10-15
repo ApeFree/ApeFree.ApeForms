@@ -2,11 +2,13 @@
 using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Core.Controls;
+using ApeFree.ApeForms.Core.Controls.Views;
 using ApeFree.ApeForms.Forms.Dialogs;
 using ApeFree.ApeForms.Forms.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
@@ -238,6 +240,70 @@ namespace ApeFree.ApeDialogs
                 //}
             };
             settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+            return dialog;
+        }
+
+        public override IDialog<string[]> CreateOpenFileDialog(string path, OpenFileDialogSettings settings, Control context = null)
+        {
+            var dialog = new ApeFormsDialog<string[]>(settings);
+
+            var view = context is DriveBrowserView v ? v : new DriveBrowserView();
+            view.SearchPattern = settings.SearchPattern;
+            view.MultiSelect = settings.MultiSelect;
+            view.Font = settings.Font;
+            view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFiles.Join("\r\n");
+            dialog.ContentView = view;
+
+            try
+            {
+                view.OpenFolder(Path.GetDirectoryName(path));
+            }
+            catch (Exception) { }
+
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
+            {
+                if (view.SelectedFiles.Any())
+                {
+                    dialog.Result.UpdateResultData(view.SelectedFiles);
+                    var result = dialog.PerformPrecheck();
+                }
+            };
+
+            // 添加选项按钮
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+
+            return dialog;
+        }
+
+        public override IDialog<string[]> CreateOpenFolderDialog(string path, OpenFolderDialogSettings settings, Control context = null)
+        {
+            var dialog = new ApeFormsDialog<string[]>(settings);
+
+            var view = context is DriveBrowserView v ? v : new DriveBrowserView();
+            view.MultiSelect = settings.MultiSelect;
+            view.Font = settings.Font;
+            view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFolders.Join("\r\n");
+            dialog.ContentView = view;
+
+            try
+            {
+                view.OpenFolder(path);
+            }
+            catch (Exception) { }
+
+
+            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
+            {
+                if (view.SelectedFolders.Any())
+                {
+                    dialog.Result.UpdateResultData(view.SelectedFolders);
+                    var result = dialog.PerformPrecheck();
+                }
+            };
+
+            // 添加选项按钮
+            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+
             return dialog;
         }
     }
