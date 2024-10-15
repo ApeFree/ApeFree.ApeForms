@@ -50,6 +50,9 @@
 		<Compile Update="Controls\Label\TallerLabel.cs" />
 		<Compile Update="Controls\ListBox\ControlListBox.cs" />
 		<Compile Update="Controls\TabBox\SlideTabControl.cs" />
+		<Compile Update="Controls\Views\DriveBrowserView.cs">
+		  <SubType>UserControl</SubType>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
