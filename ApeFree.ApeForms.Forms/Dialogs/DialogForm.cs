@@ -20,6 +20,19 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InitializeComponent();
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            var maxContentHeight = flpOptions.Top - panelContent.Top - panelView.Height;
+            if (panelView.Controls.Count > 0 && maxContentHeight > Height / 3)
+            {
+                maxContentHeight = Height / 3;
+            }
+            var maxSize = new Size(panelContent.Width, maxContentHeight);
+            panelContent.MaximumSize = maxSize;
+        }
+
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
