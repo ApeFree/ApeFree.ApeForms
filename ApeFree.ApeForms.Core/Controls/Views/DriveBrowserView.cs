@@ -12,6 +12,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ApeFree.ApeForms.Core.Controls.Views
 {
+    /// <summary>
+    /// 驱动浏览器控件
+    /// </summary>
     public partial class DriveBrowserView : UserControl
     {
         /// <summary>
