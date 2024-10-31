@@ -11,7 +11,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
     {
         public static Size DefaultDialogSize = new Size(480, 240);
 
-        public DialogForm InnerDialog { get; }
+        public DialogForm InnerDialog { get; private set; }
         public override string Title { get => InnerDialog.Text; set => InnerDialog.Text = value; }
         public override string Content { get => InnerDialog.Content; set => InnerDialog.Content = value; }
 
@@ -25,6 +25,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             InnerDialog.Size = settings.DialogSize ?? DefaultDialogSize;
             InnerDialog.ContentFont = settings.Font;
             InnerDialog.ReminderColor = settings.ReminderColor;
+            InnerDialog.Shown += InnerDialog_Shown;
 
             foreach (var item in settings.GetOptions())
             {
@@ -32,10 +33,23 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             }
         }
 
+        private void InnerDialog_Shown(object sender, EventArgs e)
+        {
+            RaiseShown();
+        }
+
         /// <inheritdoc/>
         protected override void DismissHandler()
         {
+            if (InnerDialog == null)
+            {
+                return;
+            }
+
             InnerDialog.Close();
+            InnerDialog.Shown -= InnerDialog_Shown;
+            InnerDialog.Dispose();
+            InnerDialog = null;
         }
 
         /// <inheritdoc/>
