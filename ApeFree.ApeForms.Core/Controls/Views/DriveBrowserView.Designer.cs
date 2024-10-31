@@ -45,6 +45,7 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             this.colSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCteationTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listView = new System.Windows.Forms.ListView();
+            this.labStatus = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -218,7 +219,7 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             this.listView.LargeImageList = this.imageList;
             this.listView.Location = new System.Drawing.Point(0, 35);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(600, 365);
+            this.listView.Size = new System.Drawing.Size(600, 353);
             this.listView.SmallImageList = this.imageList;
             this.listView.TabIndex = 2;
             this.listView.UseCompatibleStateImageBehavior = false;
@@ -227,12 +228,22 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             this.listView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnFileItemMouseClicked);
             this.listView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnListViewMouseDoubleClicked);
             // 
+            // labStatus
+            // 
+            this.labStatus.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labStatus.Location = new System.Drawing.Point(0, 388);
+            this.labStatus.Name = "labStatus";
+            this.labStatus.Size = new System.Drawing.Size(600, 12);
+            this.labStatus.TabIndex = 4;
+            // 
             // DriveBrowserView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.listView);
+            this.Controls.Add(this.labStatus);
             this.Controls.Add(this.panel1);
             this.Name = "DriveBrowserView";
             this.Size = new System.Drawing.Size(600, 400);
@@ -255,5 +266,6 @@ namespace ApeFree.ApeForms.Core.Controls.Views
         protected System.Windows.Forms.ColumnHeader colCteationTime;
         protected System.Windows.Forms.ListView listView;
         protected SimpleButton btnPrevious;
+        private System.Windows.Forms.Label labStatus;
     }
 }

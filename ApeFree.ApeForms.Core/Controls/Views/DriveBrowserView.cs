@@ -234,9 +234,24 @@ namespace ApeFree.ApeForms.Core.Controls.Views
         /// <param name="path"></param>
         public virtual void OpenFolder(string path)
         {
+            labStatus.Text = string.Empty;
+            labStatus.Visible = false;
+
             DirectoryInfo directory = new DirectoryInfo(path);
-            var dirItems = directory.GetDirectories();
-            var fileItems = DisplayItemType == DisplayItemType.FolderAndFile ? directory.GetFiles(SearchPattern) : [];
+            DirectoryInfo[] dirItems = null;
+            FileInfo[] fileItems = null;
+
+            try
+            {
+                dirItems = directory.GetDirectories();
+                fileItems = DisplayItemType == DisplayItemType.FolderAndFile ? directory.GetFiles(SearchPattern) : [];
+            }
+            catch (Exception ex)
+            {
+                labStatus.Text = ex.Message;
+                labStatus.Visible = true;
+                return;
+            }
 
             var lvis = new List<ListViewItem>();
 
