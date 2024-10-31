@@ -243,22 +243,26 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
+        /// <inheritdoc/>
         public override IDialog<string[]> CreateOpenFileDialog(string path, OpenFileDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<string[]>(settings);
 
             var view = context is DriveBrowserView v ? v : new DriveBrowserView();
+            view.DisplayItemType = DisplayItemType.FolderAndFile;
             view.SearchPattern = settings.SearchPattern;
             view.MultiSelect = settings.MultiSelect;
             view.Font = settings.Font;
             view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFiles.Join("\r\n");
             dialog.ContentView = view;
 
-            try
+            DialogEventHandler openDefaultFolderHandler = null;
+            openDefaultFolderHandler = new DialogEventHandler((d, e) =>
             {
                 view.OpenFolder(Path.GetDirectoryName(path));
-            }
-            catch (Exception) { }
+                dialog.Shown -= openDefaultFolderHandler;
+            });
+            dialog.Shown += openDefaultFolderHandler;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
@@ -275,22 +279,25 @@ namespace ApeFree.ApeDialogs
             return dialog;
         }
 
+        /// <inheritdoc/>
         public override IDialog<string[]> CreateOpenFolderDialog(string path, OpenFolderDialogSettings settings, Control context = null)
         {
             var dialog = new ApeFormsDialog<string[]>(settings);
 
             var view = context is DriveBrowserView v ? v : new DriveBrowserView();
+            view.DisplayItemType = DisplayItemType.OnlyFolder;
             view.MultiSelect = settings.MultiSelect;
             view.Font = settings.Font;
             view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFolders.Join("\r\n");
             dialog.ContentView = view;
 
-            try
+            DialogEventHandler openDefaultFolderHandler = null;
+            openDefaultFolderHandler = new DialogEventHandler((d, e) =>
             {
                 view.OpenFolder(path);
-            }
-            catch (Exception) { }
-
+                dialog.Shown -= openDefaultFolderHandler;
+            });
+            dialog.Shown += openDefaultFolderHandler;
 
             Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
             {
