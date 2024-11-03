@@ -68,8 +68,23 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         public string CloseAllPagesOptionText { get => tsmiCloseAll.Text; set => tsmiCloseAll.Text = value; }
 
+        /// <summary>
+        /// 当前页面序号
+        /// </summary>
         public int CurrentIndex { get; private set; }
 
+        /// <summary>
+        /// 标题栏文本格式
+        /// </summary>
+        // public Font PageTitleFont { get; set; }
+
+        /// <summary>
+        /// 添加页面
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <param name="icon"></param>
+        /// <returns></returns>
         public ToolStripItem AddPage(string title, Control content, Image icon = null)
         {
             // 检查加入的控件是否已存在，若存在则跳转
@@ -110,6 +125,10 @@ namespace ApeFree.ApeForms.Core.Controls
             return item;
         }
 
+        /// <summary>
+        /// 跳转到指定标题的页面
+        /// </summary>
+        /// <param name="title"></param>
         public void Jump(string title)
         {
             foreach (ToolStripItem item in tsTitle.Items)
@@ -118,6 +137,10 @@ namespace ApeFree.ApeForms.Core.Controls
             }
         }
 
+        /// <summary>
+        /// 跳转到指定控件的页面
+        /// </summary>
+        /// <param name="content"></param>
         public void Jump(Control content)
         {
             foreach (var kv in Pages)
@@ -130,6 +153,11 @@ namespace ApeFree.ApeForms.Core.Controls
             }
         }
 
+        /// <summary>
+        /// 跳转到指定序号的页面
+        /// </summary>
+        /// <param name="index"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void Jump(int index)
         {
             // 检查数据的合法性
@@ -151,16 +179,27 @@ namespace ApeFree.ApeForms.Core.Controls
             }
         }
 
+        /// <summary>
+        /// 跳转到下一个页面
+        /// </summary>
         public void NextPage()
         {
             Jump(CurrentIndex + 1);
         }
 
+        /// <summary>
+        /// 跳转到前一个页面
+        /// </summary>
         public void PreviousPage()
         {
             if (CurrentIndex > 0) Jump(CurrentIndex - 1);
         }
 
+        /// <summary>
+        /// 通过标题名称移除一个页面
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public Control RemovePage(string title)
         {
             foreach (ToolStripItem item in tsTitle.Items)
@@ -178,6 +217,10 @@ namespace ApeFree.ApeForms.Core.Controls
             return null;
         }
 
+        /// <summary>
+        /// 移除指定控件的页面
+        /// </summary>
+        /// <param name="content"></param>
         public void RemovePage(Control content)
         {
             foreach (var kv in Pages)
@@ -199,6 +242,11 @@ namespace ApeFree.ApeForms.Core.Controls
 
         }
 
+        /// <summary>
+        /// 移除指定序号的页面
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Control RemovePage(int index)
         {
             Control content = null;
@@ -243,7 +291,7 @@ namespace ApeFree.ApeForms.Core.Controls
             return false;
         }
 
-        ToolStripItem ActiveContextMenuTitleItem;
+        private ToolStripItem ActiveContextMenuTitleItem;
 
 
 
@@ -418,7 +466,9 @@ namespace ApeFree.ApeForms.Core.Controls
             base.OnTextChanged(e);
 
             // 计算标签的宽度
-            Width = TextRenderer.MeasureText(Text, this.Font).Width + Height;
+            var size = TextRenderer.MeasureText(Text, Font);
+            Width = size.Width + size.Height * 2 + 15;
+            Height = size.Height + 15;
         }
 
         protected override void OnPaint(PaintEventArgs e)

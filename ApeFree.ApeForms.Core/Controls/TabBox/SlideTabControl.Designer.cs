@@ -49,7 +49,7 @@ namespace ApeFree.ApeForms.Core.Controls
             this.tsTitle.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsTitle.Location = new System.Drawing.Point(0, 0);
             this.tsTitle.Name = "tsTitle";
-            this.tsTitle.Size = new System.Drawing.Size(532, 25);
+            this.tsTitle.Size = new System.Drawing.Size(456, 25);
             this.tsTitle.TabIndex = 0;
             this.tsTitle.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.TsTitle_ItemAdded);
             this.tsTitle.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.TsTitle_ItemClicked);
@@ -102,23 +102,23 @@ namespace ApeFree.ApeForms.Core.Controls
             // slideBox
             // 
             this.slideBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slideBox.Font = new System.Drawing.Font("黑体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.slideBox.Location = new System.Drawing.Point(0, 25);
             this.slideBox.Margin = new System.Windows.Forms.Padding(0);
             this.slideBox.Name = "slideBox";
             this.slideBox.Rate = 1;
             this.slideBox.ReviseValue = 5;
-            this.slideBox.Size = new System.Drawing.Size(532, 360);
+            this.slideBox.Size = new System.Drawing.Size(456, 247);
             this.slideBox.TabIndex = 1;
             // 
             // SlideTabControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.slideBox);
             this.Controls.Add(this.tsTitle);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "SlideTabControl";
-            this.Size = new System.Drawing.Size(532, 385);
+            this.Size = new System.Drawing.Size(456, 272);
             this.cmsTitleItem.ResumeLayout(false);
             this.cmsTitle.ResumeLayout(false);
             this.ResumeLayout(false);
