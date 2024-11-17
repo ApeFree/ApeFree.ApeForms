@@ -62,13 +62,13 @@ namespace ApeFree.ApeForms.Core.Controls
                     return;
                 }
 
-                Parent.GetChildControls().ForEach(x =>
-                {
-                    if(x is Shutter s && x != this)
-                    {
-                        s.OpenState = false;
-                    }
-                });
+                //Parent.GetChildControls().ForEach(x =>
+                //{
+                //    if(x is Shutter s && x != this)
+                //    {
+                //        s.OpenState = false;
+                //    }
+                //});
             }
         }
 
