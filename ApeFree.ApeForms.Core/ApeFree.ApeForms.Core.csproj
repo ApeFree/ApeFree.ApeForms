@@ -27,11 +27,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="STTech.CodePlus" Version="1.6.5.1" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
+	  <ProjectReference Include="..\..\STTech.CodePlus\STTech.CodePlus\STTech.CodePlus.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
