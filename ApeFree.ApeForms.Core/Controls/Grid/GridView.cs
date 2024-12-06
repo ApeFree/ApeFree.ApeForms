@@ -142,15 +142,16 @@ namespace ApeFree.ApeForms.Core.Controls
         private List<object[]> dataSource = new List<object[]>();
         private Rectangle[][] CurrentCellsArea = new Rectangle[0][];
         private Point? HoverCellLocation;
-        private int ColumnCount => Columns.Length;
 
         private int displayRow = 5;
         private Font headerFont;
         private int headerHeight = 25;
         private CellSelectionMode selectionMode = CellSelectionMode.EntireRow;
         private ColumnSettings[] columns = new ColumnSettings[0];
+        private int ColumnCount => Columns.Length;
         private Color selectedBackColor = SystemColors.Highlight;
         private Color selectedForeColor = Color.White;
+        private Color headerBackColor = Color.WhiteSmoke;
         private Color hoveredBackColor = Color.FromArgb(32, SystemColors.Highlight);
 
         // 单元格编辑回调方法字典
@@ -197,7 +198,13 @@ namespace ApeFree.ApeForms.Core.Controls
         /// 表头高度
         /// </summary>
         [Description("表头高度")]
-        public int HeaderHeight { get { return headerHeight; } set { headerHeight = value; Invalidate(); } }
+        public int HeaderHeight { get { return headerHeight; } set { headerHeight = value; Refresh(); } }
+
+        /// <summary>
+        /// 表头单元格的背景颜色
+        /// </summary>
+        [Description("表头单元格的背景颜色")]
+        public Color HeaderBackColor { get { return headerBackColor; } set { headerBackColor = value; Invalidate(); } }
 
         /// <summary>
         /// 数据源
@@ -280,6 +287,9 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 scrollBar.Maximum = Math.Max(DataSource.Count - DisplayRow + 1, 1);
             }
+
+            // 清空计算单元格区域
+            CurrentCellsArea = null;
 
             base.Refresh();
         }
@@ -393,7 +403,7 @@ namespace ApeFree.ApeForms.Core.Controls
             }
 
             // 获取行数据
-            var row = DataSource[clickedCell.Y-1];
+            var row = DataSource[clickedCell.Y - 1];
 
             // 如果列超出有效数据的长度
             if (row.Length < clickedCell.X)
@@ -405,7 +415,7 @@ namespace ApeFree.ApeForms.Core.Controls
             var data = row[clickedCell.X];
 
             // 如果数据为空则退出
-            if(data == null)
+            if (data == null)
             {
                 return;
             }
@@ -436,8 +446,7 @@ namespace ApeFree.ApeForms.Core.Controls
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            // 当尺寸发生变化，立即重绘界面
-            Invalidate();
+            Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -451,7 +460,10 @@ namespace ApeFree.ApeForms.Core.Controls
             }
 
             // 获取当前所有单元格区域
-            CurrentCellsArea = GetCellsRectangle();
+            if (CurrentCellsArea == null)
+            {
+                CurrentCellsArea = GetCellsRectangle();
+            }
 
             // 绘制表头单元格
             DrawHeaderCells(e.Graphics);
@@ -598,41 +610,67 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <returns>首行为表头单元格的区域，其余为数据单元格区域</returns>
         private Rectangle[][] GetCellsRectangle()
         {
-            // 计算实际宽度
-            var knownWidth = Columns.Where(x => x.Width != 0).Sum(x => x.Width);
-            var autoWidth = (Width - knownWidth - scrollBar.Width) / Columns.Where(x => x.Width == 0).Count();
-            foreach (var col in Columns)
+            // 清空所有实际宽度值
+            foreach (var x in Columns)
             {
-                col.ActualWidth = col.Width == 0 ? autoWidth : col.Width;
+                if (x.Width == 0)
+                {
+                    x.ActualWidth = 0;
+                }
+                else
+                {
+                    x.ActualWidth = x.Width;
+                }
+            }
+
+            // 计算实际宽度
+            var knownWidth = Columns.Where(x => x.Width != 0).Sum(x => x.Width) + 1;
+            var unknownWidthCellCount = Columns.Where(x => x.Width == 0).Count();
+            var unknownWidth = Width - knownWidth - (scrollBar.Visible ? scrollBar.Width : 0);
+            var autoWidth = unknownWidth / (float)unknownWidthCellCount;
+            var columnLeftArray = Enumerable.Range(0, unknownWidthCellCount + 1).Select(col => (int)(knownWidth + autoWidth * col)).ToArray();
+
+            for (int i = 0; i < unknownWidthCellCount; i++)
+            {
+                var cs = Columns.FirstOrDefault(x => x.Width == 0 && x.ActualWidth == 0);
+                if (cs == null)
+                {
+                    break;
+                }
+                else
+                {
+                    var width = columnLeftArray[i + 1] - columnLeftArray[i];
+                    cs.ActualWidth = width;
+                }
             }
 
             // 计算单元格行高
-            var cellHeight = (Height - HeaderHeight) / DisplayRow;
+            var cellHeight = (Height - HeaderHeight) / (float)DisplayRow;
+            var rowHeightArray = Enumerable.Range(0, DisplayRow + 1).Select(row => (int)(HeaderHeight + cellHeight * row)).ToArray();
 
             // 创建表格区域二维数组（总行数=显示行数+表头）
             Rectangle[][] grid = new Rectangle[DisplayRow + 1][];
 
-            for (int i = 0; i < grid.Length; i++)
+            // 表头区域
+            grid[0] = Columns.Select((c, r) =>
             {
-                // 判断是否为表头
-                if (i == 0)
+                var location = new Point(Columns.Take(r).Sum(x => x.ActualWidth), 0);
+                var rect = new Rectangle(location, new Size(Columns[r].ActualWidth, HeaderHeight));
+                return rect;
+            }).ToArray();
+
+            // 数据区域
+            for (int i = 1; i < grid.Length; i++)
+            {
+                var rowTop = rowHeightArray[i - 1];
+                var rowHeight = rowHeightArray[i] - rowTop;
+
+                grid[i] = Columns.Select((c, r) =>
                 {
-                    grid[i] = Columns.Select((c, r) =>
-                    {
-                        var location = new Point(Columns.Take(r).Sum(x => x.ActualWidth), 0);
-                        var rect = new Rectangle(location, new Size(Columns[r].ActualWidth, HeaderHeight));
-                        return rect;
-                    }).ToArray();
-                }
-                else
-                {
-                    grid[i] = Columns.Select((c, r) =>
-                    {
-                        var location = new Point(Columns.Take(r).Sum(x => x.ActualWidth), (i - 1) * cellHeight + HeaderHeight);
-                        var rect = new Rectangle(location, new Size(Columns[r].ActualWidth, cellHeight));
-                        return rect;
-                    }).ToArray();
-                }
+                    var location = new Point(Columns.Take(r).Sum(x => x.ActualWidth), rowTop);
+                    var rect = new Rectangle(location, new Size(Columns[r].ActualWidth, rowHeight));
+                    return rect;
+                }).ToArray();
             }
 
             return grid;
@@ -686,7 +724,7 @@ namespace ApeFree.ApeForms.Core.Controls
 
             // 表头字体、表头背景色
             var headerFont = HeaderFont ?? new Font(Font, FontStyle.Bold);
-            var headerBackColor = BackColor.Luminance(0.9f);
+            var headerBackColor = HeaderBackColor;
 
             // 绘制表头
             for (int i = 0; i < ColumnCount; i++)
