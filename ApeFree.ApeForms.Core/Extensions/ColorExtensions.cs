@@ -10,20 +10,16 @@
         /// <returns></returns>
         public static Color Luminance(this Color color, float ratio)
         {
+            if (ratio < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(ratio));
+            }
+
             byte[] values = new byte[] { color.R, color.G, color.B };
             for (int i = 0; i < values.Length; i++)
             {
                 var cv = (int)Math.Round(values[i] * ratio) + 1;
-                switch (cv)
-                {
-                    case > 255:
-                        cv = 255;
-                        break;
-                    case < 0:
-                        cv = 0;
-                        break;
-                }
-                values[i] = (byte)cv;
+                values[i] = (byte)Math.Min(255, cv);
             }
             return Color.FromArgb(color.A, values[0], values[1], values[2]);
         }
