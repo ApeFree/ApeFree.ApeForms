@@ -38,6 +38,7 @@ namespace ApeFree.ApeForms.TemplateNest
             clbSideBar = new ControlListBox();
             clbBottomBar = new ControlListBox();
             splitContainer = new System.Windows.Forms.SplitContainer();
+            rtpSearch = new RoundTextPanel();
             panelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
@@ -55,7 +56,7 @@ namespace ApeFree.ApeForms.TemplateNest
             panelHead.Location = new System.Drawing.Point(0, 0);
             panelHead.Margin = new System.Windows.Forms.Padding(4);
             panelHead.Name = "panelHead";
-            panelHead.Size = new System.Drawing.Size(912, 71);
+            panelHead.Size = new System.Drawing.Size(915, 71);
             panelHead.TabIndex = 1;
             // 
             // clbTopBar
@@ -67,7 +68,7 @@ namespace ApeFree.ApeForms.TemplateNest
             clbTopBar.Location = new System.Drawing.Point(175, 0);
             clbTopBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbTopBar.Name = "clbTopBar";
-            clbTopBar.Size = new System.Drawing.Size(737, 71);
+            clbTopBar.Size = new System.Drawing.Size(740, 71);
             clbTopBar.TabIndex = 1;
             // 
             // picLogo
@@ -90,7 +91,7 @@ namespace ApeFree.ApeForms.TemplateNest
             slideTabControl.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             slideTabControl.Name = "slideTabControl";
             slideTabControl.Rate = 2;
-            slideTabControl.Size = new System.Drawing.Size(696, 653);
+            slideTabControl.Size = new System.Drawing.Size(699, 653);
             stateColorSet1.GotFocusBackColor = System.Drawing.Color.FromArgb(0, 122, 204);
             stateColorSet1.GotFocusForeColor = System.Drawing.Color.White;
             stateColorSet1.LostFocusBackColor = System.Drawing.Color.FromArgb(251, 251, 251);
@@ -109,13 +110,13 @@ namespace ApeFree.ApeForms.TemplateNest
             // clbSideBar
             // 
             clbSideBar.AutoScroll = true;
-            clbSideBar.BackColor = System.Drawing.Color.FromArgb(40, 40, 60);
+            clbSideBar.BackColor = System.Drawing.Color.Transparent;
             clbSideBar.Direction = System.Windows.Forms.FlowDirection.TopDown;
             clbSideBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            clbSideBar.Location = new System.Drawing.Point(0, 0);
+            clbSideBar.Location = new System.Drawing.Point(0, 27);
             clbSideBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbSideBar.Name = "clbSideBar";
-            clbSideBar.Size = new System.Drawing.Size(212, 653);
+            clbSideBar.Size = new System.Drawing.Size(212, 626);
             clbSideBar.TabIndex = 3;
             // 
             // clbBottomBar
@@ -127,7 +128,7 @@ namespace ApeFree.ApeForms.TemplateNest
             clbBottomBar.Location = new System.Drawing.Point(0, 724);
             clbBottomBar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             clbBottomBar.Name = "clbBottomBar";
-            clbBottomBar.Size = new System.Drawing.Size(912, 71);
+            clbBottomBar.Size = new System.Drawing.Size(915, 71);
             clbBottomBar.TabIndex = 4;
             // 
             // splitContainer
@@ -139,15 +140,36 @@ namespace ApeFree.ApeForms.TemplateNest
             // 
             // splitContainer.Panel1
             // 
+            splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(40, 40, 60);
             splitContainer.Panel1.Controls.Add(clbSideBar);
+            splitContainer.Panel1.Controls.Add(rtpSearch);
             splitContainer.Panel1MinSize = 175;
             // 
             // splitContainer.Panel2
             // 
             splitContainer.Panel2.Controls.Add(slideTabControl);
-            splitContainer.Size = new System.Drawing.Size(912, 653);
+            splitContainer.Size = new System.Drawing.Size(915, 653);
             splitContainer.SplitterDistance = 212;
             splitContainer.TabIndex = 5;
+            // 
+            // rtpSearch
+            // 
+            rtpSearch.BackColor = System.Drawing.SystemColors.Window;
+            rtpSearch.BorderColor = System.Drawing.SystemColors.Highlight;
+            rtpSearch.BorderWidth = (ushort)2;
+            rtpSearch.CornerRadius = 20;
+            rtpSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            rtpSearch.Font = new System.Drawing.Font("Microsoft YaHei UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            rtpSearch.Hint = null;
+            rtpSearch.HintColor = System.Drawing.Color.Gray;
+            rtpSearch.Location = new System.Drawing.Point(0, 0);
+            rtpSearch.MinimumSize = new System.Drawing.Size(30, 24);
+            rtpSearch.Name = "rtpSearch";
+            rtpSearch.ReadOnly = false;
+            rtpSearch.Size = new System.Drawing.Size(212, 27);
+            rtpSearch.TabIndex = 4;
+            rtpSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            rtpSearch.TextChanged += rtpSearch_TextChanged;
             // 
             // TemplateForm
             // 
@@ -179,6 +201,7 @@ namespace ApeFree.ApeForms.TemplateNest
         private ControlListBox clbBottomBar;
         protected SlideTabControl slideTabControl;
         private System.Windows.Forms.SplitContainer splitContainer;
+        private RoundTextPanel rtpSearch;
     }
 }
 

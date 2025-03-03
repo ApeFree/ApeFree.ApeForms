@@ -67,7 +67,7 @@ namespace ApeFree.ApeForms.TemplateNest
         public Color TopBarBackColor { get => panelHead.BackColor; set => panelHead.BackColor = value; }
 
         [Description("侧边导航栏背景色")]
-        public Color SideBarBackColor { get => clbSideBar.BackColor; set => clbSideBar.BackColor = value; }
+        public Color SideBarBackColor { get => splitContainer.Panel1.BackColor; set => splitContainer.Panel1.BackColor = value; }
 
         [Description("底部导航栏背景色")]
         public Color BottomBarBackColor { get => clbBottomBar.BackColor; set => clbBottomBar.BackColor = value; }
@@ -337,6 +337,68 @@ namespace ApeFree.ApeForms.TemplateNest
             foreach (Control item in bottomBar.Items)
             {
                 item.Dispose();
+            }
+        }
+
+        private void rtpSearch_TextChanged(object sender, EventArgs e)
+        {
+            var searchText = rtpSearch.Text;
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                // 显示所有的选项
+                foreach (var item in clbSideBar.GetChildControls(true))
+                {
+                    item.Visible = true;
+                }
+            }
+            else
+            {
+                var sideBarItems = clbSideBar.Items.ToArray();
+                SearchKeyword(searchText, sideBarItems);
+            }
+
+            bool SearchKeyword(string keyword, Control[] controls)
+            {
+                var hasKeyword = false;
+
+                foreach (var item in controls)
+                {
+                    if (item is SimpleButtonShutter shutter)
+                    {
+                        var childItems = shutter.HiddenControl.GetChildControls();
+
+                        var b = SearchKeyword(keyword, childItems.ToArray());
+                        if (b)
+                        {
+                            hasKeyword = true;
+                            shutter.Visible = true;
+                        }
+                        else
+                        {
+                            shutter.Visible = false;
+                        }
+                    }
+                    else if (item is TabButton button)
+                    {
+                        bool contains = button.Text.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) != -1;
+                        if (contains)
+                        {
+                            hasKeyword = true;
+                            button.Visible = true;
+                        }
+                        else
+                        {
+                            button.Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        // 暂不存在其他类型的控件
+                    }
+                }
+
+                return hasKeyword;
             }
         }
     }
