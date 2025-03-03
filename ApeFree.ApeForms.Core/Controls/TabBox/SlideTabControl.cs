@@ -78,6 +78,21 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         // public Font PageTitleFont { get; set; }
 
+        [Browsable(true)]
+        [Description("显示或隐藏单个页面的标签是否提供关闭按钮")]
+        public bool ShowPageCloseButton
+        {
+            get
+            {
+                return Pages.Keys.Any(x => ((TabStripButton)x).ShowCloseButton);
+            }
+            set
+            {
+                Pages.Keys.ForEach(x => ((TabStripButton)x).ShowCloseButton = true);
+                tsTitle.Invalidate(true);
+            }
+        }
+
         /// <summary>
         /// 添加页面
         /// </summary>
@@ -434,6 +449,10 @@ namespace ApeFree.ApeForms.Core.Controls
         private Rectangle rect;
         public EventHandler CloseButtonClickHandler;
 
+        [Browsable(true)]
+        [Description("显示或隐藏关闭按钮")]
+        public bool ShowCloseButton { get; set; }
+
         public TabStripButton(string name, Image image, EventHandler onClick) : base(name, image, onClick)
         {
             AutoSize = false;
@@ -455,7 +474,8 @@ namespace ApeFree.ApeForms.Core.Controls
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
-            if (inside)
+
+            if (ShowCloseButton && inside)
             {
                 CloseButtonClickHandler?.Invoke(this, e);
             }
@@ -475,25 +495,28 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             base.OnPaint(e);
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            var x = Height / 4;
-            rect = new Rectangle(Width - 3 * x, x, x * 2, x * 2);
-
-            using (var brush = new SolidBrush(inside ? BackColor.Luminance(0.6f) : BackColor))
+            if (ShowCloseButton)
             {
-                e.Graphics.FillRectangle(brush, rect);
-            }
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            var border = 2;
-            using (var pen = new Pen(ForeColor))
-            {
-                var sp = new Point(Width - 3 * x, x);
-                e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + border), new Point(sp.X + 2 * x - border - 1, sp.Y + 2 * x - border - 1));
-                e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + 2 * x - border - 1), new Point(sp.X + 2 * x - border - 1, sp.Y + border));
+                var x = Height / 4;
+                rect = new Rectangle(Width - 3 * x, x, x * 2, x * 2);
+
+                using (var brush = new SolidBrush(inside ? BackColor.Luminance(0.6f) : BackColor))
+                {
+                    e.Graphics.FillRectangle(brush, rect);
+                }
+
+                var border = 2;
+                using (var pen = new Pen(ForeColor))
+                {
+                    var sp = new Point(Width - 3 * x, x);
+                    e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + border), new Point(sp.X + 2 * x - border - 1, sp.Y + 2 * x - border - 1));
+                    e.Graphics.DrawLine(pen, new Point(sp.X + border, sp.Y + 2 * x - border - 1), new Point(sp.X + 2 * x - border - 1, sp.Y + border));
+                }
             }
         }
     }
