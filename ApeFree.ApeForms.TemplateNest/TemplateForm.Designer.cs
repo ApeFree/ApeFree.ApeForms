@@ -91,6 +91,7 @@ namespace ApeFree.ApeForms.TemplateNest
             slideTabControl.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             slideTabControl.Name = "slideTabControl";
             slideTabControl.Rate = 2;
+            slideTabControl.ShowPageCloseButton = false;
             slideTabControl.Size = new System.Drawing.Size(699, 653);
             stateColorSet1.GotFocusBackColor = System.Drawing.Color.FromArgb(0, 122, 204);
             stateColorSet1.GotFocusForeColor = System.Drawing.Color.White;
