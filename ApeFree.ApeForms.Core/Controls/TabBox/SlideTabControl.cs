@@ -84,14 +84,15 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             get
             {
-                return Pages.Keys.Any(x => ((TabStripButton)x).ShowCloseButton);
+                return showPageCloseButton;
             }
             set
             {
-                Pages.Keys.ForEach(x => ((TabStripButton)x).ShowCloseButton = true);
-                tsTitle.Invalidate(true);
+                showPageCloseButton = value;
+                Pages.Keys.ForEach(x => ((TabStripButton)x).ShowCloseButton = showPageCloseButton);
             }
         }
+        private bool showPageCloseButton = true;
 
         /// <summary>
         /// 添加页面
@@ -448,15 +449,27 @@ namespace ApeFree.ApeForms.Core.Controls
         private bool inside;
         private Rectangle rect;
         public EventHandler CloseButtonClickHandler;
+        private bool showCloseButton;
 
         [Browsable(true)]
         [Description("显示或隐藏关闭按钮")]
-        public bool ShowCloseButton { get; set; }
+        public bool ShowCloseButton
+        {
+            get => showCloseButton; set
+            {
+                if (showCloseButton != value)
+                {
+                    showCloseButton = value;
+                    Invalidate();
+                }
+            }
+        }
 
-        public TabStripButton(string name, Image image, EventHandler onClick) : base(name, image, onClick)
+        public TabStripButton(string name, Image image, EventHandler onClick, bool showCloseButton = true) : base(name, image, onClick)
         {
             AutoSize = false;
             TextAlign = ContentAlignment.MiddleLeft;
+            ShowCloseButton = showCloseButton;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
