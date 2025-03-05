@@ -444,7 +444,7 @@ namespace ApeFree.ApeForms.Core.Controls
         }
     }
 
-    internal class TabStripButton : ToolStripButton
+    public class TabStripButton : ToolStripButton
     {
         private bool inside;
         private Rectangle rect;
