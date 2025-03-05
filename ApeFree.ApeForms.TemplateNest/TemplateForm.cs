@@ -222,7 +222,11 @@ namespace ApeFree.ApeForms.TemplateNest
                             }
 
                             // 设置单击事件
-                            slideTabControl.AddPage(item.Name, item.Control, item.Icon ?? Icon.ToBitmap());
+                            var tsb = slideTabControl.AddPage(item.Name, item.Control, item.Icon ?? Icon.ToBitmap());
+                            if (tsb is TabStripButton btn)
+                            {
+                                btn.ShowCloseButton = item.ShowCloseButton;
+                            }
                         });
 
                         // 设置单个按钮的前景色和背景色
@@ -455,6 +459,11 @@ namespace ApeFree.ApeForms.TemplateNest
         /// 关联控件类型
         /// </summary>
         public Type ControlType { get; }
+
+        /// <summary>
+        /// 显示或隐藏关闭按钮
+        /// </summary>
+        public bool ShowCloseButton { get; set; } = true;
 
         /// <summary>
         /// 关联控件
