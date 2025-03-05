@@ -294,7 +294,16 @@ namespace ApeFree.ApeDialogs
             DialogEventHandler openDefaultFolderHandler = null;
             openDefaultFolderHandler = new DialogEventHandler((d, e) =>
             {
-                view.OpenFolder(path);
+                var openOk = view.OpenFolder(path);
+                if (openOk)
+                {
+                    // 默认文件夹如果打开成功，更新为结果文件夹
+                    dialog.Result.UpdateResultData(view.SelectedFolders);
+                }
+                else
+                {
+                    // 略
+                }
                 dialog.Shown -= openDefaultFolderHandler;
             });
             dialog.Shown += openDefaultFolderHandler;

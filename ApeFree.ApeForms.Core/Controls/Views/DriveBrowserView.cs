@@ -235,7 +235,7 @@ namespace ApeFree.ApeForms.Core.Controls.Views
         /// 打开文件夹
         /// </summary>
         /// <param name="path"></param>
-        public virtual void OpenFolder(string path)
+        public virtual bool OpenFolder(string path)
         {
             labStatus.Text = string.Empty;
             labStatus.Visible = false;
@@ -248,12 +248,13 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             {
                 dirItems = directory.GetDirectories();
                 fileItems = DisplayItemType == DisplayItemType.FolderAndFile ? directory.GetFiles(SearchPattern) : [];
+                SelectedFolders = [path];
             }
             catch (Exception ex)
             {
                 labStatus.Text = ex.Message;
                 labStatus.Visible = true;
-                return;
+                return false;
             }
 
             var lvis = new List<ListViewItem>();
@@ -291,6 +292,8 @@ namespace ApeFree.ApeForms.Core.Controls.Views
                     listView.Items.AddRange(lvis.ToArray());
                 }
             });
+
+            return true;
         }
 
         private void tbPath_KeyDown(object sender, KeyEventArgs e)
