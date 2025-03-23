@@ -41,6 +41,11 @@ namespace ApeFree.ApeForms.TemplateNest
         protected SlideTabControl SlideTabBox => slideTabControl;
 
         /// <summary>
+        /// 页面标题项的快捷菜单
+        /// </summary>
+        protected ContextMenuStrip PageItemContextMenu => cmsPageItem;
+
+        /// <summary>
         /// 侧边导航栏的文字对齐方向
         /// </summary>
         public ContentAlignment SideBarTextAlign { get; set; } = ContentAlignment.MiddleLeft;
@@ -55,12 +60,14 @@ namespace ApeFree.ApeForms.TemplateNest
         /// “关闭所有选项卡”选项的文本
         /// </summary>
         [Description("“关闭所有选项卡”选项的文本")]
+        [Obsolete("该属性已经弃用，请使用'PageItemContextMenu'属性设置自定义快捷菜单。")]
         public string CloseAllPagesOptionText { get => slideTabControl.CloseAllPagesOptionText; set => slideTabControl.CloseAllPagesOptionText = value; }
 
         /// <summary>
         /// “关闭选项卡”选项的文本
         /// </summary>
         [Description("“关闭选项卡”选项的文本")]
+        [Obsolete("该属性已经弃用，请使用'PageItemContextMenu'属性设置自定义快捷菜单。")]
         public string ClosePageOptionText { get => slideTabControl.ClosePageOptionText; set => slideTabControl.ClosePageOptionText = value; }
 
         [Description("顶部导航栏背景色")]
