@@ -30,17 +30,8 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tsTitle = new System.Windows.Forms.ToolStrip();
-            this.cmsTitleItem = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCloseAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsTitle = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiPreviousPage = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiNextPage = new System.Windows.Forms.ToolStripMenuItem();
             this.slideBox = new ApeFree.ApeForms.Core.Controls.SlideBox();
-            this.cmsTitleItem.SuspendLayout();
-            this.cmsTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // tsTitle
@@ -54,50 +45,6 @@ namespace ApeFree.ApeForms.Core.Controls
             this.tsTitle.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.TsTitle_ItemAdded);
             this.tsTitle.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.TsTitle_ItemClicked);
             this.tsTitle.ItemRemoved += new System.Windows.Forms.ToolStripItemEventHandler(this.TsTitle_ItemRemoved);
-            // 
-            // cmsTitleItem
-            // 
-            this.cmsTitleItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiClose,
-            this.tsmiCloseAll});
-            this.cmsTitleItem.Name = "cmsTitleItem";
-            this.cmsTitleItem.Size = new System.Drawing.Size(126, 48);
-            // 
-            // tsmiClose
-            // 
-            this.tsmiClose.Name = "tsmiClose";
-            this.tsmiClose.Size = new System.Drawing.Size(125, 22);
-            this.tsmiClose.Text = "Close";
-            this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
-            // 
-            // tsmiCloseAll
-            // 
-            this.tsmiCloseAll.Name = "tsmiCloseAll";
-            this.tsmiCloseAll.Size = new System.Drawing.Size(125, 22);
-            this.tsmiCloseAll.Text = "Close all";
-            this.tsmiCloseAll.Click += new System.EventHandler(this.tsmiCloseAll_Click);
-            // 
-            // cmsTitle
-            // 
-            this.cmsTitle.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiPreviousPage,
-            this.tsmiNextPage});
-            this.cmsTitle.Name = "cmsTitle";
-            this.cmsTitle.Size = new System.Drawing.Size(113, 48);
-            // 
-            // tsmiPreviousPage
-            // 
-            this.tsmiPreviousPage.Name = "tsmiPreviousPage";
-            this.tsmiPreviousPage.Size = new System.Drawing.Size(112, 22);
-            this.tsmiPreviousPage.Text = "上一页";
-            this.tsmiPreviousPage.Click += new System.EventHandler(this.tsmiPreviousPage_Click);
-            // 
-            // tsmiNextPage
-            // 
-            this.tsmiNextPage.Name = "tsmiNextPage";
-            this.tsmiNextPage.Size = new System.Drawing.Size(112, 22);
-            this.tsmiNextPage.Text = "下一页";
-            this.tsmiNextPage.Click += new System.EventHandler(this.tsmiNextPage_Click);
             // 
             // slideBox
             // 
@@ -119,8 +66,6 @@ namespace ApeFree.ApeForms.Core.Controls
             this.Controls.Add(this.tsTitle);
             this.Name = "SlideTabControl";
             this.Size = new System.Drawing.Size(456, 272);
-            this.cmsTitleItem.ResumeLayout(false);
-            this.cmsTitle.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,11 +75,5 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private System.Windows.Forms.ToolStrip tsTitle;
         private SlideBox slideBox;
-        private System.Windows.Forms.ContextMenuStrip cmsTitleItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiClose;
-        private System.Windows.Forms.ToolStripMenuItem tsmiCloseAll;
-        private System.Windows.Forms.ContextMenuStrip cmsTitle;
-        private System.Windows.Forms.ToolStripMenuItem tsmiPreviousPage;
-        private System.Windows.Forms.ToolStripMenuItem tsmiNextPage;
     }
 }

@@ -35,7 +35,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <summary>
         /// 所有页面对象
         /// </summary>
-        public Dictionary<ToolStripItem, Control> Pages = new Dictionary<ToolStripItem, Control>();
+        public Dictionary<TabStripButton, Control> Pages = new Dictionary<TabStripButton, Control>();
 
         /// <summary>
         /// 页面标题栏停靠的位置
@@ -61,17 +61,24 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <summary>
         /// 关闭页面选项的文本
         /// </summary>
-        public string ClosePageOptionText { get => tsmiClose.Text; set => tsmiClose.Text = value; }
+        [Obsolete("该属性已经弃用，请使用'PageItemContextMenu'属性设置自定义快捷菜单。")]
+        public string ClosePageOptionText { get; set; }
 
         /// <summary>
         /// 关闭所有页面选项的文本
         /// </summary>
-        public string CloseAllPagesOptionText { get => tsmiCloseAll.Text; set => tsmiCloseAll.Text = value; }
+        [Obsolete("该属性已经弃用，请使用'PageItemContextMenu'属性设置自定义快捷菜单。")]
+        public string CloseAllPagesOptionText { get; set; }
 
         /// <summary>
         /// 当前页面序号
         /// </summary>
         public int CurrentIndex { get; private set; }
+
+        /// <summary>
+        /// 标题栏页面项的快捷菜单
+        /// </summary>
+        public ContextMenuStrip PageItemContextMenu { get; set; }
 
         /// <summary>
         /// 标题栏文本格式
@@ -89,9 +96,21 @@ namespace ApeFree.ApeForms.Core.Controls
             set
             {
                 showPageCloseButton = value;
-                Pages.Keys.ForEach(x => ((TabStripButton)x).ShowCloseButton = showPageCloseButton);
+                Pages.Keys.ForEach(x => x.ShowCloseButton = showPageCloseButton);
             }
         }
+
+        /// <summary>
+        /// 所有页面的标题项
+        /// </summary>
+        public TabStripButton[] PageTitleItems => Pages.Keys.ToArray();
+
+        /// <summary>
+        /// 当前激活快捷菜单的标题项
+        /// </summary>
+        public TabStripButton ActiveContextMenuTitleItem { get; private set; }
+
+
         private bool showPageCloseButton = true;
 
         /// <summary>
@@ -147,7 +166,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <param name="title"></param>
         public void Jump(string title)
         {
-            foreach (ToolStripItem item in tsTitle.Items)
+            foreach (TabStripButton item in tsTitle.Items)
             {
                 PerformItemClicked(item);
             }
@@ -218,7 +237,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <returns></returns>
         public Control RemovePage(string title)
         {
-            foreach (ToolStripItem item in tsTitle.Items)
+            foreach (TabStripButton item in tsTitle.Items)
             {
                 if (item.Text == title)
                 {
@@ -254,8 +273,6 @@ namespace ApeFree.ApeForms.Core.Controls
                     return;
                 }
             }
-
-
         }
 
         /// <summary>
@@ -268,10 +285,9 @@ namespace ApeFree.ApeForms.Core.Controls
             Control content = null;
             if (index < Pages.Count)
             {
-                var tsi = tsTitle.Items.Cast<ToolStripItem>().ElementAt(index);
+                var tsi = tsTitle.Items.Cast<TabStripButton>().ElementAt(index);
                 content = Pages[tsi];
                 tsTitle.Items.Remove(tsi);
-                // tsTitle.Items.RemoveAt(index);
                 Jump(CurrentIndex);
             }
 
@@ -293,37 +309,49 @@ namespace ApeFree.ApeForms.Core.Controls
             {
                 e.Item.Text = $"{name} {++c}";
             }
-        }
 
-        private bool HasCheckSameName(ToolStripItem newItem)
-        {
-            foreach (ToolStripItem item in tsTitle.Items)
+            bool HasCheckSameName(ToolStripItem newItem)
             {
-                if (newItem != item && newItem.Text == item.Text)
+                foreach (TabStripButton item in tsTitle.Items)
                 {
-                    return true;
+                    if (newItem != item && newItem.Text == item.Text)
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
         }
 
-        private ToolStripItem ActiveContextMenuTitleItem;
 
+        private void TsTitle_ItemRemoved(object sender, ToolStripItemEventArgs e)
+        {
+            e.Item.Click -= Item_Click;
 
+            var item = e.Item as TabStripButton;
+            slideBox.RemovePage(Pages[item]);
+            Pages.Remove(item);
+            Jump(CurrentIndex);
+        }
 
         private void Item_MouseDown(object sender, MouseEventArgs e)
         {
             // 当无页面的时候不做处理
-            if (Pages.Count == 0) return;
+            if (Pages.Count == 0)
+            {
+                return;
+            }
 
+            if (PageItemContextMenu == null)
+            {
+                return;
+            }
 
             if (e.Button == MouseButtons.Right)
             {
-                ActiveContextMenuTitleItem = (ToolStripItem)sender;
+                ActiveContextMenuTitleItem = (TabStripButton)sender;
 
-                tsmiClose.Image = ActiveContextMenuTitleItem.Image;
-
-                Point mousePoint = Control.MousePosition;
+                Point mousePoint = MousePosition;
                 Point stripPoint = PointToScreen(ActiveContextMenuTitleItem.Owner.Location);
 
                 if (TitleDock == DockStyle.Left || TitleDock == DockStyle.Right)
@@ -334,38 +362,27 @@ namespace ApeFree.ApeForms.Core.Controls
                         h += tsTitle.Items[i].Size.Height;
                         if (h > mousePoint.Y)
                         {
-                            cmsTitleItem.Show(new Point(stripPoint.X, h));
+                            PageItemContextMenu.Show(new Point(stripPoint.X, h));
                             return;
                         }
                     }
-                    cmsTitleItem.Show(new Point(stripPoint.X, h));
+                    PageItemContextMenu.Show(new Point(stripPoint.X, h));
                 }
                 else
                 {
                     int w = stripPoint.X;
                     for (int i = 0; i < Pages.Count; ++i)
                     {
-                        w += tsTitle.Items[i].Size.Width;
-                        if (w > mousePoint.X)
+                        if (w >= mousePoint.X)
                         {
-                            cmsTitleItem.Show(new Point(w, stripPoint.Y));
+                            PageItemContextMenu.Show(new Point(w - ActiveContextMenuTitleItem.Width, stripPoint.Y + ActiveContextMenuTitleItem.Height));
                             return;
                         }
+                        w += tsTitle.Items[i].Size.Width;
                     }
-                    cmsTitleItem.Show(new Point(w, stripPoint.Y));
+                    PageItemContextMenu.Show(new Point(w - ActiveContextMenuTitleItem.Width, stripPoint.Y + ActiveContextMenuTitleItem.Height));
                 }
-
-                // cmsTitleItem.Show();
             }
-        }
-
-        private void TsTitle_ItemRemoved(object sender, ToolStripItemEventArgs e)
-        {
-            e.Item.Click -= Item_Click;
-
-            slideBox.RemovePage(Pages[e.Item]);
-            Pages.Remove(e.Item);
-            Jump(CurrentIndex);
         }
 
         private void TsTitle_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -375,7 +392,7 @@ namespace ApeFree.ApeForms.Core.Controls
             CurrentIndex = index;
             PageChanged?.Invoke(sender, new PageChangedEventArgs(CurrentIndex));
 
-            foreach (ToolStripItem item in tsTitle.Items)
+            foreach (TabStripButton item in tsTitle.Items)
             {
                 if (item == e.ClickedItem)
                 {
@@ -433,29 +450,21 @@ namespace ApeFree.ApeForms.Core.Controls
             Pages.Clear();
         }
 
-        private void tsmiPreviousPage_Click(object sender, EventArgs e)
-        {
-            PreviousPage();
-        }
-
-        private void tsmiNextPage_Click(object sender, EventArgs e)
-        {
-            NextPage();
-        }
     }
 
     public class TabStripButton : ToolStripButton
     {
-        private bool inside;
+        private bool isMouseOverCloseButton;
         private Rectangle rect;
-        public EventHandler CloseButtonClickHandler;
+        internal EventHandler CloseButtonClickHandler;
         private bool showCloseButton;
 
         [Browsable(true)]
         [Description("显示或隐藏关闭按钮")]
         public bool ShowCloseButton
         {
-            get => showCloseButton; set
+            get => showCloseButton;
+            set
             {
                 if (showCloseButton != value)
                 {
@@ -475,20 +484,20 @@ namespace ApeFree.ApeForms.Core.Controls
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            inside = rect.Contains(e.Location);
+            isMouseOverCloseButton = rect.Contains(e.Location);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             base.OnMouseLeave(e);
-            inside = false;
+            isMouseOverCloseButton = false;
         }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
-            if (ShowCloseButton && inside)
+            if (ShowCloseButton && isMouseOverCloseButton)
             {
                 CloseButtonClickHandler?.Invoke(this, e);
             }
@@ -518,7 +527,7 @@ namespace ApeFree.ApeForms.Core.Controls
                 var x = Height / 4;
                 rect = new Rectangle(Width - 3 * x, x, x * 2, x * 2);
 
-                using (var brush = new SolidBrush(inside ? BackColor.Luminance(0.6f) : BackColor))
+                using (var brush = new SolidBrush(isMouseOverCloseButton ? BackColor.Luminance(0.6f) : BackColor))
                 {
                     e.Graphics.FillRectangle(brush, rect);
                 }
