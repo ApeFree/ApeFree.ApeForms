@@ -1,23 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452;net461;net6.0-windows</TargetFrameworks>
+		<TargetFrameworks>net8.0-windows;net452;net461</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<UseWindowsForms>true</UseWindowsForms>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
 		<Copyright>Copyright © 2022-2025 ApeFree, All Rights Reserved.</Copyright>
+		<Version>0.11.14.0</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体核心库，包含功能丰富的控件（Metro风格），为常用控件提供扩展功能，更多的使用方法请参考项目URL。</Description>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
-		<Version>0.11.13.2</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<SignAssembly>False</SignAssembly>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Design" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Design" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\ApeFree_64px.png">
