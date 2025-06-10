@@ -100,23 +100,14 @@ namespace ApeFree.ApeForms.Core.Gdi
             {
                 // 需要绘制的矩形区域
                 Rectangle rect = ClientRectangle;
-                Palette.ClientRectangle = rect;
-
-                if (BackgroundImage != null)
-                {
-                    Palette.Canvas.DrawImageUnscaled(BackgroundImage, rect);
-                }
-                else
-                {
-                    Palette.Canvas.Clear(BackColor);
-                }
+                Palette.OutputSize = rect.Size;
 
                 Palette.UpdateCanvas();
 
                 // 将位图缓存直接绘制到 Panel 控件上
                 using (Graphics graphics = CreateGraphics())
                 {
-                    graphics.DrawImageUnscaled(Palette.Image, rect);
+                    graphics.DrawImageUnscaled(Palette.Canvas, rect);
                 }
             }
             catch (Exception) { }

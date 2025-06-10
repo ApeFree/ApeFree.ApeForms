@@ -9,34 +9,21 @@ namespace ApeFree.ApeForms.Core.Gdi
     /// <summary>
     /// WinForm Gdi+图形画板
     /// </summary>
-    public class GdiPalette : Palette<Graphics, GdiStyle>
+    public partial class GdiPalette : Palette<Bitmap, GdiStyle>
     {
-        private Rectangle clientRectangle;
+        private Graphics Graphic;
 
-        public Bitmap Image { get; private set; }
-
-        public Rectangle ClientRectangle
+        protected override void OnOutputSizeChanged()
         {
-            get => clientRectangle;
-            set
-            {
-                if (clientRectangle != value)
-                {
-                    // 这里还有优化的空间
-                    clientRectangle = value;
-                    UpdateClientRectangle();
-                }
-            }
-        }
+            base.OnOutputSizeChanged();
 
-        private void UpdateClientRectangle()
-        {
-            Image?.Dispose();
             Canvas?.Dispose();
-            if (clientRectangle.Width > 0 && clientRectangle.Height > 0)
+            Graphic?.Dispose();
+            if (OutputSize.Width > 0 && OutputSize.Height > 0)
             {
-                Image = new Bitmap(clientRectangle.Width, clientRectangle.Height);
-                Canvas = Graphics.FromImage(Image);
+                Canvas = new Bitmap((int)OutputSize.Width, (int)OutputSize.Height);
+                Graphic = Graphics.FromImage(Canvas);
+                Graphic.Clear(Color.Transparent);
             }
         }
 
@@ -45,28 +32,47 @@ namespace ApeFree.ApeForms.Core.Gdi
         {
             try
             {
-                Canvas.SmoothingMode = SmoothingMode.AntiAlias;
-                Canvas.SmoothingMode = SmoothingMode.HighQuality;
-                Canvas.CompositingQuality = CompositingQuality.HighQuality;
-                Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                Graphic.Clear(Color.Transparent);
+
+                Graphic.SmoothingMode = SmoothingMode.AntiAlias;
+                Graphic.SmoothingMode = SmoothingMode.HighQuality;
+                Graphic.CompositingQuality = CompositingQuality.HighQuality;
+                Graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
                 base.UpdateCanvas();
             }
             catch (System.Exception) { }
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (Graphic != null)
+            {
+                Graphic.Dispose();
+                Graphic = null;
+            }
+        }
+    }
+
+    public partial class GdiPalette
+    {
         ///<inheritdoc/>
         protected override void DrawEllipseHandler(GdiStyle style, EllipseShape graphic)
         {
             var p = graphic.Points.First();
+            p = TransformAbsCoordsToRelCoords(p);
+            var size = new SizeF(graphic.Width * Scale, graphic.Height * Scale);
+
             if (style.Pen != null)
             {
-                Canvas.DrawEllipse(style.Pen, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.DrawEllipse(style.Pen, p.X, p.Y, size.Width, size.Height);
             }
 
             if (style.Brush != null)
             {
-                Canvas.FillEllipse(style.Brush, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.FillEllipse(style.Brush, p.X, p.Y, size.Width, size.Height);
             }
         }
 
@@ -74,57 +80,68 @@ namespace ApeFree.ApeForms.Core.Gdi
         protected override void DrawRectangleHandler(GdiStyle style, RectangleShape graphic)
         {
             var p = graphic.Points.First();
+            p = TransformAbsCoordsToRelCoords(p);
             if (style.Pen != null)
             {
-                Canvas.DrawRectangle(style.Pen, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.DrawRectangle(style.Pen, p.X, p.Y, graphic.Width, graphic.Height);
             }
 
             if (style.Brush != null)
             {
-                Canvas.FillRectangle(style.Brush, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.FillRectangle(style.Brush, p.X, p.Y, graphic.Width, graphic.Height);
             }
         }
 
         ///<inheritdoc/>
         protected override void DrawCircleHandler(GdiStyle style, CircleShape graphic)
         {
-            var p = graphic.CenterPoint;
-            var r = graphic.Radius;
+            var p = graphic.Location;
+            p = TransformAbsCoordsToRelCoords(p);
+
+            var r = graphic.Radius * Scale;
             var d = r * 2;
             if (style.Pen != null)
             {
-                Canvas.DrawEllipse(style.Pen, p.X - r, p.Y - r, d, d);
+                Graphic.DrawEllipse(style.Pen, p.X - r, p.Y - r, d, d);
             }
 
             if (style.Brush != null)
             {
-                Canvas.FillEllipse(style.Brush, p.X - r, p.Y - r, d, d);
+                Graphic.FillEllipse(style.Brush, p.X - r, p.Y - r, d, d);
             }
         }
 
         ///<inheritdoc/>
         protected override void DrawVectorHandler(GdiStyle style, VectorSahpe graphic)
         {
-            Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
+            var p1 = TransformAbsCoordsToRelCoords(graphic.StartPoint);
+            var p2 = TransformAbsCoordsToRelCoords(graphic.EndPoint);
+
+            Graphic.DrawLine(style.Pen, p1, p2);
         }
 
         ///<inheritdoc/>
         protected override void DrawLineHandler(GdiStyle style, LineShape graphic)
         {
-            Canvas.DrawLine(style.Pen, graphic.StartPoint, graphic.EndPoint);
+            var p1 = TransformAbsCoordsToRelCoords(graphic.StartPoint);
+            var p2 = TransformAbsCoordsToRelCoords(graphic.EndPoint);
+
+            Graphic.DrawLine(style.Pen, p1, p2);
         }
 
         ///<inheritdoc/>
         protected override void DrawPolygonHandler(GdiStyle style, PolygonShape shape)
         {
+            var ps = shape.DisplayPoints.Select(TransformAbsCoordsToRelCoords).ToArray();
+
             if (style.Pen != null)
             {
-                Canvas.DrawPolygon(style.Pen, shape.Points);
+                Graphic.DrawPolygon(style.Pen, ps);
             }
 
             if (style.Brush != null)
             {
-                Canvas.FillPolygon(style.Brush, shape.Points);
+                Graphic.FillPolygon(style.Brush, ps);
             }
         }
 
@@ -145,13 +162,31 @@ namespace ApeFree.ApeForms.Core.Gdi
 
             if (shape.Width <= 0 || shape.Height <= 0)
             {
-                var size = Canvas.MeasureString(shape.Text, font);
+                var size = Graphic.MeasureString(shape.Text, font);
                 width = size.Width;
                 height = size.Height;
             }
 
             // 绘制文字
-            Canvas.DrawString(shape.Text, font, brush, new RectangleF(shape.Left, shape.Top, width, height), format);
+            Graphic.DrawString(shape.Text, font, brush, new RectangleF(shape.Left, shape.Top, width, height), format);
+        }
+
+        ///<inheritdoc/>
+        protected override void DrawComplexShapeHandler(GdiStyle style, ComplexShape shape)
+        {
+
+        }
+
+        ///<inheritdoc/>
+        protected override void DrawImageHandler(GdiStyle style, ImageShape shape)
+        {
+            if (shape.Image as Bitmap == null)
+            {
+                return;
+            }
+
+            // 绘制文字
+            Graphic.DrawImage(shape.Image as Bitmap, shape.Location.X, shape.Location.Y, shape.Width, shape.Height);
         }
     }
 }
