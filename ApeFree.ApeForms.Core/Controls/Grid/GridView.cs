@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STTech.CodePlus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,26 +18,26 @@ namespace ApeFree.ApeForms.Core.Controls
             // 启用双缓冲
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
+        }
 
-            void InitializeComponent()
-            {
-                scrollBar = new VScrollBar();
-                SuspendLayout();
+        private void InitializeComponent()
+        {
+            scrollBar = new VScrollBar();
+            SuspendLayout();
 
-                scrollBar.Dock = DockStyle.Right;
-                scrollBar.LargeChange = 2;
-                scrollBar.Maximum = 1;
-                scrollBar.Size = new Size(17, 390);
-                scrollBar.Scroll += new ScrollEventHandler(scrollBar_Scroll);
+            scrollBar.Dock = DockStyle.Right;
+            scrollBar.LargeChange = 2;
+            scrollBar.Maximum = 1;
+            scrollBar.Size = new Size(17, 390);
+            scrollBar.Scroll += new ScrollEventHandler(scrollBar_Scroll);
 
-                AutoScaleDimensions = new SizeF(6F, 12F);
-                AutoScaleMode = AutoScaleMode.Font;
-                BackColor = Color.WhiteSmoke;
-                Controls.Add(scrollBar);
-                Size = new Size(100, 100);
+            AutoScaleDimensions = new SizeF(6F, 12F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
+            Controls.Add(scrollBar);
+            Size = new Size(100, 100);
 
-                ResumeLayout(false);
-            }
+            ResumeLayout(false);
         }
 
         #region 内部类
@@ -106,12 +107,14 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         public class DrawCellEventArgs : EventArgs
         {
-            public DrawCellEventArgs(Graphics graphics, Rectangle cellArea, object data, CellInteractionState cellInteractionState)
+            public DrawCellEventArgs(Graphics graphics, Rectangle cellArea, object data, CellInteractionState cellInteractionState, Color cellForeColor, Color cellBackColor)
             {
                 Graphics = graphics;
                 CellArea = cellArea;
                 Data = data;
                 CellInteractionState = cellInteractionState;
+                CellForeColor = cellForeColor;
+                CellBackColor = cellBackColor;
             }
 
             /// <summary>
@@ -133,6 +136,58 @@ namespace ApeFree.ApeForms.Core.Controls
             /// 单元格交互状态
             /// </summary>
             public CellInteractionState CellInteractionState { get; }
+
+            /// <summary>
+            /// 单元格前景色
+            /// </summary>
+            public Color CellForeColor { get; }
+
+            /// <summary>
+            /// 单元格背景色
+            /// </summary>
+            public Color CellBackColor { get; }
+        }
+
+        public class CellEventArgs : EventArgs
+        {
+
+            /// <summary>
+            /// 单元格数据
+            /// </summary>
+            public object CellData
+            {
+                get
+                {
+                    return RowData[ColumnIndex];
+                }
+                set
+                {
+                    RowData[ColumnIndex] = value;
+                }
+            }
+
+            /// <summary>
+            /// 行数据
+            /// </summary>
+            public object[] RowData { get; }
+
+            /// <summary>
+            /// 行序号
+            /// </summary>
+            public int RowIndex { get; }
+
+            /// <summary>
+            /// 列序号
+            /// </summary>
+            public int ColumnIndex { get; }
+
+            public CellEventArgs(object[] rowData, int rowIndex, int columnIndex)
+            {
+                RowData = rowData;
+                RowIndex = rowIndex;
+                ColumnIndex = columnIndex;
+            }
+
         }
         #endregion
 
@@ -141,7 +196,9 @@ namespace ApeFree.ApeForms.Core.Controls
 
         private List<object[]> dataSource = new List<object[]>();
         private Rectangle[][] CurrentCellsArea = new Rectangle[0][];
-        private Point? HoverCellLocation;
+
+        /// <summary>当前鼠标移动到的单元格坐标</summary>
+        protected Point? MouseMovingCellLocation { get; private set; }
 
         private int displayRow = 5;
         private Font headerFont;
@@ -155,7 +212,7 @@ namespace ApeFree.ApeForms.Core.Controls
         private Color hoveredBackColor = Color.FromArgb(32, SystemColors.Highlight);
 
         // 单元格编辑回调方法字典
-        private Dictionary<Type, Delegate> cellEditFuncDict = new Dictionary<Type, Delegate>();
+        private Dictionary<Type, EventHandler<CellEventArgs>> cellEditFuncDict = new Dictionary<Type, EventHandler<CellEventArgs>>();
 
         /// <summary>
         /// 绘制自定义数据类型单元格的回调方法
@@ -218,7 +275,7 @@ namespace ApeFree.ApeForms.Core.Controls
                 dataSource = value;
                 SelectedRowIndex = -1;
                 SelectedColumnIndex = -1;
-                HoverCellLocation = null;
+                MouseMovingCellLocation = null;
                 CurrentCellsArea = null;
                 TopRowIndex = 0;
 
@@ -328,13 +385,25 @@ namespace ApeFree.ApeForms.Core.Controls
             base.OnMouseMove(e);
 
             // 获取当前移动中鼠标指针所属单元格的位置
-            var movingCell = GetCellLocation(e.Location);
+            var movingCellLocation = GetCellLocation(e.Location);
 
-            if (HoverCellLocation != movingCell)
+            if (movingCellLocation.X == -1)
             {
-                HoverCellLocation = movingCell;
+                return;
+            }
+
+            if (MouseMovingCellLocation != movingCellLocation)
+            {
+                MouseMovingCellLocation = movingCellLocation;
+                OnMouseCellHover(new CellEventArgs(DataSource[movingCellLocation.Y], movingCellLocation.Y, movingCellLocation.X));
+
                 Invalidate();
             }
+        }
+
+        protected virtual void OnMouseCellHover(CellEventArgs e)
+        {
+
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -371,7 +440,7 @@ namespace ApeFree.ApeForms.Core.Controls
         {
             base.OnMouseLeave(e);
             // 当鼠标离开控件区域时，清除鼠标的悬停位置信息
-            HoverCellLocation = null;
+            MouseMovingCellLocation = null;
 
             // 立即重绘界面
             Invalidate();
@@ -394,25 +463,34 @@ namespace ApeFree.ApeForms.Core.Controls
             }
 
             // 获取当前移动中鼠标指针所属单元格的位置
-            var clickedCell = GetCellLocation(e.Location);
+            var clickedCellPos = GetCellLocation(e.Location);
+
+            // 检查点击位置是否有效
+            if (clickedCellPos == new Point(-1, -1))
+            {
+                return;
+            }
+
+            // 获取单元格区域
+            var clickedCell = CurrentCellsArea[clickedCellPos.Y][clickedCellPos.X];
 
             // 如果未点击有效单元格则
-            if (clickedCell.X == -1 || clickedCell.Y == -1)
+            if (clickedCellPos.X == -1 || clickedCellPos.Y == -1)
             {
                 return;
             }
 
             // 获取行数据
-            var row = DataSource[clickedCell.Y - 1];
+            var row = DataSource[clickedCellPos.Y - 1];
 
             // 如果列超出有效数据的长度
-            if (row.Length < clickedCell.X)
+            if (row.Length < clickedCellPos.X)
             {
                 return;
             }
 
             // 获取单元格数据
-            var data = row[clickedCell.X];
+            var data = row[clickedCellPos.X];
 
             // 如果数据为空则退出
             if (data == null)
@@ -424,17 +502,18 @@ namespace ApeFree.ApeForms.Core.Controls
             var type = data.GetType();
 
             // 获取数据类型对应的编辑回调
-            if (cellEditFuncDict.TryGetValue(type, out var func))
+            EventHandler<CellEventArgs> func;
+            if (cellEditFuncDict.TryGetValue(type, out func))
             {
                 // 通过回调编辑数据
                 data = func.DynamicInvoke(data);
 
                 // 替换数据源同一位置的数据
-                row[clickedCell.X] = data;
+                row[clickedCellPos.X] = data;
 
                 // 重绘单元格
                 // TODO: 可只重绘被修改的单元格，不需要重绘全部
-                Invalidate(false);
+                Invalidate(clickedCell, false);
             }
             else
             {
@@ -503,6 +582,9 @@ namespace ApeFree.ApeForms.Core.Controls
                     // 当前待绘制的单元格数据
                     var data = rowObjects.Length > col ? rowObjects[col] : null;
 
+                    // 预处理单元格数据
+                    data = PreprocessCellData(data, new Point(row, col));
+
                     // 当前单元格交互状态
                     var interactionState = CellInteractionState.None;
 
@@ -523,11 +605,11 @@ namespace ApeFree.ApeForms.Core.Controls
                     {
                         interactionState = CellInteractionState.Selected;
                     }
-                    else if (HoverCellLocation != null) // 判断当前是否鼠标悬停在单元格上
+                    else if (MouseMovingCellLocation != null) // 判断当前是否鼠标悬停在单元格上
                     {
                         // 获取当前鼠标悬停单元格是行列序号
-                        var hoverColumn = HoverCellLocation.Value.X;
-                        var hoverRow = HoverCellLocation.Value.Y - 1 + TopRowIndex;
+                        var hoverColumn = MouseMovingCellLocation.Value.X;
+                        var hoverRow = MouseMovingCellLocation.Value.Y - 1 + TopRowIndex;
 
                         // 根据单元格选中模式确定背景色的颜色
                         if (SelectionMode == CellSelectionMode.SingleCell && row == hoverRow && col == hoverColumn)
@@ -589,7 +671,7 @@ namespace ApeFree.ApeForms.Core.Controls
                     }
                     else if (DrawCell != null)                                      // 其他数据类型通过自定义单元格绘制回调处理
                     {
-                        DrawCell.Invoke(this, new DrawCellEventArgs(e.Graphics, cell, data, interactionState));
+                        DrawCell.Invoke(this, new DrawCellEventArgs(e.Graphics, cell, data, interactionState, cellForeColor, cellBackColor));
                     }
                     else                                                            // 其他数据类型强转为文本
                     {
@@ -601,6 +683,14 @@ namespace ApeFree.ApeForms.Core.Controls
             // 绘制表格
             DrawGridLines(e.Graphics, CurrentCellsArea, 1, Color.LightGray);
         }
+
+        /// <summary>
+        /// 单元格数据预处理
+        /// </summary>
+        /// <param name="data">原始数据</param>
+        /// <param name="location">数据位置</param>
+        /// <returns>处理后的数据</returns>
+        protected virtual object PreprocessCellData(object data, Point location) => data;
         #endregion
 
         #region 单元格区域计算
@@ -710,6 +800,32 @@ namespace ApeFree.ApeForms.Core.Controls
             }
             return new Point(-1, -1);
         }
+
+        /// <summary>
+        /// 通过单元格位置获取单元格数据
+        /// </summary>
+        /// <param name="cellLocation"></param>
+        /// <returns></returns>
+        protected object GetDataByCellLocation(Point cellLocation)
+        {
+            // 当前鼠标按压单元格真实数据的行列序号
+            var rowIndex = cellLocation.Y + TopRowIndex - 1;
+            var columnIndex = cellLocation.X;
+
+            // 行号超出选中区域则忽略（比如选中的是无数据空白区域）
+            if (rowIndex < 0 || rowIndex > DataSource.Count - 1)
+            {
+                return null;
+            }
+
+            var row = DataSource[rowIndex];
+            if (row == null || row.Length <= columnIndex)
+            {
+                return null;
+            }
+
+            return row[columnIndex];
+        }
         #endregion
 
         #region 表格元素绘制
@@ -760,8 +876,9 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <param name="rect"></param>
         /// <param name="text"></param>
         /// <param name="font"></param>
+        /// <param name="foreColor"></param>
         /// <param name="backColor"></param>
-        private void DrawText(Graphics g, Rectangle rect, string text, Font font, Color? foreColor, Color? backColor)
+        protected virtual void DrawText(Graphics g, Rectangle rect, string text, Font font, Color? foreColor, Color? backColor)
         {
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
@@ -784,7 +901,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <param name="rect"></param>
         /// <param name="image"></param>
         /// <param name="backColor"></param>
-        private void DrawImage(Graphics g, Rectangle rect, Image image, Color? backColor)
+        protected virtual void DrawImage(Graphics g, Rectangle rect, Image image, Color? backColor)
         {
             // 计算缩放比例
             float scaleX = (float)rect.Width / image.Width;
@@ -879,7 +996,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="handler"></param>
-        public void RegisterTypeEditHandler<T>(Func<T, T> handler)
+        public void RegisterTypeEditHandler<T>(EventHandler<CellEventArgs> handler)
         {
             if (handler == null)
             {
