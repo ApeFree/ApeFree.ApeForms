@@ -107,14 +107,16 @@ namespace ApeFree.ApeForms.Core.Controls
         /// </summary>
         public class DrawCellEventArgs : EventArgs
         {
-            public DrawCellEventArgs(Graphics graphics, Rectangle cellArea, object data, CellInteractionState cellInteractionState, Color cellForeColor, Color cellBackColor)
+            public DrawCellEventArgs(Graphics graphics, Rectangle cellArea, object[] rowData, CellInteractionState cellInteractionState, Color cellForeColor, Color cellBackColor, int row, int col)
             {
                 Graphics = graphics;
                 CellArea = cellArea;
-                Data = data;
+                RowData = rowData;
                 CellInteractionState = cellInteractionState;
                 CellForeColor = cellForeColor;
                 CellBackColor = cellBackColor;
+                RowIndex = row;
+                ColumnIndex = col;
             }
 
             /// <summary>
@@ -128,9 +130,14 @@ namespace ApeFree.ApeForms.Core.Controls
             public Rectangle CellArea { get; }
 
             /// <summary>
-            /// 原始数据
+            /// 单元格数据
             /// </summary>
-            public object Data { get; }
+            public object CellData => RowData[ColumnIndex];
+
+            /// <summary>
+            /// 行数据
+            /// </summary>
+            public object[] RowData { get; }
 
             /// <summary>
             /// 单元格交互状态
@@ -146,6 +153,20 @@ namespace ApeFree.ApeForms.Core.Controls
             /// 单元格背景色
             /// </summary>
             public Color CellBackColor { get; }
+            /// <summary>
+            /// 行序号
+            /// </summary>
+            public int RowIndex { get; }
+
+            /// <summary>
+            /// 列序号
+            /// </summary>
+            public int ColumnIndex { get; }
+
+            /// <summary>
+            /// 是否需要表格重绘
+            /// </summary>
+            public bool IsRedrawingNeeded { get; set; }
         }
 
         public class CellEventArgs : EventArgs
@@ -332,7 +353,7 @@ namespace ApeFree.ApeForms.Core.Controls
         /// <summary>
         /// 允许编辑
         /// </summary>
-        public bool AllowEdit { get; set; }
+        public virtual bool AllowEdit { get; set; }
 
         #endregion
 
@@ -392,9 +413,24 @@ namespace ApeFree.ApeForms.Core.Controls
                 return;
             }
 
+            if (DataSource == null)
+            {
+                return;
+            }
+
             if (MouseMovingCellLocation != movingCellLocation)
             {
                 MouseMovingCellLocation = movingCellLocation;
+
+                if (DataSource.Count <= movingCellLocation.Y)
+                {
+                    return;
+                }
+                else if (DataSource[movingCellLocation.Y].Length <= movingCellLocation.X)
+                {
+                    return;
+                }
+
                 OnMouseCellHover(new CellEventArgs(DataSource[movingCellLocation.Y], movingCellLocation.Y, movingCellLocation.X));
 
                 Invalidate();
@@ -418,7 +454,7 @@ namespace ApeFree.ApeForms.Core.Controls
             var columnIndex = cellLocation.X;
 
             // 行号超出选中区域则忽略（比如选中的是无数据空白区域）
-            if (rowIndex < 0 || rowIndex > DataSource.Count - 1)
+            if (rowIndex < 0 || DataSource == null || rowIndex > DataSource.Count - 1)
             {
                 return;
             }
@@ -466,7 +502,7 @@ namespace ApeFree.ApeForms.Core.Controls
             var clickedCellPos = GetCellLocation(e.Location);
 
             // 检查点击位置是否有效
-            if (clickedCellPos == new Point(-1, -1))
+            if (clickedCellPos.X < 1 || clickedCellPos.Y < 1)
             {
                 return;
             }
@@ -480,8 +516,10 @@ namespace ApeFree.ApeForms.Core.Controls
                 return;
             }
 
+            var rowIndex = clickedCellPos.Y - 1 + TopRowIndex;
+
             // 获取行数据
-            var row = DataSource[clickedCellPos.Y - 1];
+            var row = DataSource[rowIndex];
 
             // 如果列超出有效数据的长度
             if (row.Length < clickedCellPos.X)
@@ -505,11 +543,9 @@ namespace ApeFree.ApeForms.Core.Controls
             EventHandler<CellEventArgs> func;
             if (cellEditFuncDict.TryGetValue(type, out func))
             {
+                var args = new CellEventArgs(row, clickedCellPos.Y - 1, clickedCellPos.X);
                 // 通过回调编辑数据
-                data = func.DynamicInvoke(data);
-
-                // 替换数据源同一位置的数据
-                row[clickedCellPos.X] = data;
+                func.DynamicInvoke(this, args);
 
                 // 重绘单元格
                 // TODO: 可只重绘被修改的单元格，不需要重绘全部
@@ -571,7 +607,7 @@ namespace ApeFree.ApeForms.Core.Controls
                 }
 
                 // 获取行数据数组
-                var rowObjects = DataSource[TopRowIndex + displayRow];
+                var rowObjects = DataSource[row];
 
                 // 绘制每一个单元格
                 for (int col = 0; col < ColumnCount; col++)
@@ -657,23 +693,30 @@ namespace ApeFree.ApeForms.Core.Controls
                             break;
                     }
 
-                    if (data == null)                                               // 无数据仅填充背景色
+                    if (data == null)                                                   // 无数据仅填充背景色
                     {
                         FillRectangleColor(e.Graphics, cellBackColor, cell);
+                        continue;
                     }
-                    else if (data is Image)                                         // 数据类型为图像
+                    else if (DrawCell != null)                                          // 其他数据类型通过自定义单元格绘制回调处理
+                    {
+                        var args = new DrawCellEventArgs(e.Graphics, cell, rowObjects, interactionState, cellForeColor, cellBackColor, row, col);
+                        DrawCell.Invoke(this, args);
+                        if (!args.IsRedrawingNeeded)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (data is Image)                                                  // 数据类型为图像
                     {
                         DrawImage(e.Graphics, cell, (Image)data, cellBackColor);
                     }
-                    else if (data is string)                                        // 数据类型为文本
+                    else if (data is string)                                            // 数据类型为文本
                     {
                         DrawText(e.Graphics, cell, (string)data, Font, cellForeColor, cellBackColor);
                     }
-                    else if (DrawCell != null)                                      // 其他数据类型通过自定义单元格绘制回调处理
-                    {
-                        DrawCell.Invoke(this, new DrawCellEventArgs(e.Graphics, cell, data, interactionState, cellForeColor, cellBackColor));
-                    }
-                    else                                                            // 其他数据类型强转为文本
+                    else                                                                // 其他数据类型强转为文本
                     {
                         DrawText(e.Graphics, cell, data.ToString(), Font, cellForeColor, cellBackColor);
                     }
@@ -992,19 +1035,26 @@ namespace ApeFree.ApeForms.Core.Controls
         #region 单元格编辑
 
         /// <summary>
-        /// 
+        /// 注册指定类型的单元格编辑处理函数
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="handler"></param>
-        public void RegisterTypeEditHandler<T>(EventHandler<CellEventArgs> handler)
+        public void RegisterTypeEditHandler<T>(EventHandler<CellEventArgs> handler) => RegisterTypeEditHandler(typeof(T), handler);
+
+        /// <summary>
+        /// 注册指定类型的单元格编辑处理函数
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="handler"></param>
+        public void RegisterTypeEditHandler(Type type, EventHandler<CellEventArgs> handler)
         {
             if (handler == null)
             {
-                cellEditFuncDict.Remove(typeof(T));
+                cellEditFuncDict.Remove(type);
             }
             else
             {
-                cellEditFuncDict[typeof(T)] = handler;
+                cellEditFuncDict[type] = handler;
             }
         }
         #endregion
