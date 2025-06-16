@@ -87,6 +87,19 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             SelectedFolders = items.Where(x => x.ImageKey == "Folder").Select(x => Path.Combine(CurrentPath, x.Text)).ToArray();
 
             OnSelectedItemsChanged?.Invoke(this, EventArgs.Empty);
+
+            if (SelectedFiles.Length == 1)
+            {
+                labStatus.Text = $"File: {SelectedFiles[0]}";
+            }
+            else if (SelectedFolders.Length == 1)
+            {
+                labStatus.Text = $"Folder: {SelectedFolders[0]}";
+            }
+            else
+            {
+                labStatus.Text = $"{SelectedFiles.Length + SelectedFolders.Length} items selected.";
+            }
         }
 
         protected virtual void OnPreviousButtonClicked(object sender, EventArgs e)
@@ -238,7 +251,6 @@ namespace ApeFree.ApeForms.Core.Controls.Views
         public virtual bool OpenFolder(string path)
         {
             labStatus.Text = string.Empty;
-            labStatus.Visible = false;
 
             DirectoryInfo directory = new DirectoryInfo(path);
             DirectoryInfo[] dirItems = null;
@@ -253,7 +265,6 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             catch (Exception ex)
             {
                 labStatus.Text = ex.Message;
-                labStatus.Visible = true;
                 return false;
             }
 
