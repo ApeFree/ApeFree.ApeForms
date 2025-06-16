@@ -3,12 +3,12 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-windows;net452;net461</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
-		<UseWindowsForms>true</UseWindowsForms>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
 		<Copyright>Copyright © 2022-2025 ApeFree, All Rights Reserved.</Copyright>
-		<Version>0.11.14.0</Version>
+		<Version>0.11.15.1</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体核心库，包含功能丰富的控件（Metro风格），为常用控件提供扩展功能，更多的使用方法请参考项目URL。</Description>
@@ -18,8 +18,18 @@
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<SignAssembly>False</SignAssembly>
+
+		<EnableWindowsForms>true</EnableWindowsForms>
+		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 
+	<Target Name="DesignTimeBuild" AfterTargets="Build" Condition="'$(DesignTimeBuild)' == 'true'">
+		<!-- 确保设计时构建会生成必要的资源文件 -->
+		<CreateItem Include="$(IntermediateOutputPath)**\*.resources">
+			<Output TaskParameter="Include" ItemName="DesignTimeResources" />
+		</CreateItem>
+	</Target>
+	
 	<ItemGroup Condition="'$(TargetFramework)' == 'net452'">
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Web.Extensions" />
