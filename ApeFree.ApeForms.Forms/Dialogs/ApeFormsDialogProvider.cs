@@ -253,7 +253,7 @@ namespace ApeFree.ApeDialogs
             view.SearchPattern = settings.SearchPattern;
             view.MultiSelect = settings.MultiSelect;
             view.Font = settings.Font;
-            view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFiles.Join("\r\n");
+            //view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFiles.Join("\r\n");
             dialog.ContentView = view;
 
             DialogEventHandler openDefaultFolderHandler = null;
@@ -288,7 +288,7 @@ namespace ApeFree.ApeDialogs
             view.DisplayItemType = DisplayItemType.OnlyFolder;
             view.MultiSelect = settings.MultiSelect;
             view.Font = settings.Font;
-            view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFolders.Join("\r\n");
+            //view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFolders.Join("\r\n");
             dialog.ContentView = view;
 
             DialogEventHandler openDefaultFolderHandler = null;
