@@ -73,7 +73,7 @@ namespace ApeFree.ApeForms.Core.Forms
             InitializeComponent();
 
             borderLayer = Palette.DrawRectangle(new GdiStyle() { Pen = new Pen(Color.DarkGray) }, new RectangleShape(new PointF(), Width - 1, Height - 1));
-            textLayer = Palette.DrawText(new GdiStyle() { Font = new Font(Font.FontFamily, 15, FontStyle.Bold) }, new TextShape(new PointF(10, 10), 9999, 9999, Text));
+            textLayer = Palette.DrawText(new GdiStyle() { Font = new Font(Font.Name,12f,FontStyle.Bold) }, new TextShape(new PointF(10, 10), 9999, 9999, Text));
             lineLayer = Palette.DrawLine(new GdiStyle() { Pen = new Pen(ButtonBackColor, 5) }, new LineShape(new Point(), 9999, 0));
             closeButtonLayer = Palette.DrawRectangle(new GdiStyle() { Brush = new SolidBrush(ButtonBackColor) }, new RectangleShape(0, 0, ButtonSize, ButtonSize));
             maximizeButtonLayer = Palette.DrawRectangle(new GdiStyle() { Brush = new SolidBrush(ButtonBackColor) }, new RectangleShape(0, 0, ButtonSize, ButtonSize));

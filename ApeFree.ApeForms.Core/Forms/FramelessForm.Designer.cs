@@ -36,6 +36,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(540, 334);
+            Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
             Name = "FramelessForm";
             Padding = new System.Windows.Forms.Padding(5, 32, 5, 5);
             Text = "FramelessForm";
