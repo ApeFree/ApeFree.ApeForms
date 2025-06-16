@@ -2,6 +2,7 @@
 using ApeFree.Cake2D.Shapes;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 
 namespace ApeFree.ApeForms.Core.Gdi
@@ -30,14 +31,20 @@ namespace ApeFree.ApeForms.Core.Gdi
         ///<inheritdoc/>
         public override void UpdateCanvas()
         {
+            if (Graphic == null)
+            {
+                return;
+            }
+
             try
             {
-                Graphic.Clear(Color.Transparent);
+                Graphic.Clear(BackColor);
 
-                Graphic.SmoothingMode = SmoothingMode.AntiAlias;
-                Graphic.SmoothingMode = SmoothingMode.HighQuality;
-                Graphic.CompositingQuality = CompositingQuality.HighQuality;
+                // 设置高质量文本渲染
                 Graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                Graphic.SmoothingMode = SmoothingMode.AntiAlias;
+                Graphic.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                Graphic.CompositingQuality = CompositingQuality.HighQuality;
 
                 base.UpdateCanvas();
             }
@@ -81,14 +88,16 @@ namespace ApeFree.ApeForms.Core.Gdi
         {
             var p = graphic.Points.First();
             p = TransformAbsCoordsToRelCoords(p);
+
+            var size = new SizeF(graphic.Width * Scale, graphic.Height * Scale);
             if (style.Pen != null)
             {
-                Graphic.DrawRectangle(style.Pen, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.DrawRectangle(style.Pen, p.X, p.Y, size.Width, size.Height);
             }
 
             if (style.Brush != null)
             {
-                Graphic.FillRectangle(style.Brush, p.X, p.Y, graphic.Width, graphic.Height);
+                Graphic.FillRectangle(style.Brush, p.X, p.Y, size.Width, size.Height);
             }
         }
 
@@ -153,8 +162,8 @@ namespace ApeFree.ApeForms.Core.Gdi
                 return;
             }
 
-            var brush = style.Brush ?? Brushes.Black;
-            var format = style.StringFormat ?? new StringFormat();
+            var brush = style.Brush ?? SystemBrushes.ControlText;
+            var format = style.StringFormat ?? StringFormat.GenericDefault;
             var font = style.Font ?? SystemFonts.DefaultFont;
 
             var width = shape.Width;
