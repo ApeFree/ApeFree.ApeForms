@@ -33,7 +33,7 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DriveBrowserView));
             imageList = new System.Windows.Forms.ImageList(components);
-            panel1 = new System.Windows.Forms.Panel();
+            panelTop = new System.Windows.Forms.Panel();
             tbPath = new RoundTextPanel();
             btnDrive = new SimpleButton();
             btnPrevious = new SimpleButton();
@@ -46,7 +46,7 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             colCteationTime = new System.Windows.Forms.ColumnHeader();
             listView = new System.Windows.Forms.ListView();
             labStatus = new System.Windows.Forms.Label();
-            panel1.SuspendLayout();
+            panelTop.SuspendLayout();
             SuspendLayout();
             // 
             // imageList
@@ -57,20 +57,21 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             imageList.Images.SetKeyName(0, "Folder");
             imageList.Images.SetKeyName(1, "File");
             // 
-            // panel1
+            // panelTop
             // 
-            panel1.Controls.Add(tbPath);
-            panel1.Controls.Add(btnDrive);
-            panel1.Controls.Add(btnPrevious);
-            panel1.Controls.Add(btnGoTo);
-            panel1.Controls.Add(btnBack);
-            panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            panel1.Location = new System.Drawing.Point(0, 0);
-            panel1.Margin = new System.Windows.Forms.Padding(4);
-            panel1.Name = "panel1";
-            panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 4);
-            panel1.Size = new System.Drawing.Size(473, 35);
-            panel1.TabIndex = 3;
+            panelTop.Controls.Add(tbPath);
+            panelTop.Controls.Add(btnDrive);
+            panelTop.Controls.Add(btnPrevious);
+            panelTop.Controls.Add(btnGoTo);
+            panelTop.Controls.Add(btnBack);
+            panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            panelTop.Location = new System.Drawing.Point(0, 0);
+            panelTop.Margin = new System.Windows.Forms.Padding(4);
+            panelTop.MinimumSize = new System.Drawing.Size(0, 35);
+            panelTop.Name = "panelTop";
+            panelTop.Padding = new System.Windows.Forms.Padding(0, 0, 0, 4);
+            panelTop.Size = new System.Drawing.Size(473, 35);
+            panelTop.TabIndex = 3;
             // 
             // tbPath
             // 
@@ -246,21 +247,21 @@ namespace ApeFree.ApeForms.Core.Controls.Views
             // 
             // DriveBrowserView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             BackColor = System.Drawing.Color.White;
             Controls.Add(listView);
             Controls.Add(labStatus);
-            Controls.Add(panel1);
+            Controls.Add(panelTop);
             Margin = new System.Windows.Forms.Padding(4);
             Name = "DriveBrowserView";
             Size = new System.Drawing.Size(473, 443);
-            panel1.ResumeLayout(false);
+            panelTop.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelTop;
         protected SimpleButton btnBack;
         protected ApeForms.Core.Controls.RoundTextPanel tbPath;
         protected SimpleButton btnGoTo;
