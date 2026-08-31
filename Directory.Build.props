@@ -1,0 +1,11 @@
+﻿<Project>
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);WFO1000;WFO5001;WFO5002;NU1701;NU1702;MSB3825;CS1591;CA1416</NoWarn>
+    <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <AssetTargetFallback Condition="'$(TargetFramework)' == 'net452'">$(AssetTargetFallback);netstandard2.0</AssetTargetFallback>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461' Or '$(TargetFramework)' == 'net452'">
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" />
+  </ItemGroup>
+</Project>

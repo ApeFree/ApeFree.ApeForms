@@ -1,14 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-windows;net452;net461</TargetFrameworks>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<UseWindowsForms>true</UseWindowsForms>
 
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
 		<Copyright>Copyright © 2022-2025 ApeFree, All Rights Reserved.</Copyright>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体库，包含Dialog、Notification等窗体，更多的使用方法请参考项目URL。</Description>
@@ -19,13 +19,7 @@
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Web.Extensions" />
-		<Reference Include="System.Design" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461'">
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Web.Extensions" />
 		<Reference Include="System.Design" />
@@ -39,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj" />
+		<PackageReference Include="ApeFree.ApeDialogs" Version="0.10.18" />
 		<ProjectReference Include="..\ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj" />
 	</ItemGroup>
 
@@ -49,7 +43,5 @@
 			<SubType>Form</SubType>
 		</Compile>
 	</ItemGroup>
-	
-	
 
 </Project>

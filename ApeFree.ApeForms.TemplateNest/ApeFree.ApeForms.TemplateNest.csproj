@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-windows;net452;net461</TargetFrameworks>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<UseWindowsForms>true</UseWindowsForms>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
 		<Copyright>Copyright © 2022-2025 ApeFree, All Rights Reserved.</Copyright>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>ApeForms模板库，提供UI模板，开箱即用。</Description>
@@ -18,13 +18,7 @@
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Web.Extensions" />
-		<Reference Include="System.Design" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461'">
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Web.Extensions" />
 		<Reference Include="System.Design" />

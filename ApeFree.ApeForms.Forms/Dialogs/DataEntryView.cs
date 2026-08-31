@@ -52,7 +52,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             Items.Clear();
 
-            foreach (var field in Fields.Reverse())
+            foreach (var field in Enumerable.Reverse(Fields))
             {
                 Control view = null;
 
@@ -134,7 +134,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var group = CreateGroupBox(field);
 
-            foreach (var item in field.Items.Reverse())
+            foreach (var item in Enumerable.Reverse(field.Items))
             {
                 var btn = new CheckBox();
                 btn.Text = field.ItemDisplayTextConvertHandler(item);
@@ -168,7 +168,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var group = CreateGroupBox(field);
 
-            foreach (var item in field.Items.Reverse())
+            foreach (var item in Enumerable.Reverse(field.Items))
             {
                 var btn = new RadioButton();
                 btn.CheckedChanged += (s, e) =>

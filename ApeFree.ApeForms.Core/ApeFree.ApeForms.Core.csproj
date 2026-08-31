@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-windows;net452;net461</TargetFrameworks>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<Company>ApeFree</Company>
 		<Authors>Guijie Lee</Authors>
 		<Copyright>Copyright © 2022-2025 ApeFree, All Rights Reserved.</Copyright>
-		<Version>0.11.15.1</Version>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Title>ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
@@ -18,25 +17,23 @@
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<SignAssembly>False</SignAssembly>
+		<GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
+		
 
 		<EnableWindowsForms>true</EnableWindowsForms>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 		<UseWindowsForms>true</UseWindowsForms>
+		
 	</PropertyGroup>
 
 	<Target Name="DesignTimeBuild" AfterTargets="Build" Condition="'$(DesignTimeBuild)' == 'true'">
-		<!-- 确保设计时构建会生成必要的资源文件 -->
 		<CreateItem Include="$(IntermediateOutputPath)**\*.resources">
 			<Output TaskParameter="Include" ItemName="DesignTimeResources" />
 		</CreateItem>
 	</Target>
 	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Web.Extensions" />
-		<Reference Include="System.Design" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461'">
+		
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Web.Extensions" />
 		<Reference Include="System.Design" />
@@ -51,6 +48,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
+	  <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D.Gdi\ApeFree.Cake2D.Gdi.csproj" />
 	  <ProjectReference Include="..\..\STTech.CodePlus\STTech.CodePlus\STTech.CodePlus.csproj" />
 	</ItemGroup>
 
