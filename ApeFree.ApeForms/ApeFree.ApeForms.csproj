@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<EnableWindowsForms>true</EnableWindowsForms>
+		<Company>ApeFree</Company>
+		<Authors>Guijie Lee</Authors>
+		<Copyright>Copyright © 2022-2026 ApeFree, All Rights Reserved.</Copyright>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+		<Title>ApeFree.ApeForms</Title>
+		<Product>ApeFree.ApeForms</Product>
+		<Description>WinForm窗体与UI控件库，包含功能丰富的控件（Metro风格）、对话框、通知弹窗与模板嵌套窗体系统。</Description>
+		<RepositoryUrl></RepositoryUrl>
+		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
+		<Version>1.0.0.0-beta260901</Version>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<InformationalVersion>1.0.0.0-beta260901</InformationalVersion>
+		<PackageVersion>1.0.0.0-beta260901</PackageVersion>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>ApeFree_64px.png</PackageIcon>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<SignAssembly>False</SignAssembly>
+		<GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+	</PropertyGroup>
+
+	<Target Name="DesignTimeBuild" AfterTargets="Build" Condition="'$(DesignTimeBuild)' == 'true'">
+		<CreateItem Include="$(IntermediateOutputPath)**\*.resources">
+			<Output TaskParameter="Include" ItemName="DesignTimeResources" />
+		</CreateItem>
+	</Target>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net452' Or '$(TargetFramework)' == 'net461'">
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Design" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\ApeFree_64px.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ApeFree.ApeDialogs" Version="0.10.18" />
+		<ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
+		<ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D.Gdi\ApeFree.Cake2D.Gdi.csproj" />
+		<ProjectReference Include="..\..\STTech.CodePlus\STTech.CodePlus\STTech.CodePlus.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

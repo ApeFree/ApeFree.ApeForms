@@ -27,9 +27,7 @@ $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 # 待打包的项目列表
 $projects = @(
-    (Join-Path $repoRoot 'ApeFree.ApeForms.Core\ApeFree.ApeForms.Core.csproj'),
-    (Join-Path $repoRoot 'ApeFree.ApeForms.Forms\ApeFree.ApeForms.Forms.csproj'),
-    (Join-Path $repoRoot 'ApeFree.ApeForms.TemplateNest\ApeFree.ApeForms.TemplateNest.csproj')
+    (Join-Path $repoRoot 'ApeFree.ApeForms\ApeFree.ApeForms.csproj')
 )
 
 # 如果未指定输出目录，默认输出到仓库根目录下的 Install 文件夹

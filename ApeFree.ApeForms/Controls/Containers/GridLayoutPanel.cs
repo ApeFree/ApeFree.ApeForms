@@ -1,0 +1,129 @@
+﻿using ApeFree.ApeForms.Controls.Buttons;
+using ApeFree.ApeForms.Controls.Cards;
+using ApeFree.ApeForms.Controls.Containers;
+using ApeFree.ApeForms.Controls.DatePickers;
+using ApeFree.ApeForms.Controls.Grids;
+using ApeFree.ApeForms.Controls.Labels;
+using ApeFree.ApeForms.Controls.ListBoxes;
+using ApeFree.ApeForms.Controls.TabBoxes;
+using ApeFree.ApeForms.Controls.TextBoxes;
+using ApeFree.ApeForms.Controls.TitleBars;
+using ApeFree.ApeForms.Controls.Views;
+using ApeFree.ApeForms.Utils;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ApeFree.ApeForms.Controls.Containers
+{
+    /// <summary>
+    /// 网格布局面板
+    /// </summary>
+    public class GridLayoutPanel : Panel
+    {
+        private int displayRow = 1;
+        private int displayColumn = 1;
+
+        public GridLayoutPanel()
+        {
+            HorizontalScroll.Maximum = 0;
+            AutoSize = false;
+            AutoScroll = true;
+            VerticalScroll.Visible = true;
+        }
+
+        /// <summary>
+        /// 显示行数
+        /// </summary>
+        public int DisplayRow
+        {
+            get { return displayRow; }
+            set
+            {
+                if (value > 0 && displayRow != value)
+                {
+                    displayRow = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 显示列数
+        /// </summary>
+        public int DisplayColumn
+        {
+            get { return displayColumn; }
+            set
+            {
+                if (value > 0 && displayColumn != value)
+                {
+                    displayColumn = value;
+                }
+            }
+        }
+        /// <summary>
+        /// 重新排列内部控件
+        /// </summary>
+        public void Rearrange()
+        {
+            var displayItems = Controls.Cast<Control>().Where(c => c.Visible).ToArray();
+            var displayCount = displayItems.Count();
+            if (displayCount == 0)
+            {
+                return;
+            }
+
+            var itemHeight = ClientRectangle.Height / (float)DisplayRow;
+            var itemWidth = ClientRectangle.Width / (float)DisplayColumn;
+
+            // 计算由滚动条导致的Y轴偏移距离
+            var topOffset = Math.Abs(AutoScrollPosition.Y);
+
+            SuspendLayout();
+
+            // 重新计算每一个子控件的坐标
+            for (int i = 0; i < displayCount; i++)
+            {
+                var row = i / DisplayColumn;
+                var col = i % DisplayColumn;
+
+                var item = displayItems[i];
+                item.SuspendLayout();
+                item.Size = new Size((int)itemWidth, (int)itemHeight);
+                item.Location = new Point((int)(col * itemWidth), (int)(row * itemHeight - topOffset));
+                item.ResumeLayout(true);
+            }
+
+            ResumeLayout(true);
+
+            var size = new Size((int)(displayItems.Select(i => i.Left).Max() + itemWidth), (int)(displayItems.Select(i => i.Top).Max() + itemHeight));
+            AutoScrollMinSize = size;
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            Rearrange();
+        }
+
+        protected override void OnControlAdded(ControlEventArgs e)
+        {
+            base.OnControlAdded(e);
+            e.Control.Dock = DockStyle.None;
+            if (e.Control.Visible)
+            {
+                Rearrange();
+            }
+        }
+
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            base.OnControlRemoved(e);
+            Rearrange();
+        }
+    }
+}
