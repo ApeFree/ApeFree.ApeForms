@@ -1,9 +1,10 @@
-﻿using ApeFree.ApeDialogs;
+using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Theme;
 using ApeFree.ApeForms.Forms.Dialogs;
 using ApeFree.ApeForms.Forms.Notifications;
 using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,216 +13,121 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 {
     public partial class DialogDemoPanel : UserControl
     {
-        ApeFormsDialogProvider provider = DialogFactory.Factory.GetApeFormsDialogProvider();
+        private readonly ApeFormsDialogProvider provider = new ApeFormsDialogProvider();
 
         public DialogDemoPanel()
         {
             InitializeComponent();
 
-            btnNeutralOptionColor.BackColor = provider.OptionTagColors[DialogOptionTag.Neutral];
-            btnPositiveOptionColor.BackColor = provider.OptionTagColors[DialogOptionTag.Positive];
-            btnNegativeOptionColor.BackColor = provider.OptionTagColors[DialogOptionTag.Negative];
-            btnFunctionalOptionColor.BackColor = provider.OptionTagColors[DialogOptionTag.Functional];
-            btnSpecialOptionColor.BackColor = provider.OptionTagColors[DialogOptionTag.Special];
+            btnNeutralOptionColor.BackColor = provider.Theme.GetColor(DialogOptionTag.Neutral).ToColor();
+            btnPositiveOptionColor.BackColor = provider.Theme.GetColor(DialogOptionTag.Positive).ToColor();
+            btnNegativeOptionColor.BackColor = provider.Theme.GetColor(DialogOptionTag.Negative).ToColor();
+            btnFunctionalOptionColor.BackColor = provider.Theme.GetColor(DialogOptionTag.Functional).ToColor();
+            btnSpecialOptionColor.BackColor = provider.Theme.GetColor(DialogOptionTag.Special).ToColor();
         }
 
         private void btnMessageDialog_Click(object sender, EventArgs e)
         {
-            // 写法一：
-            //var settings = new MessageDialogSettings()
-            //{
-            //    // 标题文本
-            //    Title = tbTitle.Text,
-            //    // 消息文本
-            //    Content = tbContent.Text,
-            //};
-            //settings.ConfirmOption.Text = "知道了";
-
-            //var dialog = provider.CreateMessageDialog(settings);
-            //dialog.Show();
-
-            // 写法二（推荐）：
-            var dialog = provider.CreateMessageDialog(s =>
+            var dialog = provider.CreateMessageDialog(new MessageDialogSettings
             {
-                // 是否可取消
-                s.Cancelable = true;
-                // 修改确认键文本
-                s.ConfirmOption.Text = "知道了";
-                // 修改Dialog窗体尺寸
-                s.DialogSize = new Size(400, 200);
-                // 修改标题名
-                s.Title = tbTitle.Text;
-                // 修改文本内容
-                s.Content = tbContent.Text;
+                Cancelable = true,
+                ConfirmOption = new DialogOption("知道了", DialogOptionTag.Positive),
+                DialogSize = new ApeSize(400, 200),
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
             });
-            (dialog as ApeFormsDialog<bool>).InnerDialog.ForeColor = Color.IndianRed;
             dialog.Show();
         }
 
         private void btnInputDialog_Click(object sender, EventArgs e)
         {
-            // 写法一：
-            //var settings = new InputDialogSettings()
-            //{
-            //    // 标题文本
-            //    Title = tbTitle.Text,
-            //    // 消息文本
-            //    Content = tbContent.Text,
-            //    // 输入框默认文本
-            //    DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.",
-            //    // 是否可取消
-            //    Cancelable = false,
-            //    // 是否允许输入为空
-            //    AllowEmpty = false,
-            //    // 输入文本最大长度
-            //    MaximumLength = 50,
-            //    // 输入文本最小长度
-            //    MinimumLength = 6,
-            //    // 是否多行
-            //    IsMultiline = false,
-            //};
-            //// 确认按钮文本
-            //settings.ConfirmOption.Text = "Confirm(确定)";
-            //// 取消按钮文本
-            //settings.CancelOption.Text = "Cancel(取消)";
-            //// 清空按钮文本
-            //settings.ClearOption.Text = "Clear(清空)";
-            //var dialog = provider.CreateInputDialog(settings, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreateInputDialog(s =>
+            var dialog = provider.CreateInputDialog(new InputDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 输入框默认文本
-                s.DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.";
-                // 是否可取消
-                s.Cancelable = true;
-                // 输入文本最大长度
-                s.MaximumLength = 200;
-                // 是否多行
-                s.IsMultiline = false;
-                // 确认按钮文本
-                s.ConfirmOption.Text = "Confirm(确定)";
-                // 取消按钮文本
-                s.CancelOption.Text = "Cancel(取消)";
-                // 清空按钮文本
-                s.ClearOption.Text = "Clear(清空)";
-                // 提醒色
-                s.ReminderColor = Color.IndianRed;
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.",
+                Cancelable = true,
+                MaximumLength = 200,
+                IsMultiline = false,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
             });
-            dialog.Show();
 
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消输入");
             }
             else
             {
-                Toast.Show($"输入内容为：{dialog.Result.Data}");
+                Toast.Show($"输入内容为：{result.Value}");
             }
         }
 
         private void btnInputMultiLineDialog_Click(object sender, EventArgs e)
         {
-            // 写法一：
-            //var dialog = provider.CreateInputDialog(new InputDialogSettings()
-            //{
-            //    Title = tbTitle.Text,
-            //    Content = tbContent.Text,
-            //    DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.",
-            //    IsMultiline = true
-            //}, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreateInputDialog(s =>
+            var dialog = provider.CreateInputDialog(new InputDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 输入框默认文本
-                s.DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.";
-                // 是否可取消
-                s.Cancelable = true;
-                // 输入文本最大长度
-                s.MaximumLength = 200;
-                // 是否多行
-                s.IsMultiline = true;
-                // 确认按钮文本
-                s.ConfirmOption.Text = "Confirm(确定)";
-                // 取消按钮文本
-                s.CancelOption.Text = "Cancel(取消)";
-                // 清空按钮文本
-                s.ClearOption.Text = "Clear(清空)";
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DefaultText = "You can set the default text in the input box by using the 'DefaultText' property.",
+                Cancelable = true,
+                MaximumLength = 200,
+                IsMultiline = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
             });
 
-            dialog.Show();
-
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消输入");
             }
             else
             {
-                Toast.Show($"输入内容为：{dialog.Result.Data}");
+                Toast.Show($"输入内容为：{result.Value}");
             }
         }
 
         private void btnPasswordDialog_Click(object sender, EventArgs e)
         {
-            // 写法一：
-            //var dialog = provider.CreatePasswordDialog(new PasswordDialogSettings()
-            //{
-            //    Title = tbTitle.Text,
-            //    Content = tbContent.Text + $"\r\n提示：密码至少要[6]位",
-            //    PasswordChar = '●',
-            //    PrecheckResult = password => password != null && password.Length >= 6,
-            //}, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreatePasswordDialog(s =>
+            var dialog = provider.CreatePasswordDialog(new PasswordDialogSettings
             {
-                s.Title = tbTitle.Text;
-                s.Content = tbContent.Text;
-                s.PasswordChar = '●';
-                s.PrecheckResult = password => new FormatCheckResult(password != null && password.Length >= 6, "密码至少要[6]位");
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                PasswordChar = '●',
+                Validator = password => password != null && password.Length >= 6
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("密码至少要[6]位"),
             });
 
-            dialog.Show();
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消输入");
             }
             else
             {
-                Toast.Show($"输入密码为：{dialog.Result.Data}");
+                Toast.Show($"输入密码为：{result.Value}");
             }
         }
 
         private void btnPromptDialog_Click(object sender, EventArgs e)
         {
-            // 写法一：
-            //var dialog = provider.CreatePromptDialog(new PromptDialogSettings() { Title = tbTitle.Text, Content = tbContent.Text }, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreatePromptDialog(s =>
+            var dialog = provider.CreatePromptDialog(new PromptDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 积极选项文本
-                s.PositiveOption.Text = "Yes";
-                // 消极选项文本
-                s.NegativeOption.Text = "No";
-            }, null);
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                PositiveOption = new DialogOption("Yes", DialogOptionTag.Positive),
+                NegativeOption = new DialogOption("No", DialogOptionTag.Negative),
+            });
 
-            dialog.Show();
-
-            if (dialog.Result.Data)
+            var result = dialog.Show();
+            if (result.IsCanceled)
+            {
+                Toast.Show("取消操作");
+            }
+            else if (result.Value)
             {
                 Toast.Show("结果：积极选项");
             }
@@ -240,48 +146,26 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 new Student("马六","五年级"),
             };
 
-            // 写法一：
-            //var dialog = provider.CreateSelectionDialog(new SelectionDialogSettings<Student>()
-            //{
-            //    Title = tbTitle.Text,
-            //    Content = tbContent.Text,
-            //    PrecheckResult = item =>
-            //    {
-            //        var b = item != null;
-            //        if (!b)
-            //        {
-            //            Toast.Show("至少要选一项哦！", 2000, null, ToastMode.Reuse);
-            //        }
-            //        return b;
-            //    },
-            //    ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})",
-            //}, students, null, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreateSelectionDialog(students, null, s =>
+            var dialog = provider.CreateSelectionDialog(new SelectionDialogSettings<Student>
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 设置预检查回调
-                s.PrecheckResult = item => new FormatCheckResult(item != null, "至少要选一项哦！");
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                ItemDisplayConverter = stu => $"{stu.Name} ({stu.Description})",
+                Validator = item => item != null
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("至少要选一项哦！"),
+            }, students);
 
-                s.ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})";
-            });
-
-            dialog.Show();
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled || result.Value == null)
             {
                 Toast.Show("取消选择");
             }
             else
             {
-                Toast.Show($"结果：{dialog.Result.Data.Name} , {dialog.Result.Data.Description}");
+                Toast.Show($"结果：{result.Value.Name} , {result.Value.Description}");
             }
         }
-
-
 
         private void btnMultipleSelectionDialog_Click(object sender, EventArgs e)
         {
@@ -292,150 +176,106 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 new Student("马六","五年级"),
             };
 
-            // 写法一：
-            //var dialog = provider.CreateMultipleSelectionDialog(new MultipleSelectionDialogSettings<Student>()
-            //{
-            //    Title = tbTitle.Text,
-            //    Content = tbContent.Text,
-            //    PrecheckResult = item =>
-            //    {
-            //        var b = item.Any();
-            //        if (!b)
-            //        {
-            //            Toast.Show("至少要选一项哦！", 2000, null, ToastMode.Reuse);
-            //        }
-            //        return b;
-            //    },
-            //    ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})",
-            //}, students, null, null);
-
-            // 写法二（推荐）：
-            var dialog = provider.CreateMultipleSelectionDialog(students, null, s =>
+            var dialog = provider.CreateMultipleSelectionDialog(new MultipleSelectionDialogSettings<Student>
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 设置预检查回调
-                s.PrecheckResult = item => new FormatCheckResult(item.Any(), "至少要选一项哦！");
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                ItemDisplayConverter = stu => $"{stu.Name} ({stu.Description})",
+                Validator = items => items != null && items.Any()
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("至少要选一项哦！"),
+            }, students);
 
-                s.ItemDisplayTextConvertCallback = stu => $"{stu.Name} ({stu.Description})";
-            });
-
-
-            dialog.Show();
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled || result.Value == null)
             {
                 Toast.Show("取消选择");
             }
             else
             {
-                Toast.Show($"结果：{string.Join("|", dialog.Result.Data.Select(s => $"{s.Name}({s.Description})"))}");
+                Toast.Show($"结果：{string.Join("|", result.Value.Select(s => $"{s.Name}({s.Description})"))}");
             }
         }
 
         private void btnDataEntrySheetDialog_Click(object sender, EventArgs e)
         {
-            // 创建表单
-            DataEntrySheet sheet = new DataEntrySheet();
-            sheet.AddTextField(new TextField()
+            var sheet = new DataEntrySheet();
+            sheet.AddField(new TextField
             {
                 Title = "姓名",
-                Data = "张三",
+                Value = "张三",
             });
-            sheet.AddPasswordField(new PasswordField()
+            sheet.AddField(new PasswordField
             {
                 Title = "密码",
-                Data = "12345",
-                ValidityCheckHandler = str =>
-                {
-                    if (str.Length < 6)
-                    {
-                        return new FormatCheckResult("密码至少6位");
-                    }
-                    return FormatCheckResult.Success;
-                },
+                Value = "12345",
+                Validator = str => str != null && str.Length >= 6
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("密码至少6位"),
             });
-            sheet.AddDateTimeField(new DateTimeField()
+            sheet.AddField(new DateTimeField
             {
                 Title = "生日",
-                Data = DateTime.Now
+                Value = DateTime.Now,
             });
-            sheet.AddNumberField(new NumberField()
+            sheet.AddField(new NumberField
             {
                 Title = "年龄",
-                Data = 16,
-                DecimalPlaces = 1,
+                Value = 16,
+                DecimalPlaces = 0,
                 Maximum = 120,
                 Minimum = 0,
             });
-            sheet.AddPicturePathField(new PicturePathField()
+            sheet.AddField(new PicturePathField
             {
                 Title = "照片",
                 BrowseButtonText = "选择照片...",
             });
-            sheet.AddFilePathField(new FilePathField()
+            sheet.AddField(new FilePathField
             {
                 Title = "附件",
                 BrowseButtonText = "选择附件...",
             });
-            sheet.AddComboBoxField(new ComboBoxField()
+            sheet.AddField(new ComboBoxField
             {
                 Title = "学历",
                 Items = new[] { "高中及以下", "大专", "本科", "硕士研究生", "博士研究生" },
-                Data = "高中及以下",
+                Value = "高中及以下",
             });
-            sheet.AddSingleChoiceField(new SingleChoiceField()
+            sheet.AddField(new SingleChoiceField
             {
                 Title = "户籍",
                 Items = new[] { "城市户口", "农村户口", "不确定" },
-                Data = "不确定",
+                Value = "不确定",
+                Validator = obj => (string)obj != "不确定"
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("户籍类型不可选择“不确定”"),
             });
-            sheet.AddMultipleChoiceField(new MultipleChoiceField()
+            sheet.AddField(new MultipleChoiceField
             {
                 Title = "特长",
                 Items = new[] { "唱歌", "跳舞", "打篮球", "铁山靠" },
-                Data = new[] { "打篮球", "铁山靠" },
+                Value = new object[] { "打篮球", "铁山靠" },
+                Validator = items => items != null && items.Count > 0
+                    ? ValidationResult.Success
+                    : ValidationResult.Failure("至少选择一个特长"),
             });
-            sheet.AddTextField(new TextField()
+            sheet.AddField(new TextField
             {
                 Title = "简介",
-                Data = "一个平平无奇的高中生，喜欢唱、跳、rap、篮球。",
-                IsMultiline = true
+                Value = "一个平平无奇的高中生，喜欢唱、跳、rap、篮球。",
+                IsMultiline = true,
             });
 
-            var dialog = provider.CreateDataEntrySheetDialog(sheet, s =>
+            var dialog = provider.CreateDataEntrySheetDialog(sheet, new DataEntrySheetDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 窗体尺寸
-                s.DialogSize = new Size(450, 700);
-                // 预校验提交结果
-                s.PrecheckResult = sht =>
-                {
-                    // 可以在此处进行数据检查，也可以在字段属性里设置数据有效性检查的回调。
-                    // 区别是：
-                    // 1. 在此处进行检查需要从表单中查找到属性然后强转格式。但可以检查多个字段相关联的数据。
-                    // 2. 在字段中设置检查回调可以直接拿到对应的数据类型，由于是设置在表单中，
-                    //    因此这部分的设置可以跟随表单一起使用（避免同一个表单在不同地方使用都需要在Dialog中写一遍格式检查的回调）。
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DialogSize = new ApeSize(450, 700),
+            });
 
-                    if (((string)sht["户籍"].Data) == "不确定")
-                    {
-                        return new FormatCheckResult("户籍类型不可选择“不确定”");
-                    }
-
-                    if (!((object[])sht["特长"].Data).Any())
-                    {
-                        return new FormatCheckResult("至少选择一个特长");
-                    }
-
-                    return FormatCheckResult.Success;
-                };
-            }, null);
-            dialog.Show();
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消输入", 2000, null, ToastMode.Reuse);
             }
@@ -443,143 +283,324 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
             {
                 var lines = sheet.Fields.Select(p =>
                 {
-                    if (p.Data is object[] array)
+                    if (p.GetRawValue() is object[] array)
                     {
                         return $"{p.Title}：\t{string.Join("、", array)}";
                     }
                     else
                     {
-                        return $"{p.Title}：\t{p.Data}";
+                        return $"{p.Title}：\t{p.GetRawValue()}";
                     }
                 });
-                Toast.Show($"{lines.Join("\r\n")}", 2000, null, ToastMode.Reuse);
-
-                // Tips: 读取单个字段的数据可以通过以下方法
-                // 方法1：通过字段标题查找
-                // var str1 = sheet["简介"].Data.ToString();
-                // 方法2：通过字段序号查找
-                // var str2 = sheet[9].Data.ToString();
+                Toast.Show(string.Join("\r\n", lines), 2000, null, ToastMode.Reuse);
             }
         }
 
         private void btnDateTimeDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateDateTimeDialog(s =>
+            var dialog = provider.CreateDateTimeDialog(new DateTimeDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = tbContent.Text;
-                // 默认时间
-                s.DefaultDateTime = new DateTime(2008, 8, 8);
-                // 是否可取消
-                s.Cancelable = true;
-                // 确认按钮文本
-                s.ConfirmOption.Text = "Confirm(确定)";
-                // 取消按钮文本
-                s.CancelOption.Text = "Cancel(取消)";
-                // 清空按钮文本
-                s.CurrentTimeOption.Text = "Now(当前)";
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DefaultDateTime = new DateTime(2008, 8, 8),
+                Cancelable = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CurrentTimeOption = new DialogOption("Now(当前)", DialogOptionTag.Functional, Behavior: DialogOptionBehavior.SetCurrentTime),
             });
 
-            dialog.Show();
-
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消选择");
             }
             else
             {
-                Toast.Show($"选择时间为：{dialog.Result.Data}");
+                Toast.Show($"选择时间为：{result.Value}");
             }
         }
 
-
-        private void btnOpenFileDialog_Click(object sender, EventArgs e)
+        private void btnComboBoxInputDialog_Click(object sender, EventArgs e)
         {
-            var path = Application.ExecutablePath;
-
-            var dialog = provider.CreateOpenFileDialog(path, s =>
+            var dialog = provider.CreateComboBoxInputDialog(new ComboBoxInputDialogSettings
             {
-                // 搜索通配符
-                s.SearchPattern = "*.exe";
-
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = $"{tbContent.Text}\r\n当前设置的通配符({nameof(s.SearchPattern)})为:{s.SearchPattern}";
-
-                // 是否支持多选
-                s.MultiSelect = true;
-                // 是否可取消
-                s.Cancelable = true;
-                // 确认按钮文本
-                s.ConfirmOption.Text = "Confirm(确定)";
-                // 取消按钮文本
-                s.CancelOption.Text = "Cancel(取消)";
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                Items = new[] { "Option A", "Option B", "Option C", "Custom Item" },
+                DefaultText = "Option A",
+                IsEditable = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
             });
 
-            dialog.Show();
+            var result = dialog.Show();
+            if (result.IsCanceled)
+            {
+                Toast.Show("取消输入");
+            }
+            else
+            {
+                Toast.Show($"选中/输入内容：{result.Value}");
+            }
+        }
 
-            if (dialog.Result.IsCancel)
+        private void btnNumberInputDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateNumberInputDialog(new NumberInputDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                Minimum = 0,
+                Maximum = 1000,
+                DefaultValue = 100,
+                DecimalPlaces = 2,
+                Increment = 10,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+            });
+
+            var result = dialog.Show();
+            if (result.IsCanceled)
+            {
+                Toast.Show("取消输入");
+            }
+            else
+            {
+                Toast.Show($"输入数值为：{result.Value}");
+            }
+        }
+
+        private void btnSliderDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateSliderDialog(new SliderDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                Minimum = 0,
+                Maximum = 100,
+                DefaultValue = 50,
+                TickFrequency = 5,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                OnValueChanged = val => System.Diagnostics.Debug.WriteLine($"Slider: {val}"),
+            });
+
+            var result = dialog.Show();
+            if (result.IsCanceled)
+            {
+                Toast.Show("取消调节");
+            }
+            else
+            {
+                Toast.Show($"最终滑块数值：{result.Value}");
+            }
+        }
+
+        private void btnRangeSliderDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateRangeSliderDialog(new RangeSliderDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                Minimum = 0,
+                Maximum = 100,
+                DefaultStart = 20,
+                DefaultEnd = 80,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                OnValueChanged = range => System.Diagnostics.Debug.WriteLine($"Range: {range.Start} ~ {range.End}"),
+            });
+
+            var result = dialog.Show();
+            if (result.IsCanceled)
+            {
+                Toast.Show("取消调节");
+            }
+            else
+            {
+                Toast.Show($"最终范围：{result.Value.Start:0.##} ~ {result.Value.End:0.##}");
+            }
+        }
+
+        private async void btnProgressDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateProgressDialog(new ProgressDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = "正在处理任务，请稍候...",
+                InitialProgress = 0,
+                Cancelable = false,
+            });
+
+            var task = dialog.ShowAsync();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                await System.Threading.Tasks.Task.Delay(200);
+                dialog.UpdateProgress(i / 10.0, $"正在执行第 {i * 10}% 步骤...");
+            }
+
+            await task;
+            Toast.Show("任务执行完成！");
+        }
+
+        private void btnToastDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateToastDialog(new ToastDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                Duration = TimeSpan.FromSeconds(3),
+            });
+            dialog.ShowAsync();
+        }
+
+        private void btnTextDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateTextDialog(new TextDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = "查看许可协议与使用说明",
+                Text = "Apache License\nVersion 2.0, January 2004\nhttp://www.apache.org/licenses/\n\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n1. Definitions.\n\n\"License\" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.\n\n\"Licensor\" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.",
+                IsReadOnly = true,
+                Cancelable = true,
+                CloseOption = new DialogOption("I Agree(同意)", DialogOptionTag.Positive),
+            });
+            dialog.Show();
+        }
+
+        private void btnColorDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateColorDialog(new ColorDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = "请选择一种颜色：",
+                DefaultColor = new ApeColor(255, 0, 122, 204),
+                Cancelable = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                PresetColors = new[]
+                {
+                    new ApeColor(255, 244, 67, 54),
+                    new ApeColor(255, 233, 30, 99),
+                    new ApeColor(255, 156, 39, 176),
+                    new ApeColor(255, 103, 58, 183),
+                    new ApeColor(255, 63, 81, 181),
+                    new ApeColor(255, 33, 150, 243),
+                    new ApeColor(255, 0, 188, 212),
+                    new ApeColor(255, 0, 150, 136),
+                    new ApeColor(255, 76, 175, 80),
+                    new ApeColor(255, 139, 195, 74),
+                    new ApeColor(255, 255, 235, 59),
+                    new ApeColor(255, 255, 152, 0),
+                    new ApeColor(255, 255, 87, 34),
+                    new ApeColor(255, 121, 85, 72),
+                    new ApeColor(255, 158, 158, 158),
+                    new ApeColor(255, 96, 125, 139),
+                },
+            });
+            var result = dialog.Show();
+            if (result.IsCanceled)
             {
                 Toast.Show("取消选择");
             }
             else
             {
-                Toast.Show($"当前选中的文件路径：\r\n{dialog.Result.Data.Join("\r\n")}");
+                Toast.Show($"选中的颜色为：{result.Value}");
+            }
+        }
+
+        private void btnSaveFileDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateSaveFileDialog(new SaveFileDialogSettings
+            {
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                DefaultFileName = "Document.txt",
+                SearchPattern = "*.*",
+                InitialPath = Application.StartupPath,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+            });
+
+            var result = dialog.Show();
+            if (result.IsCanceled || string.IsNullOrEmpty(result.Value))
+            {
+                Toast.Show("取消保存");
+            }
+            else
+            {
+                Toast.Show($"保存路径为：{result.Value}");
+            }
+        }
+
+        private void btnOpenFileDialog_Click(object sender, EventArgs e)
+        {
+            var dialog = provider.CreateOpenFileDialog(new OpenFileDialogSettings
+            {
+                InitialPath = Application.StartupPath,
+                SearchPattern = "*.exe",
+                Title = tbTitle.Text,
+                Content = $"{tbContent.Text}\r\n当前设置的通配符为: *.exe",
+                MultiSelect = true,
+                Cancelable = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+            });
+
+            var result = dialog.Show();
+            if (result.IsCanceled || result.Value == null)
+            {
+                Toast.Show("取消选择");
+            }
+            else
+            {
+                Toast.Show($"当前选中的文件路径：\r\n{string.Join("\r\n", result.Value)}");
             }
         }
 
         private void btnOpenFolderDialog_Click(object sender, EventArgs e)
         {
-            var dialog = provider.CreateOpenFolderDialog("C:/", s =>
+            var dialog = provider.CreateOpenFolderDialog(new OpenFolderDialogSettings
             {
-                // 标题文本
-                s.Title = tbTitle.Text;
-                // 消息文本
-                s.Content = $"{tbContent.Text}";
-
-                // 是否支持多选
-                s.MultiSelect = true;
-                // 是否可取消
-                s.Cancelable = true;
-                // 确认按钮文本
-                s.ConfirmOption.Text = "Confirm(确定)";
-                // 取消按钮文本
-                s.CancelOption.Text = "Cancel(取消)";
+                InitialPath = "C:\\",
+                Title = tbTitle.Text,
+                Content = tbContent.Text,
+                MultiSelect = true,
+                Cancelable = true,
+                ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
+                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
             });
 
-            dialog.Show();
-
-            if (dialog.Result.IsCancel)
+            var result = dialog.Show();
+            if (result.IsCanceled || result.Value == null)
             {
                 Toast.Show("取消选择");
             }
             else
             {
-                Toast.Show($"当前选中的文件夹路径：\r\n{dialog.Result.Data.Join("\r\n")}");
+                Toast.Show($"当前选中的文件夹路径：\r\n{string.Join("\r\n", result.Value)}");
             }
         }
 
         private void btnOptionColor_Click(object sender, EventArgs e)
         {
             var btn = sender as Control;
-            var tagName = btn.Text;
-            var ot = tagName.ToEnum<DialogOptionTag>();
+            if (btn == null) return;
 
-            ColorDialog MyDialog = new ColorDialog();
-            MyDialog.AllowFullOpen = false;
-            MyDialog.ShowHelp = true;
-            MyDialog.Color = btn.BackColor;
-            if (MyDialog.ShowDialog() == DialogResult.OK)
+            using (var myDialog = new ColorDialog())
             {
-                btn.BackColor = MyDialog.Color;
-                provider.OptionTagColors[ot] = btn.BackColor;
+                myDialog.AllowFullOpen = false;
+                myDialog.ShowHelp = true;
+                myDialog.Color = btn.BackColor;
+                if (myDialog.ShowDialog() == DialogResult.OK)
+                {
+                    btn.BackColor = myDialog.Color;
+                }
             }
         }
 
-        class Student
+        private class Student
         {
             public Student(string name, string description)
             {

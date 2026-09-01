@@ -20,11 +20,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ApeFree.ApeDialogs" Version="0.10.18" />
     <PackageReference Condition="'$(TargetFramework)' == 'net10.0-windows' Or '$(TargetFramework)' == 'net8.0-windows'" Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj" />
     <ProjectReference Include="..\ApeFree.ApeForms\ApeFree.ApeForms.csproj" />
     <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
     <ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D.Gdi\ApeFree.Cake2D.Gdi.csproj" />
