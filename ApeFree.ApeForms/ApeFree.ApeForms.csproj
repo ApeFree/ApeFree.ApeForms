@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
@@ -12,8 +12,9 @@
 		<Title>ApeFree.ApeForms</Title>
 		<Product>ApeFree.ApeForms</Product>
 		<Description>WinForm窗体与UI控件库，包含功能丰富的控件（Metro风格）、对话框、通知弹窗与模板嵌套窗体系统。</Description>
-		<RepositoryUrl></RepositoryUrl>
+		<RepositoryUrl>https://github.com/ApeFree/ApeFree.ApeForms</RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Version>1.0.0.0-beta260901</Version>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
@@ -21,6 +22,8 @@
 		<PackageVersion>1.0.0.0-beta260901</PackageVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<SignAssembly>False</SignAssembly>
 		<GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
@@ -40,6 +43,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 		<None Include="..\ApeFree_64px.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
