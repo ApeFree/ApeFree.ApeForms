@@ -1,10 +1,12 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApeFree.ApeForms", "ApeFree.ApeForms\ApeFree.ApeForms.csproj", "{316979AE-81DF-4430-86D2-64AC44084328}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApeFree.ApeForms.Demo", "ApeFree.ApeForms.Demo\ApeFree.ApeForms.Demo.csproj", "{B8F42F99-4A47-4952-B4FD-E195EFE4F1B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApeFree.ApeDialogs", "..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj", "{792C0212-A00D-4C98-8902-6CD0313C586F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,10 @@ Global
 		{B8F42F99-4A47-4952-B4FD-E195EFE4F1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F42F99-4A47-4952-B4FD-E195EFE4F1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F42F99-4A47-4952-B4FD-E195EFE4F1B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792C0212-A00D-4C98-8902-6CD0313C586F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792C0212-A00D-4C98-8902-6CD0313C586F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792C0212-A00D-4C98-8902-6CD0313C586F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792C0212-A00D-4C98-8902-6CD0313C586F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

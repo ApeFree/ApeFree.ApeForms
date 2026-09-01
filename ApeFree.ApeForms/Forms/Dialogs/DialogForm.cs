@@ -1,10 +1,6 @@
 ﻿using ApeFree.ApeForms.Forms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Dialogs
@@ -13,11 +9,22 @@ namespace ApeFree.ApeForms.Forms.Dialogs
     {
         public string Title { get => Text; set => Text = value; }
         public string Content { get => labContent.Text; set => labContent.Text = value; }
-        public Font ContentFont { get; set; }
+        public Font ContentFont
+        {
+            get => labContent.Font;
+            set
+            {
+                if (value != null)
+                {
+                    labContent.Font = value;
+                }
+            }
+        }
 
         public DialogForm()
         {
             InitializeComponent();
+            KeyPreview = true;
         }
 
         protected override void OnShown(EventArgs e)
@@ -29,7 +36,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 maxContentHeight = Height / 3;
             }
-            var maxSize = new Size(panelContent.Width, maxContentHeight);
+            var maxSize = new Size(panelContent.Width, Math.Max(20, maxContentHeight));
             panelContent.MaximumSize = maxSize;
         }
 
@@ -41,11 +48,16 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         public void SetContentView(Control view)
         {
+            panelView.Controls.Clear();
             if (view != null)
             {
                 view.Dock = DockStyle.Fill;
-                panelView.Controls.Clear();
                 panelView.Controls.Add(view);
+                panelView.Visible = true;
+            }
+            else
+            {
+                panelView.Visible = false;
             }
         }
 

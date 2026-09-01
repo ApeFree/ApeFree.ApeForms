@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
@@ -47,7 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ApeFree.ApeDialogs" Version="0.10.18" />
+		<ProjectReference Include="..\..\ApeFree.ApeDialogs\ApeFree.ApeDialogs\ApeFree.ApeDialogs.csproj" />
 		<ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D\ApeFree.Cake2D.csproj" />
 		<ProjectReference Include="..\..\ApeFree.Cake2D\ApeFree.Cake2D.Gdi\ApeFree.Cake2D.Gdi.csproj" />
 		<ProjectReference Include="..\..\STTech.CodePlus\STTech.CodePlus\STTech.CodePlus.csproj" />

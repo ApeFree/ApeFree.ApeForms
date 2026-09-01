@@ -1,336 +1,115 @@
 ﻿using ApeFree.ApeDialogs;
 using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
-using ApeFree.ApeForms.Controls.Buttons;
-using ApeFree.ApeForms.Controls.Cards;
-using ApeFree.ApeForms.Controls.Containers;
-using ApeFree.ApeForms.Controls.DatePickers;
-using ApeFree.ApeForms.Controls.Grids;
-using ApeFree.ApeForms.Controls.Labels;
-using ApeFree.ApeForms.Controls.ListBoxes;
-using ApeFree.ApeForms.Controls.TabBoxes;
-using ApeFree.ApeForms.Controls.TextBoxes;
-using ApeFree.ApeForms.Controls.TitleBars;
-using ApeFree.ApeForms.Controls.Views;
-using ApeFree.ApeForms.Controls.Views;
-using ApeFree.ApeForms.Forms.Dialogs;
-using ApeFree.ApeForms.Forms.Notifications;
+using ApeFree.ApeDialogs.Theme;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ApeFree.ApeForms.Forms.Dialogs
 {
+    /// <summary>
+    /// ApeDialogs 的 WinForms 实现提供器。
+    /// 上下文类型为 <see cref="Control"/>（通常为主窗体或父控件）。
+    /// </summary>
     public class ApeFormsDialogProvider : DialogProvider<Control>
     {
-        private ErrorProvider errorProvider = new ErrorProvider() { BlinkStyle = ErrorBlinkStyle.BlinkIfDifferentError, BlinkRate = 100 };
+        private readonly IDialogTheme _theme;
 
-        /// <inheritdoc/>
-        public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
+        /// <summary>
+        /// 默认构造提供器（使用默认主题）。
+        /// </summary>
+        public ApeFormsDialogProvider()
+            : this(DefaultTheme.Instance)
         {
-            var view = new DateTimePicker();
-            view.Format = DateTimePickerFormat.Custom;
-            view.CustomFormat = settings.DateTimeFormat;
-            view.Value = settings.DefaultDateTime;
-            view.Font = settings.Font;
+        }
 
-            var dialog = new ApeFormsDialog<DateTime>(settings);
-            dialog.ContentView = view;
-
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                dialog.Result.UpdateResultData(view.Value);
-                var result = dialog.PerformPrecheck();
-                //if (result.IsSuccess)
-                //{
-                //    e.Dialog.Dismiss(false);
-                //}
-            };
-
-            // 添加选项按钮
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-            settings.CurrentTimeOption.OptionSelectedCallback = (s, e) => view.Value = DateTime.Now;
-
-            return dialog;
+        /// <summary>
+        /// 构造提供器。
+        /// </summary>
+        /// <param name="theme">主题配色</param>
+        public ApeFormsDialogProvider(IDialogTheme theme)
+        {
+            _theme = theme ?? throw new ArgumentNullException(nameof(theme));
         }
 
         /// <inheritdoc/>
-        public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
-        {
-            var view = new TextBox();
-            view.Multiline = settings.IsMultiline;
-            view.Text = settings.DefaultText;
-            view.MaxLength = settings.MaximumLength;
-            view.Font = settings.Font;
-
-            var dialog = new ApeFormsDialog<string>(settings);
-            dialog.ContentView = view;
-
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                dialog.Result.UpdateResultData(view.Text);
-                var result = dialog.PerformPrecheck();
-                //if (result.IsSuccess)
-                //{
-                //    e.Dialog.Dismiss(false);
-                //}
-            };
-
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-            settings.ClearOption.OptionSelectedCallback = (s, e) => view.Clear();
-
-            // 单行输入的模式下，在输入框内使用回车键可确认输入
-            if (!view.Multiline)
-            {
-                view.KeyDown += (s, e) =>
-                {
-                    if (e.KeyCode == Keys.Return)
-                    {
-                        confirmOptionCallback.Invoke(view, new OptionSelectedEventArgs(dialog, settings.ConfirmOption));
-                    }
-                };
-            }
-
-            return dialog;
-        }
+        public override IDialogTheme Theme => _theme;
 
         /// <inheritdoc/>
         public override IDialog<bool> CreateMessageDialog(MessageDialogSettings settings, Control context = null)
-        {
-            var dialog = new ApeFormsDialog<bool>(settings);
-            settings.ConfirmOption.OptionSelectedCallback = (s, e) => e.Dialog.Dismiss(false);
-            return dialog;
-        }
-
-        /// <inheritdoc/>
-        public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
-        {
-            ApeFormsDialog<string> dialog = (ApeFormsDialog<string>)CreateInputDialog(settings, context);
-            ((TextBox)dialog.ContentView).PasswordChar = settings.PasswordChar;
-            return dialog;
-        }
+            => new ApeFormsMessageDialog(settings, context);
 
         /// <inheritdoc/>
         public override IDialog<bool> CreatePromptDialog(PromptDialogSettings settings, Control context = null)
-        {
-            var dialog = new ApeFormsDialog<bool>(settings);
-            settings.PositiveOption.OptionSelectedCallback = (s, e) => { dialog.Result.UpdateResultData(true); e.Dialog.Dismiss(false); };
-            settings.NegativeOption.OptionSelectedCallback = (s, e) => { dialog.Result.UpdateResultData(false); e.Dialog.Dismiss(false); };
-
-            return dialog;
-        }
+            => new ApeFormsPromptDialog(settings, context);
 
         /// <inheritdoc/>
-        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem, Control context = null)
-        {
-            var view = new CheckedListBox();
-            view.Font = settings.Font;
-            view.SelectedIndexChanged += (s, e) =>
-            {
-                for (int i = 0; i < view.Items.Count; i++)
-                {
-                    view.SetItemChecked(i, false);
-                }
-                view.SetItemChecked(view.SelectedIndex, true);
-            };
-            foreach (var item in collection)
-            {
-                view.Items.Add(settings.ItemDisplayTextConvertCallback(item), item.Equals(defaultSelectedItem));
-            }
-            var dialog = new ApeFormsDialog<T>(settings);
-            dialog.ContentView = view;
-
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                var value = view.CheckedItems.Count > 0 ? collection.ElementAt(view.CheckedIndices[0]) : default;
-                dialog.Result.UpdateResultData(value);
-                var result = dialog.PerformPrecheck();
-            };
-
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-
-            return dialog;
-        }
+        public override IDialog<string> CreateInputDialog(InputDialogSettings settings, Control context = null)
+            => new ApeFormsInputDialog(settings, context);
 
         /// <inheritdoc/>
-        public override IDialog<IEnumerable<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems, Control context = null)
-        {
-            var view = new CheckedListBox();
-            view.Font = settings.Font;
+        public override IDialog<string> CreatePasswordDialog(PasswordDialogSettings settings, Control context = null)
+            => new ApeFormsPasswordDialog(settings, context);
 
-            // 关联Selected与Checked（使操作变简单）
-            view.SelectedIndexChanged += (s, e) =>
-            {
-                if (view.SelectedIndex != -1)
-                {
-                    view.SetItemChecked(view.SelectedIndex, !view.GetItemChecked(view.SelectedIndex));
-                }
-            };
+        /// <inheritdoc/>
+        public override IDialog<T> CreateSelectionDialog<T>(SelectionDialogSettings<T> settings, IEnumerable<T> collection, T defaultSelectedItem = default, Control context = null)
+            => new ApeFormsSelectionDialog<T>(settings, collection, defaultSelectedItem, context);
 
-            // 添加选项集合到列表控件
-            foreach (var item in collection)
-            {
-                view.Items.Add(settings.ItemDisplayTextConvertCallback(item), defaultSelectedItems?.Contains(item) ?? false);
-            }
-            var dialog = new ApeFormsDialog<IEnumerable<T>>(settings);
-            dialog.ContentView = view;
+        /// <inheritdoc/>
+        public override IDialog<IReadOnlyList<T>> CreateMultipleSelectionDialog<T>(MultipleSelectionDialogSettings<T> settings, IEnumerable<T> collection, IEnumerable<T> defaultSelectedItems = null, Control context = null)
+            => new ApeFormsMultipleSelectionDialog<T>(settings, collection, defaultSelectedItems, context);
 
-            settings.ConfirmOption.OptionSelectedCallback = (s, e) =>
-            {
-                var items = view.CheckedItems.Cast<object>().Select(str => view.Items.IndexOf(str)).Select(i => collection.ElementAt(i));
-                dialog.Result.UpdateResultData(items);
-                var result = dialog.PerformPrecheck();
-            };
-            settings.SelectAllOption.OptionSelectedCallback = (s, e) =>
-            {
-                view.SelectedIndex = -1;
-                for (int i = 0; i < view.Items.Count; i++)
-                {
-                    view.SetItemChecked(i, true);
-                }
-            };
-            settings.ReverseSelectedOption.OptionSelectedCallback = (s, e) =>
-            {
-                view.SelectedIndex = -1;
-                for (int i = 0; i < view.Items.Count; i++)
-                {
-                    view.SetItemChecked(i, !view.GetItemChecked(i));
-                }
-            };
-
-            return dialog;
-        }
+        /// <inheritdoc/>
+        public override IDialog<DateTime> CreateDateTimeDialog(DateTimeDialogSettings settings, Control context = null)
+            => new ApeFormsDateTimeDialog(settings, context);
 
         /// <inheritdoc/>
         public override IDialog<DataEntrySheet> CreateDataEntrySheetDialog(DataEntrySheet sheet, DataEntrySheetDialogSettings settings, Control context = null)
-        {
-            var view = new DataEntryView();
-            view.Fields = sheet.Fields.ToArray();
-            view.Font = settings.Font;
-
-            var dialog = new ApeFormsDialog<DataEntrySheet>(settings);
-            dialog.ContentView = view;
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                errorProvider.Clear();
-
-                foreach (var field in sheet.Fields)
-                {
-                    var vcr = field.ValidityCheck();
-                    if (!vcr.IsSuccess)
-                    {
-                        var ctrl = view.GetFieldControlByTitle(field.Title);
-                        errorProvider.SetIconAlignment(ctrl, ErrorIconAlignment.TopRight);
-                        errorProvider.SetIconPadding(ctrl, -20);
-                        errorProvider.SetError(ctrl, vcr.ErrorMessage);
-                        Toast.Show(vcr.ErrorMessage, 2000, null, ToastMode.Reuse);
-                        // dialog.InnerDialog.Shake();
-
-                        // 将垂直滚动条滚动到校验失败的控件的位置
-                        //view.VerticalScroll.Value = ctrl.Top - view.AutoScrollPosition.Y;
-                        //view.PerformLayout();
-                        view.VerticalScrollGradualChange(ctrl, 0, 2);
-
-                        return;
-                    }
-                }
-
-                dialog.Result.UpdateResultData(sheet);
-                var result = dialog.PerformPrecheck();
-                //if (result.IsSuccess)
-                //{
-                //    e.Dialog.Dismiss(false);
-                //}
-            };
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-            return dialog;
-        }
+            => new ApeFormsDataEntrySheetDialog(sheet, settings, context);
 
         /// <inheritdoc/>
-        public override IDialog<string[]> CreateOpenFileDialog(string path, OpenFileDialogSettings settings, Control context = null)
-        {
-            var dialog = new ApeFormsDialog<string[]>(settings);
-
-            var view = context is DriveBrowserView v ? v : new DriveBrowserView();
-            view.DisplayItemType = DisplayItemType.FolderAndFile;
-            view.SearchPattern = settings.SearchPattern;
-            view.MultiSelect = settings.MultiSelect;
-            view.Font = settings.Font;
-            //view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFiles.Join("\r\n");
-            dialog.ContentView = view;
-
-            DialogEventHandler openDefaultFolderHandler = null;
-            openDefaultFolderHandler = new DialogEventHandler((d, e) =>
-            {
-                view.OpenFolder(Path.GetDirectoryName(path));
-                dialog.Shown -= openDefaultFolderHandler;
-            });
-            dialog.Shown += openDefaultFolderHandler;
-
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                if (view.SelectedFiles.Any())
-                {
-                    dialog.Result.UpdateResultData(view.SelectedFiles);
-                    var result = dialog.PerformPrecheck();
-                }
-            };
-
-            // 添加选项按钮
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
-
-            return dialog;
-        }
+        public override IDialog<IReadOnlyList<string>> CreateOpenFileDialog(OpenFileDialogSettings settings, Control context = null)
+            => new ApeFormsOpenFileDialog(settings, context);
 
         /// <inheritdoc/>
-        public override IDialog<string[]> CreateOpenFolderDialog(string path, OpenFolderDialogSettings settings, Control context = null)
-        {
-            var dialog = new ApeFormsDialog<string[]>(settings);
+        public override IDialog<IReadOnlyList<string>> CreateOpenFolderDialog(OpenFolderDialogSettings settings, Control context = null)
+            => new ApeFormsOpenFolderDialog(settings, context);
 
-            var view = context is DriveBrowserView v ? v : new DriveBrowserView();
-            view.DisplayItemType = DisplayItemType.OnlyFolder;
-            view.MultiSelect = settings.MultiSelect;
-            view.Font = settings.Font;
-            //view.OnSelectedItemsChanged += (s, e) => dialog.Content = view.SelectedFolders.Join("\r\n");
-            dialog.ContentView = view;
+        /// <inheritdoc/>
+        public override IDialog<decimal> CreateNumberInputDialog(NumberInputDialogSettings settings, Control context = null)
+            => new ApeFormsNumberInputDialog(settings, context);
 
-            DialogEventHandler openDefaultFolderHandler = null;
-            openDefaultFolderHandler = new DialogEventHandler((d, e) =>
-            {
-                var openOk = view.OpenFolder(path);
-                if (openOk)
-                {
-                    // 默认文件夹如果打开成功，更新为结果文件夹
-                    dialog.Result.UpdateResultData(view.SelectedFolders);
-                }
-                else
-                {
-                    // 略
-                }
-                dialog.Shown -= openDefaultFolderHandler;
-            });
-            dialog.Shown += openDefaultFolderHandler;
+        /// <inheritdoc/>
+        public override IAdjustDialog<decimal> CreateSliderDialog(SliderDialogSettings settings, Control context = null)
+            => new ApeFormsSliderDialog(settings, context);
 
-            Action<object, OptionSelectedEventArgs> confirmOptionCallback = (s, e) =>
-            {
-                if (view.SelectedFolders.Any())
-                {
-                    dialog.Result.UpdateResultData(view.SelectedFolders);
-                    var result = dialog.PerformPrecheck();
-                }
-            };
+        /// <inheritdoc/>
+        public override IAdjustDialog<ValueRange<decimal>> CreateRangeSliderDialog(RangeSliderDialogSettings settings, Control context = null)
+            => new ApeFormsRangeSliderDialog(settings, context);
 
-            // 添加选项按钮
-            settings.ConfirmOption.OptionSelectedCallback = confirmOptionCallback;
+        /// <inheritdoc/>
+        public override IProgressDialog CreateProgressDialog(ProgressDialogSettings settings, Control context = null)
+            => new ApeFormsProgressDialog(settings, context);
 
-            return dialog;
-        }
+        /// <inheritdoc/>
+        public override IDialog<bool> CreateToastDialog(ToastDialogSettings settings, Control context = null)
+            => new ApeFormsToastDialog(settings, context);
+
+        /// <inheritdoc/>
+        public override IDialog<bool> CreateTextDialog(TextDialogSettings settings, Control context = null)
+            => new ApeFormsTextDialog(settings, context);
+
+        /// <inheritdoc/>
+        public override IDialog<ApeColor> CreateColorDialog(ColorDialogSettings settings, Control context = null)
+            => new ApeFormsColorDialog(settings, context);
+
+        /// <inheritdoc/>
+        public override IDialog<string> CreateSaveFileDialog(SaveFileDialogSettings settings, Control context = null)
+            => new ApeFormsSaveFileDialog(settings, context);
+
+        /// <inheritdoc/>
+        public override IDialog<string> CreateComboBoxInputDialog(ComboBoxInputDialogSettings settings, Control context = null)
+            => new ApeFormsComboBoxInputDialog(settings, context);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ApeFree.ApeForms.Forms
+namespace ApeFree.ApeForms.Forms
 {
     partial class FramelessForm
     {
@@ -37,6 +37,7 @@
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(540, 334);
             Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             Name = "FramelessForm";
             Padding = new System.Windows.Forms.Padding(5, 32, 5, 5);
             Text = "FramelessForm";

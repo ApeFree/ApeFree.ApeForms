@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -103,6 +103,7 @@ namespace ApeFree.ApeForms.Forms
                 true);
 
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.None;
 
             _borderElement = new RectangleElement(0, 0, Width - 1, Height - 1)
             {
