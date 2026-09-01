@@ -353,3 +353,10 @@ MigrationBackup/
 /ApeFree.ApeForms.local.sln
 /Demo
 /ApeFree.ApeForms.Test
+
+
+# Local release build script
+build-release.ps1
+
+# NuGet package release folder
+[Ii]nstall/
