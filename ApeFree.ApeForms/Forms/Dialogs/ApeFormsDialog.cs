@@ -119,25 +119,32 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 return;
             }
 
-            if (Context != null)
+            try
             {
-                var parentForm = Context.FindForm();
+                Form parentForm = Context?.FindForm() ?? Form.ActiveForm;
                 if (parentForm != null && !parentForm.IsDisposed)
                 {
                     InnerDialog.StartPosition = FormStartPosition.CenterParent;
+                    InnerDialog.TopMost = parentForm.TopMost;
                     InnerDialog.ShowDialog(parentForm);
-                    return;
+                }
+                else
+                {
+                    InnerDialog.StartPosition = FormStartPosition.CenterScreen;
+                    InnerDialog.ShowDialog();
                 }
             }
-
-            InnerDialog.StartPosition = FormStartPosition.CenterScreen;
-            InnerDialog.ShowDialog();
+            finally
+            {
+                InnerDialog?.Dispose();
+                InnerDialog = null;
+            }
         }
 
         /// <inheritdoc/>
         protected override void DismissHandler()
         {
-            if (InnerDialog == null)
+            if (InnerDialog == null || InnerDialog.IsDisposed)
             {
                 return;
             }
@@ -146,16 +153,15 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 InnerDialog.BeginInvoke(new Action(() =>
                 {
-                    InnerDialog?.Close();
-                    InnerDialog?.Dispose();
-                    InnerDialog = null;
+                    if (InnerDialog != null && !InnerDialog.IsDisposed)
+                    {
+                        InnerDialog.Close();
+                    }
                 }));
             }
             else
             {
                 InnerDialog.Close();
-                InnerDialog.Dispose();
-                InnerDialog = null;
             }
         }
 

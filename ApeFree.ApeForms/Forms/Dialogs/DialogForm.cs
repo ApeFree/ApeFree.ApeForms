@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeForms.Forms;
+using ApeFree.ApeForms.Forms;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -40,11 +40,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             panelContent.MaximumSize = maxSize;
         }
 
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-            this.SetWindowToTopWithoutFocus();
-        }
 
         public void SetContentView(Control view)
         {
