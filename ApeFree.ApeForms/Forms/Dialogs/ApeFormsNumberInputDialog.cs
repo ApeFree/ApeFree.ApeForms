@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using System;
 using System.Windows.Forms;
 
@@ -44,11 +44,5 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         }
 
         protected override void OnConfirmRequested() => TrySubmit(_numericUpDown.Value);
-
-        protected override void OnClearRequested()
-        {
-            _numericUpDown.Value = Math.Max(_settings.Minimum, Math.Min(_settings.Maximum, 0));
-            _numericUpDown.Focus();
-        }
     }
 }

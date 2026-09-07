@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +52,14 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 button.Click += (_, _) => OnConfirmRequested();
             }
+            else if (ReferenceEquals(dialogOption, _settings.SelectAllOption))
+            {
+                button.Click += (_, _) => SelectAll();
+            }
+            else if (ReferenceEquals(dialogOption, _settings.ReverseSelectedOption))
+            {
+                button.Click += (_, _) => ReverseSelection();
+            }
             return button;
         }
 
@@ -68,7 +76,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             TrySubmit(result);
         }
 
-        protected override void OnSelectAllRequested()
+        private void SelectAll()
         {
             for (int i = 0; i < _checkedListBox.Items.Count; i++)
             {
@@ -76,7 +84,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             }
         }
 
-        protected override void OnReverseSelectionRequested()
+        private void ReverseSelection()
         {
             for (int i = 0; i < _checkedListBox.Items.Count; i++)
             {

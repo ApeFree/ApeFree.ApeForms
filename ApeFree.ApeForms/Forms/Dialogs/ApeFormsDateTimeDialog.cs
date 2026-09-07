@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using System;
 using System.Windows.Forms;
 
@@ -38,11 +38,13 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 button.Click += (_, _) => OnConfirmRequested();
             }
+            else if (ReferenceEquals(dialogOption, _settings.CurrentTimeOption))
+            {
+                button.Click += (_, _) => _dateTimePicker.Value = DateTime.Now;
+            }
             return button;
         }
 
         protected override void OnConfirmRequested() => TrySubmit(_dateTimePicker.Value);
-
-        protected override void OnSetCurrentTimeRequested() => _dateTimePicker.Value = DateTime.Now;
     }
 }

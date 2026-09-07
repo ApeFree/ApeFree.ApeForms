@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -46,15 +46,17 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             {
                 button.Click += (_, _) => TrySubmit(_textBox.Text);
             }
+            else if (ReferenceEquals(dialogOption, _settings.ClearOption))
+            {
+                button.Click += (_, _) =>
+                {
+                    _textBox.Clear();
+                    _textBox.Focus();
+                };
+            }
             return button;
         }
 
         protected override void OnConfirmRequested() => TrySubmit(_textBox.Text);
-
-        protected override void OnClearRequested()
-        {
-            _textBox.Clear();
-            _textBox.Focus();
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Core;
+using ApeFree.ApeDialogs.Core;
 using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeDialogs.Theme;
 using ApeFree.ApeForms.Forms.Notifications;
@@ -62,7 +62,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 InnerDialog.ContentFont = settings.Font.Value.ToFont();
             }
 
-            var reminderColor = _theme.ReminderColor.ToColor();
+            var reminderColor = (settings.ReminderColor ?? _theme.ReminderColor).ToColor();
             InnerDialog.ReminderColor = reminderColor;
 
             if (contentView != null)
@@ -97,25 +97,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
             btn.Click += (s, e) =>
             {
-                switch (dialogOption.Behavior)
-                {
-                    case DialogOptionBehavior.Cancel:
-                        Cancel();
-                        break;
-                    case DialogOptionBehavior.Clear:
-                        OnClearRequested();
-                        break;
-                    case DialogOptionBehavior.SelectAll:
-                        OnSelectAllRequested();
-                        break;
-                    case DialogOptionBehavior.ReverseSelection:
-                        OnReverseSelectionRequested();
-                        break;
-                    case DialogOptionBehavior.SetCurrentTime:
-                        OnSetCurrentTimeRequested();
-                        break;
-                }
-
+                dialogOption.Action?.Invoke(this);
                 dialogOption.OnSelected?.Invoke(this, new OptionSelectedEventArgs(this, dialogOption));
             };
 
@@ -191,34 +173,6 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         /// 回车确认动作（由具体 Dialog 覆写）。
         /// </summary>
         protected virtual void OnConfirmRequested()
-        {
-        }
-
-        /// <summary>
-        /// 清空动作（由具体输入类 Dialog 覆写）。
-        /// </summary>
-        protected virtual void OnClearRequested()
-        {
-        }
-
-        /// <summary>
-        /// 全选动作（由具体多选类 Dialog 覆写）。
-        /// </summary>
-        protected virtual void OnSelectAllRequested()
-        {
-        }
-
-        /// <summary>
-        /// 反选动作（由具体多选类 Dialog 覆写）。
-        /// </summary>
-        protected virtual void OnReverseSelectionRequested()
-        {
-        }
-
-        /// <summary>
-        /// 设为当前时间动作（由日期时间类 Dialog 覆写）。
-        /// </summary>
-        protected virtual void OnSetCurrentTimeRequested()
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -66,12 +66,5 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         }
 
         protected override void OnConfirmRequested() => TrySubmit(_comboBox.Text);
-
-        protected override void OnClearRequested()
-        {
-            _comboBox.Text = string.Empty;
-            _comboBox.SelectedIndex = -1;
-            _comboBox.Focus();
-        }
     }
 }
