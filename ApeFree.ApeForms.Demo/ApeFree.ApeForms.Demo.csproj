@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net10.0-windows;net8.0-windows;net461;net452</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net461;net452</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <RootNamespace>ApeFree.ApeForms.Demo</RootNamespace>
@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Condition="'$(TargetFramework)' == 'net10.0-windows' Or '$(TargetFramework)' == 'net8.0-windows'" Include="System.IO.Ports" Version="8.0.0" />
+    <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

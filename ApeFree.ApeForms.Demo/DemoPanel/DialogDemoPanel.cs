@@ -50,7 +50,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 MaximumLength = 200,
                 IsMultiline = false,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -75,7 +75,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 MaximumLength = 200,
                 IsMultiline = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -199,73 +199,30 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
 
         private void btnDataEntrySheetDialog_Click(object sender, EventArgs e)
         {
-            var sheet = new DataEntrySheet();
-            sheet.AddField(new TextField
-            {
-                Title = "姓名",
-                Value = "张三",
-            });
-            sheet.AddField(new PasswordField
-            {
-                Title = "密码",
-                Value = "12345",
-                Validator = str => str != null && str.Length >= 6
-                    ? ValidationResult.Success
-                    : ValidationResult.Failure("密码至少6位"),
-            });
-            sheet.AddField(new DateTimeField
-            {
-                Title = "生日",
-                Value = DateTime.Now,
-            });
-            sheet.AddField(new NumberField
-            {
-                Title = "年龄",
-                Value = 16,
-                DecimalPlaces = 0,
-                Maximum = 120,
-                Minimum = 0,
-            });
-            sheet.AddField(new PicturePathField
-            {
-                Title = "照片",
-                BrowseButtonText = "选择照片...",
-            });
-            sheet.AddField(new FilePathField
-            {
-                Title = "附件",
-                BrowseButtonText = "选择附件...",
-            });
-            sheet.AddField(new ComboBoxField
-            {
-                Title = "学历",
-                Items = new[] { "高中及以下", "大专", "本科", "硕士研究生", "博士研究生" },
-                Value = "高中及以下",
-            });
-            sheet.AddField(new SingleChoiceField
-            {
-                Title = "户籍",
-                Items = new[] { "城市户口", "农村户口", "不确定" },
-                Value = "不确定",
-                Validator = obj => (string)obj != "不确定"
-                    ? ValidationResult.Success
-                    : ValidationResult.Failure("户籍类型不可选择“不确定”"),
-            });
-            sheet.AddField(new MultipleChoiceField
-            {
-                Title = "特长",
-                Items = new[] { "唱歌", "跳舞", "打篮球", "铁山靠" },
-                Value = new object[] { "打篮球", "铁山靠" },
-                Validator = items => items != null && items.Count > 0
-                    ? ValidationResult.Success
-                    : ValidationResult.Failure("至少选择一个特长"),
-            });
-            sheet.AddField(new TextField
-            {
-                Title = "简介",
-                Value = "一个平平无奇的高中生，喜欢唱、跳、rap、篮球。",
-                IsMultiline = true,
-            });
+            var sheet = new DataEntrySheet()
+                .AddTextField("姓名", "张三")
+                .AddPasswordField(f =>
+                {
+                    f.Title = "密码";
+                    f.Value = "12345";
+                    f.Validator = str => str != null && str.Length >= 6
+                        ? ValidationResult.Success
+                        : ValidationResult.Failure("密码至少6位");
+                })
+                .AddDateTimeField("生日", DateTime.Now)
+                .AddNumberField("年龄", 16, minimum: 0, maximum: 120, decimalPlaces: 0)
+                .AddPicturePathField("照片", browseButtonText: "选择照片...")
+                .AddFilePathField("附件", browseButtonText: "选择附件...")
+                .AddComboBoxField("学历", new[] { "高中及以下", "大专", "本科", "硕士研究生", "博士研究生" }, "高中及以下")
+                .AddSingleChoiceField("户籍", new[] { "城市户口", "农村户口", "不确定" }, "不确定",
+                    validator: obj => (string)obj != "不确定"
+                        ? ValidationResult.Success
+                        : ValidationResult.Failure("户籍类型不可选择“不确定”"))
+                .AddMultipleChoiceField("特长", new[] { "唱歌", "跳舞", "打篮球", "铁山靠" }, new[] { "打篮球", "铁山靠" },
+                    validator: items => items != null && items.Count > 0
+                        ? ValidationResult.Success
+                        : ValidationResult.Failure("至少选择一个特长"))
+                .AddTextField("简介", "一个平平无奇的高中生，喜欢唱、跳、rap、篮球。", isMultiline: true);
 
             var dialog = provider.CreateDataEntrySheetDialog(sheet, new DataEntrySheetDialogSettings
             {
@@ -305,8 +262,8 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DefaultDateTime = new DateTime(2008, 8, 8),
                 Cancelable = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
-                CurrentTimeOption = new DialogOption("Now(当前)", DialogOptionTag.Functional, Behavior: DialogOptionBehavior.SetCurrentTime),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
+                CurrentTimeOption = new DialogOption("Now(当前)", DialogOptionTag.Functional),
             });
 
             var result = dialog.Show();
@@ -330,7 +287,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DefaultText = "Option A",
                 IsEditable = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -356,7 +313,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DecimalPlaces = 2,
                 Increment = 10,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -381,7 +338,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DefaultValue = 50,
                 TickFrequency = 5,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
                 OnValueChanged = val => System.Diagnostics.Debug.WriteLine($"Slider: {val}"),
             });
 
@@ -407,7 +364,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DefaultStart = 20,
                 DefaultEnd = 80,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
                 OnValueChanged = range => System.Diagnostics.Debug.WriteLine($"Range: {range.Start} ~ {range.End}"),
             });
 
@@ -478,7 +435,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 DefaultColor = new ApeColor(255, 0, 122, 204),
                 Cancelable = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
                 PresetColors = new[]
                 {
                     new ApeColor(255, 244, 67, 54),
@@ -520,7 +477,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 SearchPattern = "*.*",
                 InitialPath = Application.StartupPath,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -545,7 +502,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 MultiSelect = true,
                 Cancelable = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
@@ -569,7 +526,7 @@ namespace ApeFree.ApeForms.Demo.DemoPanel
                 MultiSelect = true,
                 Cancelable = true,
                 ConfirmOption = new DialogOption("Confirm(确定)", DialogOptionTag.Positive),
-                CancelOption = new DialogOption("Cancel(取消)", DialogOptionTag.Negative, Behavior: DialogOptionBehavior.Cancel),
+                CancelOption = DialogOption.CreateCancelOption("Cancel(取消)"),
             });
 
             var result = dialog.Show();
