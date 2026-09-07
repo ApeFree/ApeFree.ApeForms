@@ -15,11 +15,11 @@
 		<RepositoryUrl>https://github.com/ApeFree/ApeFree.ApeForms</RepositoryUrl>
 		<PackageProjectUrl>https://blog.csdn.net/lgj123xj/category_11811822.html</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>1.0.2.0-beta260905</Version>
-		<AssemblyVersion>1.0.2.0</AssemblyVersion>
-		<FileVersion>1.0.2.0</FileVersion>
-		<InformationalVersion>1.0.2.0-beta260905</InformationalVersion>
-		<PackageVersion>1.0.2.0-beta260905</PackageVersion>
+		<Version>1.0.2.1-alpha260907</Version>
+		<AssemblyVersion>1.0.2.1</AssemblyVersion>
+		<FileVersion>1.0.2.1</FileVersion>
+		<InformationalVersion>1.0.2.1-alpha260907</InformationalVersion>
+		<PackageVersion>1.0.2.1-alpha260907</PackageVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIcon>ApeFree_64px.png</PackageIcon>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
