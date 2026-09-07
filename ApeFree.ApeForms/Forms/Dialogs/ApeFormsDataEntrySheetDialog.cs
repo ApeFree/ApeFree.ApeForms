@@ -1,5 +1,7 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeForms.Forms.Notifications;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -10,6 +12,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         private readonly DataEntrySheet _sheet;
         private readonly DataEntrySheetDialogSettings _settings;
         private readonly DataEntryView _view;
+        private readonly ErrorProvider _errorProvider = new ErrorProvider { BlinkStyle = ErrorBlinkStyle.BlinkIfDifferentError, BlinkRate = 100 };
 
         public ApeFormsDataEntrySheetDialog(DataEntrySheet sheet, DataEntrySheetDialogSettings settings, Control context = null)
             : base(settings, context)
@@ -27,7 +30,10 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 _view.Font = settings.Font.Value.ToFont();
             }
 
+            _errorProvider.ContainerControl = _view;
+
             InnerDialog.SetContentView(_view);
+            InnerDialog.FormClosed += (_, _) => _errorProvider.Dispose();
             AddDefaultOptions();
         }
 
@@ -43,12 +49,37 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
         protected override void OnConfirmRequested()
         {
-            var validation = _sheet.Validate();
-            if (!validation.IsSuccess)
+            _errorProvider.Clear();
+
+            foreach (var field in _sheet.Fields)
             {
-                OnValidationFailed(validation);
-                return;
+                var vcr = field.Validate();
+                if (!vcr.IsSuccess)
+                {
+                    var ctrl = _view.GetFieldControlByTitle(field.Title);
+                    if (ctrl != null)
+                    {
+                        _errorProvider.SetIconAlignment(ctrl, ErrorIconAlignment.TopRight);
+                        _errorProvider.SetIconPadding(ctrl, -20);
+                        _errorProvider.SetError(ctrl, vcr.ErrorMessage);
+
+                        // 将垂直滚动条滚动到校验失败的控件的位置
+                        _view.ScrollControlIntoView(ctrl);
+                        int targetY = Math.Max(0, ctrl.Top - _view.AutoScrollPosition.Y);
+                        _view.AutoScrollPosition = new Point(0, targetY);
+                        _view.PerformLayout();
+                    }
+
+                    if (InnerDialog != null && !InnerDialog.IsDisposed)
+                    {
+                        InnerDialog.Shake();
+                        Toast.Show(vcr.ErrorMessage, 2000, InnerDialog, ToastMode.Reuse);
+                    }
+
+                    return;
+                }
             }
+
             TrySubmit(_sheet);
         }
     }

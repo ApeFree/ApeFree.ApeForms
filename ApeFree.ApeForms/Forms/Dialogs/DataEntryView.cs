@@ -1,4 +1,4 @@
-﻿using ApeFree.ApeDialogs.Settings;
+using ApeFree.ApeDialogs.Settings;
 using ApeFree.ApeForms.Controls.Buttons;
 using ApeFree.ApeForms.Controls.Labels;
 using ApeFree.ApeForms.Controls.ListBoxes;
@@ -100,15 +100,28 @@ namespace ApeFree.ApeForms.Forms.Dialogs
             return Items.FirstOrDefault(c => c.Text == title);
         }
 
+        /// <summary>
+        /// 字段标题字体
+        /// </summary>
+        public Font TitleFont => new Font(Font, FontStyle.Bold);
+
+        /// <summary>
+        /// 字段数据字体
+        /// </summary>
+        public Font ValueFont => Font;
+
         private GroupBox CreateGroupBox(SheetField field)
         {
             var gb = new GroupBox
             {
                 Text = field.Title,
+                Font = TitleFont,
                 Dock = DockStyle.Top,
                 AutoSize = true,
-                Padding = new Padding(8, 16, 8, 8),
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(5),
             };
+            gb.ControlAdded += (s, e) => e.Control.Font = ValueFont;
             return gb;
         }
 
@@ -202,6 +215,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 BackColor = Color.WhiteSmoke,
                 ForeColor = Color.Black,
                 Dock = DockStyle.Top,
+                Height = 26,
             };
 
             btnBrowse.Click += (s, e) =>
@@ -227,28 +241,12 @@ namespace ApeFree.ApeForms.Forms.Dialogs
         {
             var group = CreateGroupBox(field);
 
-            var labPath = new TallerLabel
-            {
-                ForeColor = Color.DarkGray,
-                Text = field.Value ?? string.Empty,
-                Dock = DockStyle.Top,
-            };
-
-            var picBox = new PictureBox
+            var pic = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.Zoom,
-                Height = 80,
                 Dock = DockStyle.Top,
+                Height = 0,
             };
-
-            if (!string.IsNullOrEmpty(field.Value) && File.Exists(field.Value))
-            {
-                try
-                {
-                    picBox.Image = Image.FromFile(field.Value);
-                }
-                catch { }
-            }
 
             var btnBrowse = new SimpleButton
             {
@@ -256,7 +254,30 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                 BackColor = Color.WhiteSmoke,
                 ForeColor = Color.Black,
                 Dock = DockStyle.Top,
+                Height = 26,
             };
+
+            void UpdateImage(string path)
+            {
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                {
+                    try
+                    {
+                        pic.ImageLocation = path;
+                        using (var image = new Bitmap(path))
+                        {
+                            var width = btnBrowse.Width > 0 ? btnBrowse.Width : (group.Width > 0 ? group.Width : 380);
+                            var height = Math.Min((int)((float)image.Height / image.Width * width), width);
+                            pic.Height = height;
+                        }
+                    }
+                    catch { }
+                }
+                else
+                {
+                    pic.Height = 0;
+                }
+            }
 
             btnBrowse.Click += (s, e) =>
             {
@@ -266,21 +287,20 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                     ofd.RestoreDirectory = true;
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
-                        labPath.Text = ofd.FileName;
+                        UpdateImage(ofd.FileName);
                         field.Value = ofd.FileName;
-                        try
-                        {
-                            picBox.Image?.Dispose();
-                            picBox.Image = Image.FromFile(ofd.FileName);
-                        }
-                        catch { }
                     }
                 }
             };
 
-            group.Controls.Add(picBox);
-            group.Controls.Add(labPath);
+            group.Controls.Add(pic);
             group.Controls.Add(btnBrowse);
+
+            if (!string.IsNullOrEmpty(field.Value))
+            {
+                UpdateImage(field.Value);
+            }
+
             return group;
         }
 
@@ -306,12 +326,15 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
             if (field.Items != null)
             {
+                int itemHeight = Math.Max(20, ValueFont.Height + 5);
+
                 foreach (var item in Enumerable.Reverse(field.Items))
                 {
                     var rb = new RadioButton
                     {
                         Text = field.ItemDisplayConverter != null ? field.ItemDisplayConverter(item) : item?.ToString() ?? string.Empty,
                         Dock = DockStyle.Top,
+                        Height = itemHeight,
                         Checked = Equals(item, field.Value),
                     };
                     rb.CheckedChanged += (s, e) =>
@@ -334,6 +357,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
 
             if (field.Items != null)
             {
+                int itemHeight = Math.Max(20, ValueFont.Height + 5);
                 var selectedList = field.Value != null ? new List<object>(field.Value) : new List<object>();
 
                 foreach (var item in Enumerable.Reverse(field.Items))
@@ -342,6 +366,7 @@ namespace ApeFree.ApeForms.Forms.Dialogs
                     {
                         Text = field.ItemDisplayConverter != null ? field.ItemDisplayConverter(item) : item?.ToString() ?? string.Empty,
                         Dock = DockStyle.Top,
+                        Height = itemHeight,
                         Checked = selectedList.Contains(item),
                     };
                     cb.CheckedChanged += (s, e) =>
